@@ -17,6 +17,7 @@ import ecs.Traps.Giftwolke;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
+import ecs.entities.Ghost;
 import ecs.entities.Hero;
 import ecs.entities.Trap;
 import ecs.systems.*;
@@ -119,7 +120,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         hero = new Hero();
-
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -140,6 +140,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
         Trap gifwolke = new Giftwolke();
         Trap bananenschale = new Bananenschale();
+        Ghost ghost = new Ghost();
     }
 
     private void manageEntitiesSets() {

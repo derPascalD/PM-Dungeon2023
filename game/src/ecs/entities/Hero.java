@@ -62,11 +62,10 @@ public class Hero extends Entity implements IOnDeathFunction {
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
     }
 
-
     private void setupHealthComponent()
     {
         Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
-         new HealthComponent(this, 100, this::onDeath ,hit,hit);
+        new HealthComponent(this, 100, this::onDeath ,hit,hit);
     }
 
     @Override
