@@ -177,9 +177,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         Trap gifwolke = new Giftwolke();
         Trap bananenschale = new Bananenschale();
+
         if(rand.nextBoolean()) {
             Ghost ghost = new Ghost();
         }
+
 
     }
 

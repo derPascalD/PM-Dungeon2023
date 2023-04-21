@@ -131,7 +131,6 @@ public class Hero extends Entity implements IOnDeathFunction {
         return pathToRunRight;
     }
 
-
     private void setupHealthComponent()
     {
         Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
