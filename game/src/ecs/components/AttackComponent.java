@@ -1,2 +1,4 @@
-package ecs.components;public class AttackComponent {
+package ecs.components;
+
+public class AttackComponent {
 }

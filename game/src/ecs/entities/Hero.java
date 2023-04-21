@@ -60,4 +60,5 @@ public class Hero extends Entity {
                 (you, other, direction) -> System.out.println("heroCollisionEnter"),
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
     }
+
 }
