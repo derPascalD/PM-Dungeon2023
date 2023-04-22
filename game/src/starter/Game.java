@@ -12,10 +12,13 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.Traps.Bananenschale;
+import ecs.Traps.Giftwolke;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.Trap;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.Painter;
@@ -116,6 +119,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         hero = new Hero();
+
+
+
+
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -134,6 +141,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
+        Trap gifwolke = new Giftwolke();
+        Trap bananenschale = new Bananenschale();
     }
 
     private void manageEntitiesSets() {

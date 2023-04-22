@@ -30,6 +30,7 @@ public class Hero extends Entity {
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
+        //new HealthComponent(this);
         setupHitboxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
