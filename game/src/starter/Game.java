@@ -228,10 +228,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private void createMonster() {
         new Demon();
-        /*
-        int anzahlMonster = (int) (Math.random() * 13);
+        int anzahlMonster = (int) (Math.random() * 4);
         for (int i = 0; i < anzahlMonster; i++) {
-            int monster = (int) (Math.random() * 5);
+            int monster = (int) (Math.random() * 3);
             if (monster == 0) {
                 new Demon();
             } else if (monster == 1) {
@@ -244,7 +243,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
 
         }
-        */
+
     }
 
 

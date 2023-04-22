@@ -43,6 +43,7 @@ public class PatrouilleWalk implements IIdleAI {
     private int currentCheckpoint = 0;
 
     /**
+     * English:
      * Walks a random pattern in a radius around the entity. The checkpoints will be chosen randomly
      * at first idle. After being initialized the checkpoints won't change anymore, only the order
      * may be.
@@ -51,6 +52,17 @@ public class PatrouilleWalk implements IIdleAI {
      * @param numberCheckpoints Number of checkpoints to walk to
      * @param pauseTime Max time in milliseconds to wait on a checkpoint. The actual time is a
      *     random number between 0 and this value
+     */
+    /**
+     * German:
+     * Durchläuft ein zufälliges Muster in einem Radius um die Entität. Die Kontrollpunkte werden zufällig ausgewählt
+     * beim ersten Leerlauf. Nach der Initialisierung ändern sich die Kontrollpunkte nicht mehr, nur die Reihenfolge
+     * kann sein.
+     *
+     * @param radius Maximale Entfernung von der Entität zu Fuß
+     * @param numberCheckpoints Anzahl der anzulaufenden Checkpoints
+     * @param pauseTime Maximale Zeit in Millisekunden, um auf einen Checkpoint zu warten. Die tatsächliche Zeit ist eine
+     * Zufallszahl zwischen 0 und diesem Wert
      */
     public PatrouilleWalk(float radius, int numberCheckpoints, int pauseTime, MODE mode) {
         this.radius = radius;

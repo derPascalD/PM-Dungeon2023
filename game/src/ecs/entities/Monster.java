@@ -2,11 +2,7 @@ package ecs.entities;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
-import ecs.components.ai.AIComponent;
-import ecs.components.ai.transition.ITransition;
 import graphic.Animation;
 
 public abstract class Monster extends Entity {

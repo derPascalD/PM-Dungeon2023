@@ -12,7 +12,7 @@ public interface IFightAI {
      */
     /**
      * German:
-     * Implements the combat behavior of an AI-controlled entity.
+     * Implementiert das Kampfverhalten einer KI-gesteuerten Entität.
      *
      * @param entity associated entity
      */

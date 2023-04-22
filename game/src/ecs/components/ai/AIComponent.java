@@ -53,21 +53,32 @@ public class AIComponent extends Component {
      */
     public AIComponent(@DSLContextMember(name = "entity") Entity entity) {
         super(entity);
-        idleAI = new RadiusWalk(5, 2);
+        idleAI = new RadiusWalk(5, 3);
         transitionAI = new RangeTransition(5f);
         fightAI = new CollideAI(2f);
+
+
+
     }
 
     /** Excecute the ai behavior */
+    /** Ausführen des KI-Verhaltens */
     public void execute() {
         if (transitionAI.isInFightMode(entity)) fightAI.fight(entity);
         else idleAI.idle(entity);
     }
 
     /**
+     * English:
      * Set a new fight ai
      *
      * @param ai new fight ai
+     */
+    /**
+     * German:
+     * Setzt einen neuen Kampf ai
+     *
+     * @param ai neuer Kampf ai
      */
     public void setFightAI(IFightAI ai) {
         this.fightAI = ai;
