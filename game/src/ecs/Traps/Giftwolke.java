@@ -36,13 +36,16 @@ public class Giftwolke extends Trap implements ICollide {
     @Override
     public void onCollision(Entity a, Entity b, Tile.Direction from) {
 
-        if (a == null || b == null) System.out.println(a +" "+ b);;
+        if (a == null || b == null) System.out.println(a +" "+ b);
+
         if (!active) return;
         var optinalVelocity = b.getComponent(VelocityComponent.class);
         if (!optinalVelocity.isPresent()) System.exit(0);
 
         var  velocityComponent = (VelocityComponent) optinalVelocity.get();
-        //TODO: verlangsamen.
+        System.out.println("Before Y: "+ velocityComponent.getYVelocity());
+        velocityComponent.setYVelocity(velocityComponent.getYVelocity()/2);
+        System.out.println("After Y: "+ velocityComponent.getYVelocity());
 
         active = false;
 
