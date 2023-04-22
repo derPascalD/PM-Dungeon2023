@@ -10,6 +10,9 @@ import ecs.entities.Entity;
 import ecs.entities.Trap;
 import level.elements.tile.Tile;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Bananenschale extends Trap implements ICollide {
 
     public Bananenschale() {
@@ -27,17 +30,46 @@ public class Bananenschale extends Trap implements ICollide {
     @Override
     public void onCollision(Entity a, Entity b, Tile.Direction from) {
 
-        if (a != null || b != null) System.out.println(a.getClass().getName() +" "+ b.getClass().getName());;
+        if (a == null || b == null) return;
         if (!active) return;
 
-        var optinalHealth = b.getComponent(HealthComponent.class);
-        if (!optinalHealth.isPresent()) System.exit(0);
 
-        var  healthComponent = (HealthComponent) optinalHealth.get();
+        var optionalHealth = b.getComponent(HealthComponent.class);
+        if (!optionalHealth.isPresent()) return;
+
+        HealthComponent  healthComponent = (HealthComponent) optionalHealth.get();
         int healthpoints = healthComponent.getCurrentHealthpoints();
-        healthpoints = healthpoints - 2;
-        healthComponent.setCurrentHealthpoints(healthpoints);
-        visible = false;
+        System.out.println("actuall healthhpoints: " +  healthpoints);
+
+        healthComponent.setCurrentHealthpoints(healthpoints = healthpoints - 10);
+        System.out.println("new healthpoints: "+ healthpoints);
+
+        var optionalVelocity = b.getComponent(VelocityComponent.class);
+        if (!optionalVelocity.isPresent()) return;
+
+        var velocityComponent = (VelocityComponent) optionalVelocity.get();
+
+
+        float orginialXVelocity = velocityComponent.getXVelocity();
+        float orginialYVelocity = velocityComponent.getYVelocity();
+
+        velocityComponent.setYVelocity(velocityComponent.getYVelocity()/10);
+        velocityComponent.setXVelocity(velocityComponent.getXVelocity()/10);
+
+
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                velocityComponent.setYVelocity(orginialYVelocity);
+                velocityComponent.setXVelocity(orginialXVelocity);
+                System.out.println("5s Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
+                timer.cancel();
+            }
+        }, 5*1000);
+
+        active = false;
 
     }
+
 }

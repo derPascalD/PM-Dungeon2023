@@ -23,15 +23,14 @@ public abstract class  Trap extends Entity{
     {
         super();
         new PositionComponent(this);
-
     }
 
     public boolean createRandomBooleanValue()
     {
         Random rand = new Random();
         return rand.nextBoolean();
-
     }
+
 
 
 
