@@ -37,11 +37,5 @@ public abstract class Monster extends Entity {
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
-    public void setupHitboxComponent() {
-        new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("heroCollisionEnter"),
-            (you, other, direction) -> System.out.println("heroCollisionLeave"));
-    }
 
 }

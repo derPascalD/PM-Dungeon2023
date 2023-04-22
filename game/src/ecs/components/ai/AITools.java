@@ -16,11 +16,20 @@ public class AITools {
     private static final Random random = new Random();
 
     /**
+     * English:
      * Sets the velocity of the passed entity so that it takes the next necessary step to get to the
      * end of the path.
      *
      * @param entity Entity moving on the path
      * @param path Path on which the entity moves
+     */
+    /**
+     * German:
+     * Setzt die Geschwindigkeit der übergebenen Entität so, dass sie den nächsten notwendigen Schritt macht, um zum
+     * Ende des Pfades zu gelangen.
+     *
+     * @param entity Entität, die sich auf dem Pfad bewegt
+     * @param path Pfad, auf dem sich die Entität bewegt
      */
     public static void move(Entity entity, GraphPath<Tile> path) {
         // entity is already at the end

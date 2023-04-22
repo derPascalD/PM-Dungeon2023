@@ -1,8 +1,10 @@
 package ecs.entities;
 
+import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.transition.ITransition;
+import ecs.systems.AISystem;
 
 public class Dragon extends Monster{
 
@@ -17,14 +19,11 @@ public class Dragon extends Monster{
         this.pathToRunRight = "monster/imp/runRight";
 
         new PositionComponent(this);
+        new HealthComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
-        setupHitboxComponent();
-        new AIComponent(this).setTransitionAI(new ITransition() {
-            @Override
-            public boolean isInFightMode(Entity entity) {
-                return false;
-            }
-        });
+
+        new AIComponent(this);
+        new AISystem();
     }
 }

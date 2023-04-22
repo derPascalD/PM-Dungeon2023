@@ -227,6 +227,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void createMonster() {
+        new Demon();
+        /*
         int anzahlMonster = (int) (Math.random() * 13);
         for (int i = 0; i < anzahlMonster; i++) {
             int monster = (int) (Math.random() * 5);
@@ -238,8 +240,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 new Dragon();
 
             }
-            System.out.println(LEVELSIZE);
+
+
+
         }
+        */
     }
 
 

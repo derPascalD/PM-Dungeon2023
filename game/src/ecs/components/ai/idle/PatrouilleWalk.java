@@ -19,12 +19,15 @@ public class PatrouilleWalk implements IIdleAI {
 
     public enum MODE {
         /** Walks to a random checkpoint. */
+        /** Läuft zu einem zufälligen Kontrollpunkt. */
         RANDOM,
 
         /** Looping the same path over and over again. */
+        /** Den gleichen Pfad immer wieder durchlaufen. */
         LOOP,
 
         /** Walks the path forward and then backward. */
+        /** Läuft den Pfad erst vorwärts und dann rückwärts ab. */
         BACK_AND_FORTH
     }
 

@@ -3,6 +3,7 @@ package ecs.entities;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.transition.ITransition;
+import ecs.systems.AISystem;
 
 public class Zombie extends Monster{
 
@@ -19,13 +20,9 @@ public class Zombie extends Monster{
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
-        setupHitboxComponent();
-        new AIComponent(this).setTransitionAI(new ITransition() {
-            @Override
-            public boolean isInFightMode(Entity entity) {
-                return false;
-            }
-        });
+
+        new AIComponent(this);
+        new AISystem();
     }
 
 
