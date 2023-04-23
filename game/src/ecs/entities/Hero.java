@@ -73,4 +73,20 @@ public class Hero extends Entity implements IOnDeathFunction {
     public void onDeath(Entity entity) {
         System.exit(0);
     }
+
+    public String getPathToIdleLeft() {
+        return pathToIdleLeft;
+    }
+
+    public String getPathToIdleRight() {
+        return pathToIdleRight;
+    }
+
+    public String getPathToRunLeft() {
+        return pathToRunLeft;
+    }
+
+    public String getPathToRunRight() {
+        return pathToRunRight;
+    }
 }

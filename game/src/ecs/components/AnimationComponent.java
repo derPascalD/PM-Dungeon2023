@@ -109,4 +109,12 @@ public class AnimationComponent extends Component {
     public Animation getIdleRight() {
         return idleRight;
     }
+
+    public void setIdleLeft(Animation idleLeft) {
+        this.idleLeft = idleLeft;
+    }
+
+    public void setIdleRight(Animation idleRight) {
+        this.idleRight = idleRight;
+    }
 }
