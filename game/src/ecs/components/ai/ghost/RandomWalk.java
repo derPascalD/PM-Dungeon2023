@@ -8,10 +8,15 @@ import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class RandomWalk implements IIdleAI, ITransition {
+
     private GraphPath<Tile> path;
     private int breakTime = 0;
     private int currentBreak = 0;
 
+    /**
+     * Entity walks around the level in random paths
+     * @param entity associated entity
+     */
     @Override
     public void idle(Entity entity) {
         if (path == null || AITools.pathFinishedOrLeft(entity, path)) {
@@ -19,6 +24,11 @@ public class RandomWalk implements IIdleAI, ITransition {
         } else AITools.move(entity, path);
     }
 
+    /**
+     * Is always false because the Entity just always idles around when following the Hero
+     * @param entity associated entity
+     * @return false
+     */
     @Override
     public boolean isInFightMode(Entity entity) {
         return false;
