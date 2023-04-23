@@ -59,8 +59,9 @@ public class Ghost extends Entity {
             followHeroAI);
         new Tombstone();
     }
+
     /**
-     * Ghost will move randomly in the Level
+     * Setting up the Velocity and Ghost will move randomly in the Level
      */
     public void moveRandom() {
         RandomWalk randomWalk = new RandomWalk();

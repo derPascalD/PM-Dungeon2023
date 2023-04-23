@@ -39,6 +39,7 @@ public class Tombstone extends Entity implements IInteraction {
         HealthComponent healthComponent = (HealthComponent) hero.getComponent(HealthComponent.class).get();
         int currentHP = healthComponent.getCurrentHealthpoints();
         System.out.println(currentHP);
+        // 70% that the Hero gets HP, 30% that the Hero loses HP
         if(rand.nextInt(101)>=70) {
             healthComponent.setCurrentHealthpoints(currentHP + healthAmount);
         } else {
