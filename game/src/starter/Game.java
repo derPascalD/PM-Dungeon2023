@@ -77,6 +77,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static PauseMenu<Actor> pauseMenu;
     private static Entity hero;
     private Logger gameLogger;
+    private Random rand = new Random();
 
     public static void main(String[] args) {
         // start the game
@@ -140,7 +141,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
         Trap gifwolke = new Giftwolke();
         Trap bananenschale = new Bananenschale();
-        Ghost ghost = new Ghost();
+        if(rand.nextBoolean()) {
+            Ghost ghost = new Ghost();
+        }
     }
 
     private void manageEntitiesSets() {

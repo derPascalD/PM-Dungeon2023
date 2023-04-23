@@ -35,6 +35,7 @@ public class Hero extends Entity implements IOnDeathFunction {
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
         pc.setSkillSlot1(firstSkill);
+        setupHealthComponent();
     }
 
     private void setupVelocityComponent() {
@@ -61,6 +62,7 @@ public class Hero extends Entity implements IOnDeathFunction {
                 (you, other, direction) -> System.out.println("heroCollisionEnter"),
                 (you, other, direction) -> System.out.println("heroCollisionLeave"));
     }
+
 
     private void setupHealthComponent()
     {
