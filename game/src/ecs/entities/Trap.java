@@ -12,10 +12,7 @@ public abstract class  Trap extends Entity{
     public boolean visible;
 
     public boolean active;
-
-    public float damageValue;
-    public  String pathToIdleLeft;
-    public  String pathToIdleRight;
+    public int damageValue;
 
     public  Animation idle;
 
@@ -25,6 +22,10 @@ public abstract class  Trap extends Entity{
         new PositionComponent(this);
     }
 
+    /**
+     *
+     * @return defines if a trap will spawn in Level or not
+     */
     public boolean createRandomBooleanValue()
     {
         Random rand = new Random();
