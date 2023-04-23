@@ -8,25 +8,41 @@ import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
 import graphic.Animation;
 
+
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
-public class Hero extends Entity {
+public class Hero extends Entity implements IOnDeathFunction {
 
+    // Neu Implementiert
     private final int fireballCoolDown = 5;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
+    private String hitAnimation = "knight/hit";
+    private String attackAnimation = "knight/attack";
 
-    private final String pathToIdleLeft = "knight/idleLeft";
-    private final String pathToIdleRight = "knight/idleRight";
-    private final String pathToRunLeft = "knight/runLeft";
-    private final String pathToRunRight = "knight/runRight";
+    private HealthComponent health;
+
+    private int lifePoints = 20;
+
+
+    // War vorher da
+    private String pathToIdleLeft = "knight/idleLeft";
+    private String pathToIdleRight = "knight/idleRight";
+    private String pathToRunLeft = "knight/runLeft";
+    private String pathToRunRight = "knight/runRight";
     private Skill firstSkill;
 
-    /** Entity with Components */
+
+
+
+    /**
+     * Entity with Components
+     */
     public Hero() {
         super();
+        health =new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
@@ -34,6 +50,7 @@ public class Hero extends Entity {
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
         pc.setSkillSlot1(firstSkill);
+
     }
 
     private void setupVelocityComponent() {
@@ -50,15 +67,29 @@ public class Hero extends Entity {
 
     private void setupFireballSkill() {
         firstSkill =
-                new Skill(
-                        new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
+            new Skill(
+                new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
     }
 
     private void setupHitboxComponent() {
         new HitboxComponent(
-                this,
-                (you, other, direction) -> System.out.println("heroCollisionEnter"),
-                (you, other, direction) -> System.out.println("heroCollisionLeave"));
+            this,
+            (you, other, direction) -> System.out.println("Hero Kollidiert"),
+            (you, other, direction) -> System.out.println("Hero ausser gefahr")
+
+        );
     }
 
+    public Animation attackAnimation() {
+        return AnimationBuilder.buildAnimation(attackAnimation);
+    }
+    public Animation hitAnimation(){
+       return AnimationBuilder.buildAnimation(hitAnimation);
+    }
+
+    @Override
+    public void onDeath(Entity entity) {
+        System.out.println("Hero tot!");
+
+    }
 }

@@ -15,7 +15,6 @@ public class Dragon extends Monster{
         this.xSpeed = 0.1f;
         this.ySpeed = 0.1f;
         this.diagonal = true;
-        this.lifePoints = 8;
         this.pathToIdleLeft = "monster/dragon/idleLeft";
         this.pathToIdleRight = "monster/dragon/idleRight";
         this.pathToRunLeft = "monster/dragon/runLeft";
@@ -26,6 +25,11 @@ public class Dragon extends Monster{
         setupVelocityComponent();
         setupAnimationComponent();
         new AIComponent(this, new CollideAI(0f), new PatrouilleWalk(4f,4,2000, PatrouilleWalk.MODE.RANDOM),new RangeTransition(2f));
+
+    }
+
+    @Override
+    void attack() {
 
     }
 }

@@ -2,6 +2,7 @@ package ecs.entities;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
+import ecs.components.HealthComponent;
 import ecs.components.VelocityComponent;
 import graphic.Animation;
 
@@ -10,16 +11,20 @@ public abstract class Monster extends Entity {
     public String pathToIdleRight;
     public String pathToRunLeft;
     public String pathToRunRight;
+    Animation hit;
+    Animation die;
 
-    float lifePoints;
+    int lifePoints;
     public float xSpeed;
     public float ySpeed;
     public boolean diagonal;
 
     Monster() {
 
-
     }
+
+
+    abstract void attack();
 
     public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);

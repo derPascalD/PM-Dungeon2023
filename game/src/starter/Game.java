@@ -233,14 +233,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             int monster = (int) (Math.random() * 3);
             if (monster == 0) {
                 new Demon();
-            } else if (monster == 1) {
+            }
+            /*
+            else if (monster == 1) {
                 new Zombie();
             } else if (monster == 2) {
                 new Dragon();
 
             }
 
-
+             */
 
         }
 

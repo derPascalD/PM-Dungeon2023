@@ -24,7 +24,7 @@ public class PauseMenu<T extends Actor> extends ScreenController<T> {
                         new Point(0, 0),
                         3,
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.RED)
+                                .setFontcolor(Color.BLUE)
                                 .build());
         screenText.setFontScale(3);
         screenText.setPosition(

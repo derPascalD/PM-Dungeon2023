@@ -14,7 +14,6 @@ public class Zombie extends Monster{
         this.xSpeed = 0.04f;
         this.ySpeed = 0.04f;
         this.diagonal = false;
-        this.lifePoints = 2;
         this.pathToIdleLeft = "monster/zombie/idleLeft";
         this.pathToIdleRight = "monster/zombie/idleRight";
         this.pathToRunLeft = "monster/zombie/runLeft";
@@ -28,5 +27,9 @@ public class Zombie extends Monster{
 
     }
 
+    @Override
+    void attack() {
+
+    }
 
 }
