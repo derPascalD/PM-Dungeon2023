@@ -15,19 +15,18 @@ import graphic.Animation;
  */
 public class Hero extends Entity implements IOnDeathFunction {
 
-    // Neu Implementiert
+
     private final int fireballCoolDown = 5;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
     private String attackAnimation = "knight/attack";
 
-    private HealthComponent health;
 
+    // Life points from Hero
     private int lifePoints = 20;
 
 
-    // War vorher da
     private String pathToIdleLeft = "knight/idleLeft";
     private String pathToIdleRight = "knight/idleRight";
     private String pathToRunLeft = "knight/runLeft";
@@ -42,7 +41,7 @@ public class Hero extends Entity implements IOnDeathFunction {
      */
     public Hero() {
         super();
-        health =new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
+        new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
@@ -87,9 +86,43 @@ public class Hero extends Entity implements IOnDeathFunction {
        return AnimationBuilder.buildAnimation(hitAnimation);
     }
 
+
+
+    /*
+     As soon as the entity dies, the content of the function is executed.
+    */
     @Override
     public void onDeath(Entity entity) {
-        System.out.println("Hero tot!");
+        System.out.println("Hero is dead!");
+        System.exit(0);
+    }
 
+    /**
+     *
+     * @return Return the current data path of the Hero Animation left
+     */
+    public String getPathToIdleLeft() {
+        return pathToIdleLeft;
+    }
+    /**
+     *
+     * @return Return the current data path of the Hero Animation right
+     */
+    public String getPathToIdleRight() {
+        return pathToIdleRight;
+    }
+    /**
+     *
+     * @return Return the current data path of the Hero Animation run left
+     */
+    public String getPathToRunLeft() {
+        return pathToRunLeft;
+    }
+    /**
+     *
+     * @return Return the current data path of the Hero Animation run right
+     */
+    public String getPathToRunRight() {
+        return pathToRunRight;
     }
 }

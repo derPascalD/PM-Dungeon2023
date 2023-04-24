@@ -10,16 +10,20 @@ import ecs.components.ai.transition.RangeTransition;
 import ecs.entities.Entity;
 import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
+import semanticAnalysis.types.DSLTypeMember;
 
-/** AIComponent is a component that stores the idle and combat behavior of AI controlled entities */
+/**
+ * AIComponent is a component that stores the idle and combat behavior of AI controlled entities
+ */
+
 /** AIComponent ist eine Komponente, die das Leerlauf- und Kampfverhalten von KI-gesteuerten Einheiten speichert */
 @DSLType(name = "ai_component")
 public class AIComponent extends Component {
 
     public static String name = "AIComponent";
-    private /*@DSLTypeMember(name="fight_ai)*/ IFightAI fightAI;
-    private /*@DSLTypeMember(name="idle_ai)*/ IIdleAI idleAI;
-    private /*@DSLTypeMember(name="transition_ai)*/ ITransition transitionAI;
+    private @DSLTypeMember(name = "fight_ai") IFightAI fightAI;
+    private @DSLTypeMember(name = "idle_ai") IIdleAI idleAI;
+    private @DSLTypeMember(name = "transition_ai") ITransition transitionAI;
 
     /**
      * English:
@@ -56,7 +60,6 @@ public class AIComponent extends Component {
         idleAI = new RadiusWalk(5, 3);
         transitionAI = new RangeTransition(5f);
         fightAI = new CollideAI(2f);
-
 
 
     }

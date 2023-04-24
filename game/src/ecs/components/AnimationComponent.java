@@ -106,7 +106,25 @@ public class AnimationComponent extends Component {
     /**
      * @return Idleanimation faced right
      */
+
+
     public Animation getIdleRight() {
         return idleRight;
+    }
+
+
+    /**
+     *
+     * @param idleLeft set animation left
+     */
+    public void setIdleLeft(Animation idleLeft) {
+        this.idleLeft = idleLeft;
+    }
+    /**
+     *
+     * @param idleRight set animation right
+     */
+    public void setIdleRight(Animation idleRight) {
+        this.idleRight = idleRight;
     }
 }

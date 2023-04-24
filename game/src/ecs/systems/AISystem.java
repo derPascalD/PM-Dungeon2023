@@ -7,7 +7,10 @@ import starter.Game;
 /** Controls the AI */
 public class AISystem extends ECS_System {
 
+
+
     private record AISData(Entity e, AIComponent aic) {}
+
 
     @Override
     public void update() {
@@ -16,6 +19,8 @@ public class AISystem extends ECS_System {
                 .map(aic -> buildDataObject((AIComponent) aic))
                 .forEach(aic -> aic.aic.execute());
     }
+
+
 
     private AISystem.AISData buildDataObject(AIComponent aic) {
         Entity e = aic.getEntity();

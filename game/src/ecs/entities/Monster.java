@@ -3,28 +3,27 @@ package ecs.entities;
 import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
+import ecs.components.HitboxComponent;
 import ecs.components.VelocityComponent;
 import graphic.Animation;
 
 public abstract class Monster extends Entity {
-    public String pathToIdleLeft;
-    public String pathToIdleRight;
-    public String pathToRunLeft;
-    public String pathToRunRight;
-    Animation hit;
-    Animation die;
-
-    int lifePoints;
-    public float xSpeed;
-    public float ySpeed;
-    public boolean diagonal;
+    protected String pathToIdleLeft;
+    protected String pathToIdleRight;
+    protected String pathToRunLeft;
+    protected String pathToRunRight;
+    protected Animation hit;
+    protected Animation die;
+    protected HealthComponent health;
+    protected HitboxComponent hitBox;
+    protected int lifePoints;
+    protected float xSpeed;
+    protected float ySpeed;
+    protected boolean diagonal;
 
     Monster() {
-
     }
 
-
-    abstract void attack();
 
     public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
@@ -36,7 +35,31 @@ public abstract class Monster extends Entity {
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
+
+    }
+
+    public void setLifePoints(int lifePoints) {
+        this.lifePoints = lifePoints;
     }
 
 
+    public int getLifePoints() {
+        return lifePoints;
+    }
+
+    public float getxSpeed() {
+        return xSpeed;
+    }
+
+    public void setxSpeed(float xSpeed) {
+        this.xSpeed = xSpeed;
+    }
+
+    public float getySpeed() {
+        return ySpeed;
+    }
+
+    public void setySpeed(float ySpeed) {
+        this.ySpeed = ySpeed;
+    }
 }

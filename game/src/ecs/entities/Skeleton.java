@@ -1,39 +1,36 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
-
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.IOnDeathFunction;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
-import ecs.components.ai.idle.PatrouilleWalk;
+import ecs.components.ai.idle.GoToHero;
 import ecs.components.ai.transition.RangeTransition;
 import ecs.components.collision.ICollide;
 import level.elements.tile.Tile;
 
-
-
-public class Demon extends Monster implements IOnDeathFunction, ICollide {
-
+public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
     /**
      * Entity with Components
      */
-    public Demon() {
-        super();
+    public Skeleton() {
+        this.xSpeed = 0.04f;
+        this.ySpeed = 0.04f;
         this.lifePoints = 8;
-        this.xSpeed = 0.1f;
-        this.ySpeed = 0.1f;
         this.diagonal = false;
-        this.pathToIdleLeft = "monster/demon/idleLeft";
-        this.pathToIdleRight = "monster/demon/idleRight";
-        this.pathToRunLeft = "monster/demon/runLeft";
-        this.pathToRunRight = "monster/demon/runRight";
+        this.pathToIdleLeft = "monster/skeleton/idleLeft";
+        this.pathToIdleRight = "monster/skeleton/idleRight";
+        this.pathToRunLeft = "monster/skeleton/runLeft";
+        this.pathToRunRight = "monster/skeleton/runRight";
 
-        this.hit= AnimationBuilder.buildAnimation("monster/demon/hit");
-        this.die = AnimationBuilder.buildAnimation("monster/demon/hit");
-
+        new PositionComponent(this);
+        new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+        new AIComponent(this, new CollideAI(0f), new GoToHero(2), new RangeTransition(1f));
+        this.hit = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
+        this.die = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
 
         health = new HealthComponent(this,
             8,
@@ -41,23 +38,8 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
             hit,
             die);
 
-
-        new PositionComponent(this);
-
-       new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
-
-       new AIComponent(
-            this,
-            new CollideAI(0f),
-            new PatrouilleWalk(3f,
-                4,
-                1000,
-                PatrouilleWalk.MODE.BACK_AND_FORTH),
-            new RangeTransition(2f));
-
         setupVelocityComponent();
         setupAnimationComponent();
-
     }
 
 
@@ -93,8 +75,8 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     */
     @Override
     public void onDeath(Entity entity) {
-
     }
+
 
     @Override
     public void setLifePoints(int lifePoints) {

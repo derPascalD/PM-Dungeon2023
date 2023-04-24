@@ -69,6 +69,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static boolean paused = false;
 
     /**
+     * Saves the level
+     */
+    private static int levelDepth;
+
+
+
+    /**
      * All entities that are currently active in the dungeon
      */
     private static final Set<Entity> entities = new HashSet<>();
@@ -138,7 +145,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-
     }
 
     /**
@@ -226,26 +232,52 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    private void createMonster() {
-        new Demon();
-        int anzahlMonster = (int) (Math.random() * 4);
-        for (int i = 0; i < anzahlMonster; i++) {
+
+    /**
+     * English:
+     * Here different monsters are created and implemented into the level.
+     * Depending on the level depth, more monsters are implemented.
+     * The monsters have more lives and higher speeds depending on the level depth.
+     *
+     */
+    /**
+     * German:
+     * Hier werden verschiedene Monster erzeugt und ins Level implementiert.
+     * Je nach Level Tiefe werden mehr Monster implementiert.
+     * Die Monster haben je nach Level Tiefe mehr Leben und höhere Geschwindigkeiten.
+     */
+    public void createMonster() {
+        for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             int monster = (int) (Math.random() * 3);
             if (monster == 0) {
-                new Demon();
-            }
-            /*
-            else if (monster == 1) {
-                new Zombie();
+                Demon dk = new Demon();
+                dk.setLifePoints((int) (dk.getLifePoints() + ((levelDepth) * 0.5)));
+                dk.setxSpeed((float) (dk.getxSpeed() + ((levelDepth) *0.02)));
+                dk.setxSpeed((float) (dk.getySpeed() + ((levelDepth) *0.02)));
+                System.out.println("Demon create with: " + dk.getLifePoints() + " Healthpoints");
+                System.out.println("Demon create with: " + dk.getxSpeed() + " xSpeed");
+                System.out.println("Demon create with: " + dk.getySpeed() + " ySpeed");
+
+            } else if (monster == 1) {
+                Skeleton sk = new Skeleton();
+                sk.setLifePoints((int) (sk.getLifePoints() + ((levelDepth) * 0.5)));
+                sk.setxSpeed((float) (sk.getxSpeed() + ((levelDepth) *0.005)));
+                sk.setxSpeed((float) (sk.getySpeed() + ((levelDepth) *0.005)));
+                System.out.println("Skeleton create with: " + sk.getLifePoints() + " Healthpoints");
+                System.out.println("Skeleton create with: " + sk.getxSpeed() + " xSpeed");
+                System.out.println("Skeleton create with: " + sk.getySpeed() + " ySpeed");
             } else if (monster == 2) {
-                new Dragon();
-
+                PumpkinKiller pK= new PumpkinKiller();
+                pK.setLifePoints((int) (pK.getLifePoints() + ((levelDepth) * 0.5)));
+                pK.setxSpeed((float) (pK.getxSpeed() + ((levelDepth) *0.02)));
+                pK.setxSpeed((float) (pK.getySpeed() + ((levelDepth) *0.02)));
+                System.out.println("PumpkinKiller create with: " + pK.getLifePoints() + " Healthpoints");
+                System.out.println("PumpkinKiller create with: " + pK.getxSpeed() + " xSpeed");
+                System.out.println("PumpkinKiller create with: " + pK.getySpeed() + " ySpeed");
             }
-
-             */
-
         }
 
+        levelDepth++;
     }
 
 
