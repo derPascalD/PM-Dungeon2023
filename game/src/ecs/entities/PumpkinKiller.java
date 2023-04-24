@@ -94,7 +94,7 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
      */
     @Override
     public void onDeath(Entity entity) {
-
+        System.out.println("PumpkinKiller is die");
     }
 
     public void setLifePoints(int lifePoints) {
