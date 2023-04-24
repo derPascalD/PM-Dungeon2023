@@ -14,7 +14,6 @@ import ecs.components.collision.ICollide;
 import level.elements.tile.Tile;
 
 
-
 public class Demon extends Monster implements IOnDeathFunction, ICollide {
 
     /**
@@ -22,6 +21,7 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
      */
     public Demon() {
         super();
+        this.attackDamage = 1;
         this.lifePoints = 8;
         this.xSpeed = 0.1f;
         this.ySpeed = 0.1f;
@@ -31,7 +31,7 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
         this.pathToRunLeft = "monster/demon/runLeft";
         this.pathToRunRight = "monster/demon/runRight";
 
-        this.hit= AnimationBuilder.buildAnimation("monster/demon/hit");
+        this.hit = AnimationBuilder.buildAnimation("monster/demon/hit");
         this.die = AnimationBuilder.buildAnimation("monster/demon/hit");
 
 
@@ -40,13 +40,11 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
             this,
             hit,
             die);
-
-
         new PositionComponent(this);
 
-       new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+        new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
 
-       new AIComponent(
+        new AIComponent(
             this,
             new CollideAI(0f),
             new PatrouilleWalk(3f,
@@ -57,7 +55,6 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
 
         setupVelocityComponent();
         setupAnimationComponent();
-
     }
 
 
@@ -124,5 +121,15 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     @Override
     public void setySpeed(float ySpeed) {
         super.setySpeed(ySpeed);
+    }
+
+    @Override
+    public int getAttackDamage() {
+        return super.getAttackDamage();
+    }
+
+    @Override
+    public void setAttackDamage(int attackDamage) {
+        super.setAttackDamage(attackDamage);
     }
 }

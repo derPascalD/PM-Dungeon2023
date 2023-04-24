@@ -52,22 +52,39 @@ public class LevelAPI {
     }
 
     /**
+     * English:
      * Load a new level with random size and the given desing
      *
      * @param designLabel The design that the level should have
+     */
+    /**
+     * German:
+     * Laden eines neuen Levels mit zufälliger Größe und dem angegebenen Design
+     *
+     * @param designLabel Das Design, das der Level haben soll
      */
     public void loadLevel(DesignLabel designLabel) {
         loadLevel(LevelSize.randomSize(), designLabel);
     }
 
     /**
+     * English:
      * Load a new level with the given size and a random desing
      *
      * @param size wanted size of the level
      */
+    /**
+     * German:
+     * Laden eines neuen Levels mit der angegebenen Größe und einem zufälligen Design
+     *
+     * @param size gewünschte Größe des Levels
+     */
     public void loadLevel(LevelSize size) {
         loadLevel(size, DesignLabel.randomDesign());
     }
+
+
+
 
     /** Load a new level with random size and random design. */
     public void loadLevel() {
