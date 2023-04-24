@@ -255,7 +255,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 new PumpkinKiller(levelDepth);
             }
         }
-        if(levelDepth >=  8){
+        if(levelDepth >=  6){
             LevelDepthSize = LevelSize.MEDIUM;
         }
         System.out.println("Level depth is "+ (levelDepth+1) +".");
