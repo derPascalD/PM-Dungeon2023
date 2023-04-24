@@ -1,10 +1,7 @@
 package ecs.Traps;
 
 import dslToGame.AnimationBuilder;
-import ecs.components.AnimationComponent;
-import ecs.components.HealthComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.VelocityComponent;
+import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
@@ -13,15 +10,13 @@ import graphic.Animation;
 import level.elements.tile.Tile;
 import starter.Game;
 
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 
 public class Bananenschale extends Trap implements ICollide {
-
-
-
 
     public Bananenschale() {
         super();
@@ -61,7 +56,6 @@ public class Bananenschale extends Trap implements ICollide {
 
     }
 
-
     /**
      *
      * @param a is the current Entity
@@ -78,9 +72,8 @@ public class Bananenschale extends Trap implements ICollide {
         if (!active) return;
 
 
-
         // gets the healthcomponent from the b entity
-        var optionalHealth = b.getComponent(HealthComponent.class);
+        Optional<Component> optionalHealth = b.getComponent(HealthComponent.class);
         if (!optionalHealth.isPresent()) return;
         HealthComponent  healthComponent = (HealthComponent) optionalHealth.get();
 
@@ -93,7 +86,7 @@ public class Bananenschale extends Trap implements ICollide {
         System.out.println("new healthpoints: "+ healthpoints);
 
         // gets the Velocitycomponent from b
-        var optionalVelocity = b.getComponent(VelocityComponent.class);
+        Optional<Component>  optionalVelocity = b.getComponent(VelocityComponent.class);
         if (!optionalVelocity.isPresent()) return;
         var velocityComponent = (VelocityComponent) optionalVelocity.get();
 
@@ -106,7 +99,7 @@ public class Bananenschale extends Trap implements ICollide {
         velocityComponent.setXVelocity(velocityComponent.getXVelocity()/10);
 
         // gets the animationComponent of b
-        var optionalAnimation = b.getComponent(AnimationComponent.class);
+        Optional<Component>  optionalAnimation = b.getComponent(AnimationComponent.class);
         if (!optionalAnimation.isPresent()) return;
         AnimationComponent  animationComponent = (AnimationComponent) optionalAnimation.get();
 
@@ -119,9 +112,6 @@ public class Bananenschale extends Trap implements ICollide {
             velocityComponent.setMoveRightAnimation(AnimationBuilder.buildAnimation("knight/blood_runRight"));
             velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation("knight/blood_runLeft"));
         }
-
-
-
 
         idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
         new AnimationComponent(this,idle);
@@ -150,5 +140,7 @@ public class Bananenschale extends Trap implements ICollide {
         active = false;
 
     }
+
+
 
 }
