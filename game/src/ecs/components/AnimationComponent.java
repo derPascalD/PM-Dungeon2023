@@ -124,6 +124,7 @@ public class AnimationComponent extends Component {
      *
      * @param idleRight set animation right
      */
+
     public void setIdleRight(Animation idleRight) {
         this.idleRight = idleRight;
     }

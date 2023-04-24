@@ -45,10 +45,15 @@ public class Hero extends Entity implements IOnDeathFunction {
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
+        setupHealthComponent();
         setupHitboxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
         pc.setSkillSlot1(firstSkill);
+
+
+
+        setupHealthComponent();
 
     }
 
@@ -125,4 +130,15 @@ public class Hero extends Entity implements IOnDeathFunction {
     public String getPathToRunRight() {
         return pathToRunRight;
     }
+
+
+    private void setupHealthComponent()
+    {
+        Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
+        new HealthComponent(this, 100, this::onDeath ,hit,hit);
+    }
+
+
+
+
 }
