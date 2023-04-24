@@ -20,6 +20,8 @@ public abstract class Monster extends Entity {
     protected float xSpeed;
     protected float ySpeed;
     protected boolean diagonal;
+    protected int attackDamage;
+
 
     Monster() {
     }
@@ -61,5 +63,13 @@ public abstract class Monster extends Entity {
 
     public void setySpeed(float ySpeed) {
         this.ySpeed = ySpeed;
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
+    }
+
+    public void setAttackDamage(int attackDamage) {
+        this.attackDamage = attackDamage;
     }
 }

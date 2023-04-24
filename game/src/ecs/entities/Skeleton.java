@@ -17,9 +17,10 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
      * Entity with Components
      */
     public Skeleton() {
+        this.attackDamage = 1;
         this.xSpeed = 0.04f;
         this.ySpeed = 0.04f;
-        this.lifePoints = 8;
+        this.lifePoints = 6;
         this.diagonal = false;
         this.pathToIdleLeft = "monster/skeleton/idleLeft";
         this.pathToIdleRight = "monster/skeleton/idleRight";
@@ -106,5 +107,15 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
     @Override
     public void setySpeed(float ySpeed) {
         super.setySpeed(ySpeed);
+    }
+
+    @Override
+    public int getAttackDamage() {
+        return super.getAttackDamage();
+    }
+
+    @Override
+    public void setAttackDamage(int attackDamage) {
+        super.setAttackDamage(attackDamage);
     }
 }

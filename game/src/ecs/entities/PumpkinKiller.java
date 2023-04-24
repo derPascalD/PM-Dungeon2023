@@ -17,9 +17,10 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
      * Entity with Components
      */
     public PumpkinKiller() {
+        this.attackDamage = 2;
+        this.lifePoints = 10;
         this.xSpeed = 0.1f;
         this.ySpeed = 0.1f;
-        this.lifePoints = 10;
         this.diagonal = false;
         this.pathToIdleLeft = "monster/pumpkinKiller/idleLeft";
         this.pathToIdleRight = "monster/pumpkinKiller/idleRight";
@@ -101,6 +102,16 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
     @Override
     public void setySpeed(float ySpeed) {
         super.setySpeed(ySpeed);
+    }
+
+    @Override
+    public int getAttackDamage() {
+        return super.getAttackDamage();
+    }
+
+    @Override
+    public void setAttackDamage(int attackDamage) {
+        super.setAttackDamage(attackDamage);
     }
 
 
