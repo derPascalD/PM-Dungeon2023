@@ -14,9 +14,18 @@ import level.elements.tile.Tile;
 
 public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide {
     /**
-     * Entity with Components
+     * English:
+     * Entity with Components.
+     * Depending on the level depth, more monsters are implemented.
+     * The monsters, depending on the level depth, have more life, give more damage and higher speeds.
      */
-    public PumpkinKiller() {
+    /**
+     * German:
+     * Entity mit Komponenten.
+     * Je nach Level Tiefe werden mehr Monster implementiert.
+     * Die Monster haben je nach Level Tiefe mehr Leben, mehr Schaden geben und höhere Geschwindigkeiten.
+     */
+    public PumpkinKiller(int levelDepth) {
         this.attackDamage = 2;
         this.lifePoints = 10;
         this.xSpeed = 0.1f;
@@ -41,6 +50,12 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
 
         setupVelocityComponent();
         setupAnimationComponent();
+
+        this.lifePoints += levelDepth * 0.5;
+        this.attackDamage += levelDepth* 0.3;
+        this.xSpeed += levelDepth*0.015;
+        this.ySpeed += levelDepth*0.015;
+
     }
 
     /*

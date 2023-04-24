@@ -14,9 +14,18 @@ import level.elements.tile.Tile;
 
 public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
     /**
-     * Entity with Components
+     * English:
+     * Entity with Components.
+     * Depending on the level depth, more monsters are implemented.
+     * The monsters, depending on the level depth, have more life, give more damage and higher speeds.
      */
-    public Skeleton() {
+    /**
+     * German:
+     * Entity mit Komponenten.
+     * Je nach Level Tiefe werden mehr Monster implementiert.
+     * Die Monster haben je nach Level Tiefe mehr Leben, mehr Schaden geben und höhere Geschwindigkeiten.
+     */
+    public Skeleton(int levelDepth) {
         this.attackDamage = 1;
         this.xSpeed = 0.04f;
         this.ySpeed = 0.04f;
@@ -38,9 +47,13 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
             this,
             hit,
             die);
-
         setupVelocityComponent();
         setupAnimationComponent();
+        this.lifePoints += levelDepth * 0.5;
+        this.attackDamage += levelDepth* 0.3;
+        this.xSpeed += levelDepth*0.005;
+        this.ySpeed += levelDepth*0.005;
+
     }
 
 
