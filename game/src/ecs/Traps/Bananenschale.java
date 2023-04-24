@@ -1,10 +1,7 @@
 package ecs.Traps;
 
 import dslToGame.AnimationBuilder;
-import ecs.components.AnimationComponent;
-import ecs.components.HealthComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.VelocityComponent;
+import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
@@ -13,15 +10,13 @@ import graphic.Animation;
 import level.elements.tile.Tile;
 import starter.Game;
 
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 
 public class Bananenschale extends Trap implements ICollide {
-
-
-
 
     public Bananenschale() {
         super();
@@ -61,7 +56,6 @@ public class Bananenschale extends Trap implements ICollide {
 
     }
 
-
     /**
      *
      * @param a is the current Entity
@@ -78,11 +72,16 @@ public class Bananenschale extends Trap implements ICollide {
         if (!active) return;
 
 
+        // gets the components from the b entity
+        HealthComponent healthComponent = (HealthComponent) b.getComponent(HealthComponent.class)
+            .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
 
-        // gets the healthcomponent from the b entity
-        var optionalHealth = b.getComponent(HealthComponent.class);
-        if (!optionalHealth.isPresent()) return;
-        HealthComponent  healthComponent = (HealthComponent) optionalHealth.get();
+        AnimationComponent animationComponent = (AnimationComponent) b.getComponent(AnimationComponent.class)
+            .orElseThrow(() -> new IllegalStateException("Entity does not have a AnimationComponent"));
+
+        VelocityComponent velocityComponent = (VelocityComponent) b.getComponent(VelocityComponent.class)
+            .orElseThrow(() -> new IllegalStateException("Entity does not have a VelocityComponent"));
+
 
         // gets the Currenthealthpoints from b
         int healthpoints = healthComponent.getCurrentHealthpoints();
@@ -92,10 +91,6 @@ public class Bananenschale extends Trap implements ICollide {
         healthComponent.setCurrentHealthpoints(healthpoints = healthpoints - damageValue);
         System.out.println("new healthpoints: "+ healthpoints);
 
-        // gets the Velocitycomponent from b
-        var optionalVelocity = b.getComponent(VelocityComponent.class);
-        if (!optionalVelocity.isPresent()) return;
-        var velocityComponent = (VelocityComponent) optionalVelocity.get();
 
         // saves the originalVelocity
         float orginialXVelocity = velocityComponent.getXVelocity();
@@ -104,11 +99,6 @@ public class Bananenschale extends Trap implements ICollide {
         // sets the new X,Y Velocity of b
         velocityComponent.setYVelocity(velocityComponent.getYVelocity()/10);
         velocityComponent.setXVelocity(velocityComponent.getXVelocity()/10);
-
-        // gets the animationComponent of b
-        var optionalAnimation = b.getComponent(AnimationComponent.class);
-        if (!optionalAnimation.isPresent()) return;
-        AnimationComponent  animationComponent = (AnimationComponent) optionalAnimation.get();
 
         // in case b is the hero - animations will be setted
         if (b instanceof Hero)
@@ -120,35 +110,48 @@ public class Bananenschale extends Trap implements ICollide {
             velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation("knight/blood_runLeft"));
         }
 
-
-
-
+        // set the new crushed animations for the banana peel.
         idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
         new AnimationComponent(this,idle);
+
+
 
         // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
         Timer timer = new Timer();
         Hero finalHero = hero;
         timer.schedule(new TimerTask() {
             public void run() {
-                velocityComponent.setYVelocity(orginialYVelocity);
-                velocityComponent.setXVelocity(orginialXVelocity);
-                if (finalHero != null)
-                {
-                    animationComponent.setIdleLeft(AnimationBuilder.buildAnimation(finalHero.getPathToIdleLeft()));
-                    animationComponent.setIdleRight(AnimationBuilder.buildAnimation(finalHero.getPathToIdleRight()));
-                    velocityComponent.setMoveRightAnimation(AnimationBuilder.buildAnimation(finalHero.getPathToRunRight()));
-                    velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation(finalHero.getPathToRunLeft()));
-                }
-
-                System.out.println("5s Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
-                timer.cancel();
+                resetPlayerVelocity(timer, orginialXVelocity, orginialYVelocity, animationComponent, velocityComponent, finalHero);
             }
         }, 5*1000);
 
         // defines that the trap can be triggered just once.
         active = false;
 
+    }
+
+    /**
+     *
+     * @param timer Timer object
+     * @param originalXVelocity is the X-Velocity before the trap was triggered
+     * @param originalYVelocity is the X-Velocity before the trap was triggered
+     * @param animationComponent is the animationComponent of the b entity
+     * @param velocityComponent is the velocityComponent of the b entity
+     * @param finalHero is the hero
+     */
+    private void resetPlayerVelocity(Timer timer, float originalXVelocity, float originalYVelocity, AnimationComponent animationComponent, VelocityComponent velocityComponent, Hero finalHero) {
+        velocityComponent.setYVelocity(originalYVelocity);
+        velocityComponent.setXVelocity(originalXVelocity);
+        if (finalHero != null)
+        {
+            animationComponent.setIdleLeft(AnimationBuilder.buildAnimation(finalHero.getPathToIdleLeft()));
+            animationComponent.setIdleRight(AnimationBuilder.buildAnimation(finalHero.getPathToIdleRight()));
+            velocityComponent.setMoveRightAnimation(AnimationBuilder.buildAnimation(finalHero.getPathToRunRight()));
+            velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation(finalHero.getPathToRunLeft()));
+        }
+
+        System.out.println("5s Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
+        timer.cancel();
     }
 
 }

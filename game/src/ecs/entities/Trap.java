@@ -1,10 +1,13 @@
 package ecs.entities;
 
 import dslToGame.AnimationBuilder;
+import ecs.components.Component;
+import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import graphic.Animation;
 
+import java.util.Optional;
 import java.util.Random;
 
 public abstract class  Trap extends Entity{
@@ -31,6 +34,10 @@ public abstract class  Trap extends Entity{
         Random rand = new Random();
         return rand.nextBoolean();
     }
+
+
+
+
 
 
 
