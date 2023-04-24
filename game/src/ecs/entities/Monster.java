@@ -24,9 +24,7 @@ public abstract class Monster extends Entity {
 
 
     Monster() {
-        System.out.println(this.getClass().getName() + " create with: " + lifePoints+ " Healthpoints.");
-        System.out.println(this.getClass().getName() + " " + xSpeed + " xSpeed.");
-        System.out.println(this.getClass().getName() + " " + ySpeed + " ySpeed.");
+
     }
 
 
