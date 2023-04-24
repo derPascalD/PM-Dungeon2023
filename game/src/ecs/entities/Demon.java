@@ -16,10 +16,20 @@ import level.elements.tile.Tile;
 
 public class Demon extends Monster implements IOnDeathFunction, ICollide {
 
+
     /**
-     * Entity with Components
+     * English:
+     * Entity with Components.
+     * Depending on the level depth, more monsters are implemented.
+     * The monsters, depending on the level depth, have more life, give more damage and higher speeds.
      */
-    public Demon() {
+    /**
+     * German:
+     * Entity mit Komponenten.
+     * Je nach Level Tiefe werden mehr Monster implementiert.
+     * Die Monster haben je nach Level Tiefe mehr Leben, mehr Schaden geben und höhere Geschwindigkeiten.
+     */
+    public Demon(int levelDepth) {
         super();
         this.attackDamage = 1;
         this.lifePoints = 8;
@@ -34,16 +44,13 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
         this.hit = AnimationBuilder.buildAnimation("monster/demon/hit");
         this.die = AnimationBuilder.buildAnimation("monster/demon/hit");
 
-
         health = new HealthComponent(this,
             8,
             this,
             hit,
             die);
         new PositionComponent(this);
-
         new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
-
         new AIComponent(
             this,
             new CollideAI(0f),
@@ -55,6 +62,11 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
 
         setupVelocityComponent();
         setupAnimationComponent();
+        this.lifePoints += levelDepth * 0.5;
+        this.attackDamage += levelDepth* 0.3;
+        this.xSpeed += levelDepth*0.02;
+        this.ySpeed += levelDepth*0.02;
+
     }
 
 

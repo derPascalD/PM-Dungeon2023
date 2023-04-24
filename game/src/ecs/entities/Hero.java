@@ -33,7 +33,7 @@ public class Hero extends Entity implements IOnDeathFunction {
     private String pathToRunRight = "knight/runRight";
     private Skill firstSkill;
 
-
+    protected HealthComponent health;
 
 
     /**
@@ -41,7 +41,7 @@ public class Hero extends Entity implements IOnDeathFunction {
      */
     public Hero() {
         super();
-        new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
+        this.health =  new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
