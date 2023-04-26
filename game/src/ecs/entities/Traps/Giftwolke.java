@@ -1,12 +1,9 @@
-package ecs.Traps;
+package ecs.entities.Traps;
 
-import com.badlogic.gdx.utils.Null;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
-import ecs.entities.Trap;
-import graphic.Animation;
 import level.elements.tile.Tile;
 
 import java.util.Optional;

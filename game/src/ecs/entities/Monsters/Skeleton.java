@@ -1,4 +1,4 @@
-package ecs.entities;
+package ecs.entities.Monsters;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.HealthComponent;
@@ -10,6 +10,7 @@ import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.idle.GoToHero;
 import ecs.components.ai.transition.RangeTransition;
 import ecs.components.collision.ICollide;
+import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class Skeleton extends Monster implements IOnDeathFunction, ICollide {

@@ -1,6 +1,8 @@
-package ecs.entities;
+package ecs.entities.NPCs;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
+import ecs.entities.Entity;
+import ecs.entities.Hero;
 import graphic.Animation;
 import starter.Game;
 

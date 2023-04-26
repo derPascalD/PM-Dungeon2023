@@ -1,16 +1,12 @@
-package ecs.Traps;
+package ecs.entities.Traps;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.entities.Trap;
-import graphic.Animation;
 import level.elements.tile.Tile;
-import starter.Game;
 
-import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 

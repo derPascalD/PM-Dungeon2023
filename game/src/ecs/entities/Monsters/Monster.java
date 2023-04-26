@@ -1,10 +1,11 @@
-package ecs.entities;
+package ecs.entities.Monsters;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.AnimationComponent;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.VelocityComponent;
+import ecs.entities.Entity;
 import graphic.Animation;
 
 public abstract class Monster extends Entity {

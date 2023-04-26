@@ -1,16 +1,17 @@
-package ecs.entities;
+package ecs.entities.Traps;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.Component;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
+import ecs.entities.Entity;
 import graphic.Animation;
 
 import java.util.Optional;
 import java.util.Random;
 
-public abstract class  Trap extends Entity{
+public abstract class  Trap extends Entity {
 
     public boolean visible;
 

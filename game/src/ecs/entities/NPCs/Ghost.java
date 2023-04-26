@@ -1,10 +1,12 @@
-package ecs.entities;
+package ecs.entities.NPCs;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.ghost.FollowHeroAI;
 import ecs.components.ai.ghost.RandomWalk;
+import ecs.entities.Entity;
+import ecs.entities.Hero;
 import graphic.Animation;
 import starter.Game;
 
