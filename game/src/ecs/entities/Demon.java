@@ -68,6 +68,7 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
         this.ySpeed += levelDepth*0.02;
 
         System.out.println(this.getClass().getName() + " create with: " + this.lifePoints+ " Healthpoints.");
+        System.out.println(this.getClass().getName() + " create with: " + this.attackDamage+ " AttackDamage.");
         System.out.println(this.getClass().getName() + " " + this.xSpeed + " xSpeed.");
         System.out.println(this.getClass().getName() + " " + this.ySpeed + " ySpeed.");
 
@@ -106,7 +107,7 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     */
     @Override
     public void onDeath(Entity entity) {
-
+        System.out.println("Demon is dead");
     }
 
     @Override
