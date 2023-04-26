@@ -253,11 +253,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * English:
      * Here different monsters are created and implemented into the level.
      * From level 8, larger levels are created.
+     * From level 50, even larger levels are created.
      */
     /**
      * German:
      * Hier werden verschiedene Monster erzeugt und ins Level implementiert.
      * Ab Level 8 werden größere Level erzeugt.
+     * Ab Level 50 werden noch größere Level erzeugt.
      */
     public void createMonster() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
@@ -270,9 +272,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 new PumpkinKiller(levelDepth);
             }
         }
-        if(levelDepth >=  6){
-            LevelDepthSize = LevelSize.MEDIUM;
-        }
+        if(levelDepth >=  6){LevelDepthSize = LevelSize.MEDIUM;}
+        if(levelDepth >=  48){LevelDepthSize = LevelSize.LARGE;}
         System.out.println("Level depth is "+ (levelDepth+1) +".");
         levelDepth++;
     }

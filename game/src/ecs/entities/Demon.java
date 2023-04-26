@@ -107,7 +107,7 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     */
     @Override
     public void onDeath(Entity entity) {
-        System.out.println("Demon is die");
+        System.out.println("Demon is dead");
     }
 
     @Override
