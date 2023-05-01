@@ -6,6 +6,8 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.components.xp.ILevelUp;
+import ecs.components.xp.XPComponent;
 import graphic.Animation;
 
 
@@ -13,25 +15,30 @@ import graphic.Animation;
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
-public class Hero extends Entity implements IOnDeathFunction {
+public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
 
     private final int fireballCoolDown = 5;
+
+    private final int StunningStrikeCoolDown = 5;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
     private String attackAnimation = "knight/attack";
 
 
+
+
     // Life points from Hero
     private int lifePoints = 20;
-
 
     private String pathToIdleLeft = "knight/idleLeft";
     private String pathToIdleRight = "knight/idleRight";
     private String pathToRunLeft = "knight/runLeft";
     private String pathToRunRight = "knight/runRight";
     private Skill firstSkill;
+    private Skill secondSkill;
+    private Skill thirdSkill;
 
     protected HealthComponent health;
 
@@ -49,12 +56,22 @@ public class Hero extends Entity implements IOnDeathFunction {
         setupHitboxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
+        setupStunningStrikeSkill();
         pc.setSkillSlot1(firstSkill);
+        setupXPComponent();
 
 
 
         setupHealthComponent();
 
+    }
+
+    private void setupXPComponent() {
+        new XPComponent(this, this::onLevelUp);
+    }
+
+    private void setupStunningStrikeSkill() {
+        secondSkill = new Skill(new StunningStrikeSkill(), StunningStrikeCoolDown);
     }
 
     private void setupVelocityComponent() {
@@ -139,6 +156,8 @@ public class Hero extends Entity implements IOnDeathFunction {
     }
 
 
-
-
+    @Override
+    public void onLevelUp(long nexLevel) {
+        //TODO:
+    }
 }
