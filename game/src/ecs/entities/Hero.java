@@ -64,7 +64,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
 
         setupStunningStrikeSkill();
-        setupSpeedeSkill();
+        setupSpeedSkill();
 
 
         pc.setSkillSlot1(firstSkill);
@@ -86,7 +86,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         secondSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown);
     }
 
-    private void setupSpeedeSkill() {
+    private void setupSpeedSkill() {
         thirdSkill = new Skill(new SpeedSkill(1,1,4),SpeedSkillCoolDown);
     }
     @Override
