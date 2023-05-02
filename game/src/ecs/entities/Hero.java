@@ -21,6 +21,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private final int fireballCoolDown = 5;
 
     private final int StunningStrikeCoolDown = 5;
+    private final int SpeedSkillCoolDown = 5;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
@@ -36,6 +37,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private String pathToIdleRight = "knight/idleRight";
     private String pathToRunLeft = "knight/runLeft";
     private String pathToRunRight = "knight/runRight";
+
+    // Skills from Hero
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
@@ -56,23 +59,44 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         setupHitboxComponent();
         PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
+
+
         setupStunningStrikeSkill();
+        setupSpeedeSkill();
+
+
         pc.setSkillSlot1(firstSkill);
         setupXPComponent();
-
-
-
         setupHealthComponent();
 
     }
+
+
+
+
+
 
     private void setupXPComponent() {
         new XPComponent(this, this::onLevelUp);
     }
 
     private void setupStunningStrikeSkill() {
-        secondSkill = new Skill(new StunningStrikeSkill(), StunningStrikeCoolDown);
+        secondSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown);
     }
+
+    private void setupSpeedeSkill() {
+        thirdSkill = new Skill(new SpeedSkill(1,1,4),SpeedSkillCoolDown);
+    }
+    @Override
+    public void onLevelUp(long nexLevel) {
+        //TODO:
+    }
+
+
+
+
+
+
 
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
@@ -156,8 +180,4 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
 
-    @Override
-    public void onLevelUp(long nexLevel) {
-        //TODO:
-    }
 }
