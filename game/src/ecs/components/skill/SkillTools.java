@@ -9,12 +9,22 @@ import tools.Point;
 public class SkillTools {
 
     /**
+     * English:
      * calculates the last position in range regardless of aimed position
      *
      * @param startPoint position to start the calculation
      * @param aimPoint point to aim for
      * @param range range from start to
      * @return last position in range if you follow the directon from startPoint to aimPoint
+     */
+    /**
+     * German:
+     * Berechnet die letzte Position im Bereich unabhängig von der Zielposition
+     *
+     * @param startPoint Position zum Starten der Berechnung
+     * @param aimPoint anzusteuernder Punkt
+     * @param range Bereich von start bis
+     * @Rückgabe der letzten Position in der Reichweite, wenn man der Richtung von startPoint zu aimPoint folgt
      */
     public static Point calculateLastPositionInRange(
             Point startPoint, Point aimPoint, float range) {

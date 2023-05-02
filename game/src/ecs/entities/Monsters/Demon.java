@@ -50,8 +50,10 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
             this,
             hit,
             die);
+
         new PositionComponent(this);
         new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+
         new AIComponent(
             this,
             new CollideAI(0f),

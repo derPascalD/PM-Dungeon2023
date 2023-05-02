@@ -5,7 +5,7 @@ import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import tools.Point;
 
-public class StunningStrikeSkill extends Skill implements ISkillFunction{
+public class StunningStrikeSkill extends MagicSkills{
 
 
 
@@ -13,11 +13,9 @@ public class StunningStrikeSkill extends Skill implements ISkillFunction{
 
     }
 
+
     @Override
     public void execute(Entity entity) {
 
     }
-
-
-
 }

@@ -21,7 +21,6 @@ public class AISystem extends ECS_System {
     }
 
 
-
     private AISystem.AISData buildDataObject(AIComponent aic) {
         Entity e = aic.getEntity();
 
