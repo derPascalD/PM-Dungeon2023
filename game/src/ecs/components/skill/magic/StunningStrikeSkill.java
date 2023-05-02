@@ -1,4 +1,4 @@
-package ecs.components.skill;
+package ecs.components.skill.magic;
 
 import ecs.entities.Entity;
 

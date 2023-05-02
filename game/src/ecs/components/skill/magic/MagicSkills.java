@@ -1,5 +1,6 @@
-package ecs.components.skill;
+package ecs.components.skill.magic;
 
+import ecs.components.skill.ISkillFunction;
 import ecs.entities.Entity;
 
 public abstract class MagicSkills implements ISkillFunction {

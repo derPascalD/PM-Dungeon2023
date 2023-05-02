@@ -6,6 +6,8 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.components.skill.magic.SpeedSkill;
+import ecs.components.skill.magic.StunningStrikeSkill;
 import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
 import graphic.Animation;
