@@ -96,7 +96,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private void setupStunningStrikeSkill() {
         skillComponent.addSkill(
             thirdSkill =
-                new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
+                new Skill(
+                    new StunningStrikeSkill(4), StunningStrikeCoolDown));
 
 
     }
