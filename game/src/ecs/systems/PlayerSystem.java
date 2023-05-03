@@ -5,21 +5,29 @@ import configuration.KeyboardConfig;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.VelocityComponent;
+import ecs.components.skill.ISkillFunction;
+import ecs.components.skill.Skill;
+import ecs.components.skill.SkillComponent;
+import ecs.components.skill.magic.MagicSkills;
+import ecs.components.skill.magic.SpeedSkill;
 import ecs.entities.Entity;
 import ecs.tools.interaction.InteractionTool;
 import starter.Game;
 
-/** Used to control the player */
+/**
+ * Used to control the player
+ */
 public class PlayerSystem extends ECS_System {
 
-    private record KSData(Entity e, PlayableComponent pc, VelocityComponent vc) {}
+    private record KSData(Entity e, PlayableComponent pc, VelocityComponent vc) {
+    }
 
     @Override
     public void update() {
         Game.getEntities().stream()
-                .flatMap(e -> e.getComponent(PlayableComponent.class).stream())
-                .map(pc -> buildDataObject((PlayableComponent) pc))
-                .forEach(this::checkKeystroke);
+            .flatMap(e -> e.getComponent(PlayableComponent.class).stream())
+            .map(pc -> buildDataObject((PlayableComponent) pc))
+            .forEach(this::checkKeystroke);
     }
 
     private void checkKeystroke(KSData ksd) {
@@ -35,20 +43,26 @@ public class PlayerSystem extends ECS_System {
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 
-        // check skills
+            // check skills
         else if (Gdx.input.isKeyPressed(KeyboardConfig.FIRST_SKILL.get()))
             ksd.pc.getSkillSlot1().ifPresent(skill -> skill.execute(ksd.e));
+
         else if (Gdx.input.isKeyPressed(KeyboardConfig.SECOND_SKILL.get()))
             ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));
+
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.THIRD_SKILL.get())) {
+            /*ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));*/
+
+        }
     }
 
     private KSData buildDataObject(PlayableComponent pc) {
         Entity e = pc.getEntity();
 
         VelocityComponent vc =
-                (VelocityComponent)
-                        e.getComponent(VelocityComponent.class)
-                                .orElseThrow(PlayerSystem::missingVC);
+            (VelocityComponent)
+                e.getComponent(VelocityComponent.class)
+                    .orElseThrow(PlayerSystem::missingVC);
 
         return new KSData(e, pc, vc);
     }

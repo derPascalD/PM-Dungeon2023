@@ -15,6 +15,6 @@ public class SpeedSkill extends MagicSkills {
 
     @Override
     public void execute(Entity entity) {
-
+        System.out.println("Run faster");
     }
 }

@@ -6,12 +6,12 @@ import ecs.entities.Entity;
 public abstract class MagicSkills implements ISkillFunction {
 
 
-    protected int skilHealthlCosts;
+    protected int skillHealthCosts;
 
     protected float skillDuration;
 
-    public MagicSkills(int skilHealthlCosts, float skillDuration) {
-        this.skilHealthlCosts = skilHealthlCosts;
+    public MagicSkills(int skillHealthCosts, float skillDuration) {
+        this.skillHealthCosts = skillHealthCosts;
         this.skillDuration = skillDuration;
 
 

@@ -22,14 +22,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private final int fireballCoolDown = 5;
 
-    private final int StunningStrikeCoolDown = 5;
-    private final int SpeedSkillCoolDown = 5;
+    private final int StunningStrikeCoolDown = 10;
+    private final int SpeedSkillCoolDown = 10;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
     private String attackAnimation = "knight/attack";
-
-
 
 
     // Life points from Hero
@@ -44,6 +42,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
+    private SkillComponent skillComponent;
 
     protected HealthComponent health;
 
@@ -53,51 +52,63 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
      */
     public Hero() {
         super();
-        this.health =  new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
+        this.health = new HealthComponent(this, lifePoints, this, hitAnimation(), attackAnimation());
+        PlayableComponent pc = new PlayableComponent(this);
+        this.skillComponent = new SkillComponent(this);
         new PositionComponent(this);
+
+
+        setupFireballSkill();
+        setupStunningStrikeSkill();
+        setupSpeedSkill();
         setupVelocityComponent();
         setupAnimationComponent();
         setupHealthComponent();
         setupHitboxComponent();
-        PlayableComponent pc = new PlayableComponent(this);
         setupFireballSkill();
-
-
         setupStunningStrikeSkill();
-        setupSpeedSkill();
-
-
-        pc.setSkillSlot1(firstSkill);
         setupXPComponent();
         setupHealthComponent();
 
+
+        pc.setSkillSlot1(secondSkill);
+        pc.setSkillSlot2(thirdSkill);
+
+
     }
-
-
-
-
 
 
     private void setupXPComponent() {
-        new XPComponent(this, this::onLevelUp);
+        new XPComponent(this, this);
+    }
+
+
+
+    private void setupSpeedSkill() {
+        skillComponent.addSkill(
+            secondSkill =
+                new Skill(
+                    new SpeedSkill(1, 1, 4), SpeedSkillCoolDown));
+
+
     }
 
     private void setupStunningStrikeSkill() {
-        secondSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown);
+        skillComponent.addSkill(
+            thirdSkill =
+                new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
+
+
     }
 
-    private void setupSpeedSkill() {
-        thirdSkill = new Skill(new SpeedSkill(1,1,4),SpeedSkillCoolDown);
-    }
     @Override
     public void onLevelUp(long nexLevel) {
         //TODO:
     }
-
-
-
-
-
+    private void setupHealthComponent() {
+        Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
+        new HealthComponent(this, 100, this::onDeath, hit, hit);
+    }
 
 
     private void setupVelocityComponent() {
@@ -121,8 +132,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private void setupHitboxComponent() {
         new HitboxComponent(
             this,
-            (you, other, direction) -> System.out.println("Hero Kollidiert"),
-            (you, other, direction) -> System.out.println("Hero ausser gefahr")
+            (you, other, direction) -> System.out.println("Hero collide"),
+            (you, other, direction) -> System.out.println("Hero not collide")
 
         );
     }
@@ -130,10 +141,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     public Animation attackAnimation() {
         return AnimationBuilder.buildAnimation(attackAnimation);
     }
-    public Animation hitAnimation(){
-       return AnimationBuilder.buildAnimation(hitAnimation);
-    }
 
+    public Animation hitAnimation() {
+        return AnimationBuilder.buildAnimation(hitAnimation);
+    }
 
 
     /*
@@ -146,40 +157,33 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
     /**
-     *
      * @return Return the current data path of the Hero Animation left
      */
     public String getPathToIdleLeft() {
         return pathToIdleLeft;
     }
+
     /**
-     *
      * @return Return the current data path of the Hero Animation right
      */
     public String getPathToIdleRight() {
         return pathToIdleRight;
     }
+
     /**
-     *
      * @return Return the current data path of the Hero Animation run left
      */
     public String getPathToRunLeft() {
         return pathToRunLeft;
     }
+
     /**
-     *
      * @return Return the current data path of the Hero Animation run right
      */
     public String getPathToRunRight() {
         return pathToRunRight;
     }
 
-
-    private void setupHealthComponent()
-    {
-        Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
-        new HealthComponent(this, 100, this::onDeath ,hit,hit);
-    }
 
 
 }
