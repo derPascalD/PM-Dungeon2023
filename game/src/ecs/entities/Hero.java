@@ -61,14 +61,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         setupFireballSkill();
         setupStunningStrikeSkill();
         setupSpeedSkill();
+        setupXPComponent();
+
         setupVelocityComponent();
         setupAnimationComponent();
         setupHealthComponent();
         setupHitboxComponent();
-        setupFireballSkill();
-        setupStunningStrikeSkill();
-        setupXPComponent();
-        setupHealthComponent();
 
 
         pc.setSkillSlot1(secondSkill);
