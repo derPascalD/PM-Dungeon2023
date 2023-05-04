@@ -12,7 +12,6 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.components.Component;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -82,7 +81,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Saves the level
      */
     private static int levelDepth;
-
 
 
     /**
@@ -177,10 +175,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
 
         createMonster();
+        addXPToEntity();
 
         Trap gifwolke = new Giftwolke();
         Trap bananenschale = new Bananenschale();
-        if(rand.nextBoolean()) {
+        if (rand.nextBoolean()) {
             Ghost ghost = new Ghost();
         }
 
@@ -277,13 +276,24 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
                 new PumpkinKiller(levelDepth);
             }
         }
-        if(levelDepth >=  6){LevelDepthSize = LevelSize.MEDIUM;}
-        if(levelDepth >=  48){LevelDepthSize = LevelSize.LARGE;}
-        System.out.println("Level depth is "+ (levelDepth+1) +".");
+        if (levelDepth >= 6) {
+            LevelDepthSize = LevelSize.MEDIUM;
+        }
+        if (levelDepth >= 48) {
+            LevelDepthSize = LevelSize.LARGE;
+        }
+        System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
     }
 
+    public void addXPToEntity() {
 
+        if (Game.hero != null) {
+            Hero hero1 = (Hero) Game.hero;
+            hero1.getXpComponent().addXP(50);
+
+        }
+    }
 
 
     /**

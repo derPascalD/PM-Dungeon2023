@@ -41,11 +41,16 @@ public class Giftwolke extends Trap implements ICollide {
 
         VelocityComponent velocityComponent = (VelocityComponent) optionalVelocity.get();
 
+        // Original Speed from Hero
+        float xSpeed = 0;
+        float ySpeed = 0;
+
         Hero hero = null;
         if (b instanceof Hero)
         {
             hero = (Hero) b;
-
+            xSpeed = hero.getxSpeed();
+            ySpeed = hero.getySpeed();
         }
 
         // sets the new X,Y Velocity of b
@@ -54,11 +59,13 @@ public class Giftwolke extends Trap implements ICollide {
 
         Timer timer = new Timer();
         Hero finalHero = hero;
+        float finalXSpeed = xSpeed;
+        float finalYSpeed = ySpeed;
         timer.schedule(new TimerTask() {
             public void run() {
                 assert finalHero != null;
-                velocityComponent.setYVelocity(finalHero.getxSpeed());
-                velocityComponent.setXVelocity(finalHero.getySpeed());
+                velocityComponent.setYVelocity(finalXSpeed);
+                velocityComponent.setXVelocity(finalYSpeed);
                 System.out.println("10 Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
             }
         }, 10 * 1000);

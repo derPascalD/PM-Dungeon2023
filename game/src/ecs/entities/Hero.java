@@ -24,10 +24,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private final int StunningStrikeCoolDown = 20;
     private final int SpeedSkillCoolDown = 20;
+
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
-    private String attackAnimation = "knight/attack";
 
 
     // Life points from Hero
@@ -46,7 +46,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private Skill thirdSkill;
     private SkillComponent skillComponent;
 
-    protected HealthComponent health;
+
+    private PlayableComponent playableComponent;
+    private XPComponent xpComponent;
+    private HealthComponent health;
 
 
     /**
@@ -54,43 +57,32 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
      */
     public Hero() {
         super();
-        this.health = new HealthComponent(this, lifePoints, this, hitAnimation(), attackAnimation());
-        PlayableComponent pc = new PlayableComponent(this);
-        this.skillComponent = new SkillComponent(this);
+        playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
+
+
         setupXPComponent();
-
-
-        setupFireballSkill();
-        setupStunningStrikeSkill();
-        setupSpeedSkill();
-
 
         setupVelocityComponent();
         setupAnimationComponent();
         setupHealthComponent();
         setupHitboxComponent();
 
-
-        pc.setSkillSlot1(secondSkill);
-        pc.setSkillSlot2(thirdSkill);
+        setupSkillComponent();
+        setupFireballSkill();
+        setupStunningStrikeSkill();
 
 
     }
-
-
-    private void setupXPComponent() {
-        new XPComponent(this, this);
-    }
-
 
 
     private void setupSpeedSkill() {
         skillComponent.addSkill(
             secondSkill =
                 new Skill(
-                    new SpeedSkill(xSpeed,ySpeed,0.3F, 0.3F, 4), SpeedSkillCoolDown));
-
+                    new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
+        playableComponent.setSkillSlot1(secondSkill);
+        System.out.println("SpeedSKill unlocked");
 
     }
 
@@ -99,18 +91,33 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
             thirdSkill =
                 new Skill(
                     new StunningStrikeSkill(4), StunningStrikeCoolDown));
-
-
+        playableComponent.setSkillSlot2(thirdSkill);
+        System.out.println("StunningStrikeSkill unlocked");
     }
 
     @Override
     public void onLevelUp(long nexLevel) {
-        System.out.println("TEST");
-        //TODO:
+        System.out.println("Level: " + nexLevel);
+        System.out.println("Punkte: " + xpComponent.getCurrentXP());
+        System.out.println("Punkte noch zum nächsten Levelaufstieg: " + xpComponent.getXPToNextLevel());
+        if (nexLevel == 2) setupSpeedSkill();
+        if (nexLevel == 3) setupStunningStrikeSkill();
+
+
     }
+
+    private void setupSkillComponent() {
+        skillComponent = new SkillComponent(this);
+
+
+    }
+
+    private void setupXPComponent() {
+        xpComponent = new XPComponent(this, this);
+    }
+
     private void setupHealthComponent() {
-        Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
-        new HealthComponent(this, 100, this::onDeath, hit, hit);
+        health = new HealthComponent(this, lifePoints, this, hitAnimation(), hitAnimation());
     }
 
 
@@ -126,24 +133,21 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
+    private void setupHitboxComponent() {
+        new HitboxComponent(
+            this,
+            (you, other, direction) -> System.out.println("Hero collide"),
+            (you, other, direction) -> System.out.println("Hero not collide")
+        );
+    }
+
+
     private void setupFireballSkill() {
         firstSkill =
             new Skill(
                 new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
     }
 
-    private void setupHitboxComponent() {
-        new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("Hero collide"),
-            (you, other, direction) -> System.out.println("Hero not collide")
-
-        );
-    }
-
-    public Animation attackAnimation() {
-        return AnimationBuilder.buildAnimation(attackAnimation);
-    }
 
     public Animation hitAnimation() {
         return AnimationBuilder.buildAnimation(hitAnimation);
@@ -198,6 +202,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     public SkillComponent getSkillComponent() {
         return skillComponent;
+    }
+
+    public XPComponent getXpComponent() {
+        return xpComponent;
     }
 
     public float getxSpeed() {
