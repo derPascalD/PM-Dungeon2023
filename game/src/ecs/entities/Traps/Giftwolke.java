@@ -4,6 +4,7 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import level.elements.tile.Tile;
 
 import java.util.Optional;
@@ -40,18 +41,24 @@ public class Giftwolke extends Trap implements ICollide {
 
         VelocityComponent velocityComponent = (VelocityComponent) optionalVelocity.get();
 
-        float originalYVelocity = velocityComponent.getYVelocity();
-        float originalXVelocity = velocityComponent.getXVelocity();
+        Hero hero = null;
+        if (b instanceof Hero)
+        {
+            hero = (Hero) b;
+
+        }
 
         // sets the new X,Y Velocity of b
         velocityComponent.setYVelocity(velocityComponent.getYVelocity() / 2);
         velocityComponent.setXVelocity(velocityComponent.getXVelocity() / 2);
 
         Timer timer = new Timer();
+        Hero finalHero = hero;
         timer.schedule(new TimerTask() {
             public void run() {
-                velocityComponent.setYVelocity(originalYVelocity);
-                velocityComponent.setXVelocity(originalXVelocity);
+                assert finalHero != null;
+                velocityComponent.setYVelocity(finalHero.getxSpeed());
+                velocityComponent.setXVelocity(finalHero.getySpeed());
                 System.out.println("10 Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
             }
         }, 10 * 1000);

@@ -88,9 +88,6 @@ public class Bananenschale extends Trap implements ICollide {
         System.out.println("new healthpoints: "+ healthpoints);
 
 
-        // saves the originalVelocity
-        float orginialXVelocity = velocityComponent.getXVelocity();
-        float orginialYVelocity = velocityComponent.getYVelocity();
 
         // sets the new X,Y Velocity of b
         velocityComponent.setYVelocity(velocityComponent.getYVelocity()/10);
@@ -100,6 +97,7 @@ public class Bananenschale extends Trap implements ICollide {
         if (b instanceof Hero)
         {
             hero = (Hero) b;
+
             animationComponent.setIdleLeft(AnimationBuilder.buildAnimation("knight/blood_idleLeft"));
             animationComponent.setIdleRight(AnimationBuilder.buildAnimation("knight/blood_idleRight"));
             velocityComponent.setMoveRightAnimation(AnimationBuilder.buildAnimation("knight/blood_runRight"));
@@ -117,7 +115,7 @@ public class Bananenschale extends Trap implements ICollide {
         Hero finalHero = hero;
         timer.schedule(new TimerTask() {
             public void run() {
-                resetPlayerVelocity(timer, orginialXVelocity, orginialYVelocity, animationComponent, velocityComponent, finalHero);
+                resetPlayerVelocity(timer, finalHero.getxSpeed(), finalHero.getySpeed(), animationComponent, velocityComponent, finalHero);
             }
         }, 5*1000);
 

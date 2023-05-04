@@ -199,4 +199,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     public SkillComponent getSkillComponent() {
         return skillComponent;
     }
+
+    public float getxSpeed() {
+        return xSpeed;
+    }
+
+    public float getySpeed() {
+        return ySpeed;
+    }
 }
