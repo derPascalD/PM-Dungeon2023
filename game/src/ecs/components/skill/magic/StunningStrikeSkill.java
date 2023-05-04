@@ -8,7 +8,7 @@ public class StunningStrikeSkill extends MagicSkills {
     protected float radius;
 
     public StunningStrikeSkill(int skillDuration) {
-        super(1,skillDuration);
+        super(1, skillDuration);
 
     }
 
@@ -17,4 +17,8 @@ public class StunningStrikeSkill extends MagicSkills {
         System.out.println("Freeze");
         //TODO:
     }
+
+
+
+
 }

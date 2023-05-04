@@ -1,5 +1,6 @@
 package ecs.components.skill;
 
+import ecs.components.skill.magic.MagicSkills;
 import ecs.entities.Entity;
 import tools.Constants;
 
@@ -45,5 +46,7 @@ public class Skill {
     /** reduces the current cool down by frame */
     public void reduceCoolDown() {
         currentCoolDownInFrames = Math.max(0, --currentCoolDownInFrames);
+
+
     }
 }

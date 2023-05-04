@@ -22,8 +22,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private final int fireballCoolDown = 5;
 
-    private final int StunningStrikeCoolDown = 10;
-    private final int SpeedSkillCoolDown = 10;
+    private final int StunningStrikeCoolDown = 20;
+    private final int SpeedSkillCoolDown = 20;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
@@ -40,6 +40,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     // Skills from Hero
     private Skill firstSkill;
+
+
     private Skill secondSkill;
     private Skill thirdSkill;
     private SkillComponent skillComponent;
@@ -56,12 +58,13 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         PlayableComponent pc = new PlayableComponent(this);
         this.skillComponent = new SkillComponent(this);
         new PositionComponent(this);
+        setupXPComponent();
 
 
         setupFireballSkill();
         setupStunningStrikeSkill();
         setupSpeedSkill();
-        setupXPComponent();
+
 
         setupVelocityComponent();
         setupAnimationComponent();
@@ -86,7 +89,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         skillComponent.addSkill(
             secondSkill =
                 new Skill(
-                    new SpeedSkill(1, 1, 4), SpeedSkillCoolDown));
+                    new SpeedSkill(xSpeed,ySpeed,0.3F, 0.3F, 4), SpeedSkillCoolDown));
 
 
     }
@@ -102,6 +105,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     @Override
     public void onLevelUp(long nexLevel) {
+        System.out.println("TEST");
         //TODO:
     }
     private void setupHealthComponent() {
@@ -184,5 +188,15 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
 
+    public Skill getSecondSkill() {
+        return secondSkill;
+    }
 
+    public Skill getThirdSkill() {
+        return thirdSkill;
+    }
+
+    public SkillComponent getSkillComponent() {
+        return skillComponent;
+    }
 }

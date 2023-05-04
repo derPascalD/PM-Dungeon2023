@@ -12,6 +12,7 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
+import ecs.components.Component;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -165,6 +166,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+
+
     }
 
     @Override
@@ -279,6 +282,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         System.out.println("Level depth is "+ (levelDepth+1) +".");
         levelDepth++;
     }
+
+
 
 
     /**

@@ -20,4 +20,8 @@ public abstract class MagicSkills implements ISkillFunction {
 
     @Override
     public abstract void execute(Entity entity);
+
+
+
+
 }
