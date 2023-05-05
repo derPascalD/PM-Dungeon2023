@@ -252,7 +252,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
     /**
      * English:
      * Here different monsters are created and implemented into the level.
@@ -268,30 +267,20 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public void createMonster() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             int monster = (int) (Math.random() * 3);
-            if (monster == 0) {
-                new Demon(levelDepth);
-            } else if (monster == 1) {
-                new Skeleton(levelDepth);
-            } else if (monster == 2) {
-                new PumpkinKiller(levelDepth);
-            }
+            if (monster == 0) new Demon(levelDepth);
+            else if (monster == 1) new Skeleton(levelDepth);
+            else if (monster == 2) new PumpkinKiller(levelDepth);
         }
-        if (levelDepth >= 6) {
-            LevelDepthSize = LevelSize.MEDIUM;
-        }
-        if (levelDepth >= 48) {
-            LevelDepthSize = LevelSize.LARGE;
-        }
+        if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
+        if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
         System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
     }
 
     public void addXPToEntity() {
-
         if (Game.hero != null) {
             Hero hero1 = (Hero) Game.hero;
             hero1.getXpComponent().addXP(50);
-
         }
     }
 
