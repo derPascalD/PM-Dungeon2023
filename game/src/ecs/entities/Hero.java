@@ -19,12 +19,11 @@ import graphic.Animation;
  */
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
-
     private final int fireballCoolDown = 5;
-
     private final int StunningStrikeCoolDown = 20;
     private final int SpeedSkillCoolDown = 20;
 
+    // Original Speed from Hero
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit";
@@ -40,16 +39,14 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     // Skills from Hero
     private Skill firstSkill;
-
-
     private Skill secondSkill;
     private Skill thirdSkill;
+
+
     private SkillComponent skillComponent;
-
-
     private PlayableComponent playableComponent;
     private XPComponent xpComponent;
-    private HealthComponent health;
+    private HealthComponent healthComponent;
 
 
     /**
@@ -70,18 +67,17 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
         setupSkillComponent();
         setupFireballSkill();
-        setupStunningStrikeSkill();
-
-
     }
 
-
+    /*
+    Adds the new Speed skill to allow the Hero to run faster for a short time.
+     */
     private void setupSpeedSkill() {
         skillComponent.addSkill(
             secondSkill =
                 new Skill(
                     new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
-        playableComponent.setSkillSlot1(secondSkill);
+        playableComponent.setSkillSlot2(secondSkill);
         System.out.println("SpeedSKill unlocked");
 
     }
@@ -91,25 +87,26 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
             thirdSkill =
                 new Skill(
                     new StunningStrikeSkill(4), StunningStrikeCoolDown));
-        playableComponent.setSkillSlot2(thirdSkill);
+        playableComponent.setSkillSlot3(thirdSkill);
         System.out.println("StunningStrikeSkill unlocked");
     }
 
+    /**
+     * Here abilities are unlocked, depending on the level of the hero
+     *
+     * @param nexLevel is the new level of the entity
+     */
     @Override
     public void onLevelUp(long nexLevel) {
         System.out.println("Level: " + nexLevel);
-        System.out.println("Punkte: " + xpComponent.getCurrentXP());
-        System.out.println("Punkte noch zum nächsten Levelaufstieg: " + xpComponent.getXPToNextLevel());
+        System.out.println("Points: " + xpComponent.getCurrentXP());
+        System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
         if (nexLevel == 2) setupSpeedSkill();
         if (nexLevel == 3) setupStunningStrikeSkill();
-
-
     }
 
     private void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
-
-
     }
 
     private void setupXPComponent() {
@@ -117,7 +114,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
     private void setupHealthComponent() {
-        health = new HealthComponent(this, lifePoints, this, hitAnimation(), hitAnimation());
+        healthComponent = new HealthComponent(this, lifePoints, this, null, null);
     }
 
 
@@ -149,14 +146,17 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
 
+    /**
+     * @return Return the Hit Animation from the Hero
+     */
     public Animation hitAnimation() {
         return AnimationBuilder.buildAnimation(hitAnimation);
     }
 
 
-    /*
-     As soon as the entity dies, the content of the function is executed.
-    */
+    /**
+     * As soon as the entity dies, the content of the function is executed.
+     */
     @Override
     public void onDeath(Entity entity) {
         System.out.println("Hero is dead!");
@@ -192,26 +192,45 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
 
+    /**
+     * @return Return the Second Skill
+     */
     public Skill getSecondSkill() {
         return secondSkill;
     }
 
+    /**
+     * @return Return the Third Skill
+     */
     public Skill getThirdSkill() {
         return thirdSkill;
     }
 
+    /**
+     * @return Return the SkillComponent from the Hero
+     */
     public SkillComponent getSkillComponent() {
         return skillComponent;
     }
 
+    /**
+     * @return Return the XpComponent from the Hero
+     */
     public XPComponent getXpComponent() {
         return xpComponent;
     }
 
+    /**
+     * @return Return the Original xSpeed from Hero
+     */
     public float getxSpeed() {
         return xSpeed;
     }
 
+
+    /**
+     * @return Return the Original ySpeed from Hero
+     */
     public float getySpeed() {
         return ySpeed;
     }

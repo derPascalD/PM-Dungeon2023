@@ -14,7 +14,14 @@ public class SpeedSkill extends MagicSkills {
     protected float xMoreSpeed;
     protected float yMoreSpeed;
 
-
+    /**
+     *
+     * @param originalXSpeed Original xSpeed from Entity
+     * @param originalYSpeed Original xSpeed from Entity
+     * @param xMoreSpeed additional x speed
+     * @param yMoreSpeed additional y speed
+     * @param skillDuration Ability duration
+     */
     public SpeedSkill(float originalXSpeed, float originalYSpeed,float xMoreSpeed, float yMoreSpeed, int skillDuration) {
         super(1, skillDuration);
         this.xMoreSpeed = xMoreSpeed;
@@ -23,6 +30,12 @@ public class SpeedSkill extends MagicSkills {
         this.originalYSpeed = originalYSpeed;
     }
 
+    /**
+     * When activating the skill, the entity runs faster in the dungeon for
+     * a certain time and then again normally
+     *
+     * @param entity which uses the skill
+     */
     @Override
     public void execute(Entity entity) {
 

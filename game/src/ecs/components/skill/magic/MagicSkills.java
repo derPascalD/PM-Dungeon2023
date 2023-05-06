@@ -7,21 +7,20 @@ public abstract class MagicSkills implements ISkillFunction {
 
 
     protected int skillHealthCosts;
-
     protected float skillDuration;
 
+    /**
+     *
+     * @param skillHealthCosts Capability cost
+     * @param skillDuration Ability duration
+     */
     public MagicSkills(int skillHealthCosts, float skillDuration) {
         this.skillHealthCosts = skillHealthCosts;
         this.skillDuration = skillDuration;
-
-
     }
 
 
     @Override
     public abstract void execute(Entity entity);
-
-
-
 
 }
