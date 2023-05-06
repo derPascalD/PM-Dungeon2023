@@ -3,6 +3,8 @@ package ecs.components.skill.magic;
 import ecs.components.HealthComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.entities.Traps.Bananenschale;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,6 +41,8 @@ public class SpeedSkill extends MagicSkills {
     @Override
     public void execute(Entity entity) {
 
+
+
         HealthComponent entityHP = (HealthComponent) entity.getComponent(HealthComponent.class)
             .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
 
@@ -48,13 +52,17 @@ public class SpeedSkill extends MagicSkills {
         entityHP.setCurrentHealthpoints(entityHP.getCurrentHealthpoints() - skillHealthCosts);
         entityXY.setXVelocity(entityXY.getXVelocity() + xMoreSpeed);
         entityXY.setYVelocity(entityXY.getYVelocity() + yMoreSpeed);
+        System.out.println("SpeedSkill active");
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
-            public void run() {
 
-                entityXY.setXVelocity(originalXSpeed);
-                entityXY.setYVelocity(originalYSpeed);
+            public void run() {
+                if(entityXY.getXVelocity() == (originalXSpeed + xMoreSpeed) ){
+                    entityXY.setXVelocity(originalXSpeed);
+                    entityXY.setYVelocity(originalYSpeed);
+                }
+                System.out.println("SpeedSkill ends");
 
             }
         }, (long) skillDuration*1000);
