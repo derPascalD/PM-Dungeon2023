@@ -1,11 +1,16 @@
 package ecs.systems;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import configuration.KeyboardConfig;
+import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.items.Healthpot;
+import ecs.items.ItemData;
+import ecs.items.ItemType;
 import ecs.tools.interaction.InteractionTool;
 import starter.Game;
 
@@ -32,6 +37,14 @@ public class PlayerSystem extends ECS_System {
         else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get()))
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
 
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.INVENTORY_OPEN.get())) {
+            showInventoryInConsole(ksd.e);
+        }
+
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.HEAL_POTION.get())) {
+            useHealPotion(ksd.e);
+        }
+
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 
@@ -40,6 +53,26 @@ public class PlayerSystem extends ECS_System {
             ksd.pc.getSkillSlot1().ifPresent(skill -> skill.execute(ksd.e));
         else if (Gdx.input.isKeyPressed(KeyboardConfig.SECOND_SKILL.get()))
             ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));
+    }
+
+    private void showInventoryInConsole(Entity e) {
+        InventoryComponent inventoryCompnent =
+            (InventoryComponent) e.getComponent(InventoryComponent.class).get();
+        System.out.println("Inventory of the Hero:");
+        for (ItemData item:inventoryCompnent.getItems()) {
+            System.out.println(item.getItemName());
+        }
+    }
+
+    private void useHealPotion(Entity e) {
+        InventoryComponent inventoryCompnent =
+            (InventoryComponent) e.getComponent(InventoryComponent.class).get();
+        // Wenn heilpots da sind, heilen, sonst fehlermeldung
+        for (ItemData item:inventoryCompnent.getItems()) {
+            if(item.getItemType().equals(ItemType.Healing)) {
+                item.triggerUse(e);
+            }
+        }
     }
 
     private KSData buildDataObject(PlayableComponent pc) {

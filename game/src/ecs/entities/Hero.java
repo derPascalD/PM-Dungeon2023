@@ -34,7 +34,7 @@ public class Hero extends Entity implements IOnDeathFunction {
     private Skill firstSkill;
 
     protected HealthComponent health;
-
+    protected InventoryComponent inventory;
 
     /**
      * Entity with Components
@@ -54,7 +54,7 @@ public class Hero extends Entity implements IOnDeathFunction {
 
 
         setupHealthComponent();
-
+        setupInventoryComponent();
     }
 
     private void setupVelocityComponent() {
@@ -82,6 +82,10 @@ public class Hero extends Entity implements IOnDeathFunction {
             (you, other, direction) -> System.out.println("Hero ausser gefahr")
 
         );
+    }
+
+    private void setupInventoryComponent() {
+        inventory = new InventoryComponent(this,9);
     }
 
     public Animation attackAnimation() {

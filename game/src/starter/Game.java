@@ -23,8 +23,10 @@ import ecs.entities.Entity;
 import ecs.entities.NPCs.Ghost;
 import ecs.entities.Hero;
 import ecs.entities.Traps.Trap;
+import ecs.items.Healthpot;
 import ecs.systems.*;
 import graphic.DungeonCamera;
+import graphic.IngameUI;
 import graphic.Painter;
 import graphic.hud.PauseMenu;
 
@@ -107,6 +109,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Entity hero;
     private Logger gameLogger;
     private Random rand = new Random();
+    private IngameUI ui;
 
     public static void main(String[] args) {
         // start the game
@@ -152,6 +155,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         hero = new Hero();
+        ui = new IngameUI();
+        controller.add(ui);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -181,6 +186,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             Ghost ghost = new Ghost();
         }
 
+        new Healthpot();
     }
 
     private void manageEntitiesSets() {
