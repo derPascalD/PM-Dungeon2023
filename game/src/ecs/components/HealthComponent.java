@@ -4,14 +4,11 @@ import com.badlogic.gdx.utils.Null;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import graphic.Animation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-
-import graphic.IngameUI;
 import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
@@ -163,11 +160,6 @@ public class HealthComponent extends Component {
      */
     public void setCurrentHealthpoints(int amount) {
         this.currentHealthpoints = Math.min(maximalHealthpoints, amount);
-        if(entity instanceof Hero){
-            IngameUI.updateHPBar((currentHealthpoints));
-        }
-
-
     }
 
     /**
