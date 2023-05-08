@@ -2,10 +2,7 @@ package ecs.entities.Monsters;
 
 import dslToGame.AnimationBuilder;
 
-import ecs.components.HealthComponent;
-import ecs.components.HitboxComponent;
-import ecs.components.IOnDeathFunction;
-import ecs.components.PositionComponent;
+import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.idle.PatrouilleWalk;
@@ -16,6 +13,7 @@ import level.elements.tile.Tile;
 
 
 public class Demon extends Monster implements IOnDeathFunction, ICollide {
+
 
 
     /**
@@ -152,4 +150,6 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     public void setAttackDamage(int attackDamage) {
         super.setAttackDamage(attackDamage);
     }
+
+
 }

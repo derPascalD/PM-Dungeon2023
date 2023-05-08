@@ -14,6 +14,9 @@ import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
+
+
+
     /**
      * English:
      * Entity with Components.
@@ -39,7 +42,13 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
 
         new PositionComponent(this);
         new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
-        new AIComponent(this, new CollideAI(0f), new GoToHero(2), new RangeTransition(1f));
+
+        new AIComponent(
+            this,
+            new CollideAI(0f),
+            new GoToHero(2),
+            new RangeTransition(1f));
+
         this.hit = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
 

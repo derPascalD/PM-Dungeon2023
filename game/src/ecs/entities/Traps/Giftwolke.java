@@ -66,7 +66,7 @@ public class Giftwolke extends Trap implements ICollide {
                 assert finalHero != null;
                 velocityComponent.setYVelocity(finalXSpeed);
                 velocityComponent.setXVelocity(finalYSpeed);
-                System.out.println("10 Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
+                System.out.println("10 seconds over. The velocity is set back to the original values.");
             }
         }, 10 * 1000);
 

@@ -140,7 +140,7 @@ public class Bananenschale extends Trap implements ICollide {
             velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation(finalHero.getPathToRunLeft()));
         }
 
-        System.out.println("5s Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
+        System.out.println("5 seconds over. The velocity is set back to the original values.");
         timer.cancel();
     }
 

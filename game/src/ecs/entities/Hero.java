@@ -20,7 +20,7 @@ import graphic.Animation;
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private final int fireballCoolDown = 5;
-    private final int StunningStrikeCoolDown = 20;
+    private final int StunningStrikeCoolDown = 3;
     private final int SpeedSkillCoolDown = 20;
 
     // Original Speed from Hero
@@ -64,8 +64,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         setupAnimationComponent();
         setupHealthComponent();
         setupHitboxComponent();
-
         setupSkillComponent();
+        setupStunningStrikeSkill();
+
         setupFireballSkill();
     }
 
@@ -94,15 +95,15 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     /**
      * Here abilities are unlocked, depending on the level of the hero
      *
-     * @param nexLevel is the new level of the entity
+     * @param nextLevel is the new level of the entity
      */
     @Override
-    public void onLevelUp(long nexLevel) {
-        System.out.println("Level: " + nexLevel);
+    public void onLevelUp(long nextLevel) {
+        System.out.println("Level: " + nextLevel);
         System.out.println("Points: " + xpComponent.getCurrentXP());
         System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
-        if (nexLevel == 2) setupSpeedSkill();
-        if (nexLevel == 3) setupStunningStrikeSkill();
+        if (nextLevel == 2) setupSpeedSkill();
+       // if (nextLevel == 3) setupStunningStrikeSkill();
     }
 
     private void setupSkillComponent() {
@@ -114,7 +115,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
     private void setupHealthComponent() {
-        healthComponent = new HealthComponent(this, lifePoints, this, null, null);
+        healthComponent = new HealthComponent(
+            this, lifePoints, this, null, null);
     }
 
 

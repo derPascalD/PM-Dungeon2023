@@ -51,7 +51,7 @@ public class InteractionTool {
                 entity,
                 pc,
                 ic,
-                Point.calculateDistance(heroPosition.getPosition(), pc.getPosition()),
+                (float) Point.calculateDistance(heroPosition.getPosition(), pc.getPosition()),
                 Point.getUnitDirectionalVector(heroPosition.getPosition(), pc.getPosition()));
     }
 
