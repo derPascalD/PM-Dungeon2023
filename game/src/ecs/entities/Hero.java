@@ -103,7 +103,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         System.out.println("Points: " + xpComponent.getCurrentXP());
         System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
         if (nextLevel == 2) setupSpeedSkill();
-       // if (nextLevel == 3) setupStunningStrikeSkill();
+       if (nextLevel == 3) setupStunningStrikeSkill();
     }
 
     private void setupSkillComponent() {
