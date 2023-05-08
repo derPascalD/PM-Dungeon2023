@@ -29,9 +29,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private String hitAnimation = "knight/hit";
 
 
-    // Life points from Hero
-    private int lifePoints = 20;
-
     private String pathToIdleLeft = "knight/idleLeft";
     private String pathToIdleRight = "knight/idleRight";
     private String pathToRunLeft = "knight/runLeft";
@@ -115,8 +112,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
     private void setupHealthComponent() {
-        healthComponent = new HealthComponent(
-            this, lifePoints, this, null, null);
+
+        healthComponent = new HealthComponent(this, 100, this, null, null);
+
     }
 
 
