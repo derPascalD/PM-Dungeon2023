@@ -2,6 +2,8 @@ package ecs.components.skill.magic;
 
 import ecs.components.HealthComponent;
 import ecs.components.VelocityComponent;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import ecs.entities.Entity;
 
 import java.util.Timer;
@@ -48,7 +50,7 @@ public class SpeedSkill extends MagicSkills {
         VelocityComponent entityXY = (VelocityComponent) entity.getComponent(VelocityComponent.class)
             .orElseThrow(() -> new IllegalStateException("Entity does not have a VelocityComponent"));
 
-        entityHP.setCurrentHealthpoints(entityHP.getCurrentHealthpoints() - skillHealthCosts);
+        entityHP.receiveHit(new Damage(skillHealthCosts, DamageType.PHYSICAL,entity));
         entityXY.setXVelocity(entityXY.getXVelocity() + xMoreSpeed);
         entityXY.setYVelocity(entityXY.getYVelocity() + yMoreSpeed);
         System.out.println("SpeedSkill active");
