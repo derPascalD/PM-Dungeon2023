@@ -154,11 +154,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         hero = new Hero();
-
-        ui = new IngameUI();
-        controller.add(ui);
-
-
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -174,6 +169,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
 
 
+
+
     }
 
     @Override
@@ -185,10 +182,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createMonster();
         addXPToEntity();
 
-        Trap gifwolke = new Poisoncloud();
-        Trap bananenschale = new Bananapeel();
+        new Poisoncloud();
+        new Bananapeel();
+
+
         if (rand.nextBoolean()) {
-            Ghost ghost = new Ghost();
+            new Ghost();
         }
 
         new Healthpot();
@@ -223,6 +222,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         } else camera.setFocusPoint(new Point(0, 0));
     }
 
+    // Collect with the
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
         if (isOnEndTile(hero)) levelAPI.loadLevel(LevelDepthSize);
     }

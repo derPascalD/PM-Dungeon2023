@@ -11,6 +11,7 @@ import ecs.components.skill.magic.StunningStrikeSkill;
 import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
 import graphic.Animation;
+import graphic.IngameUI;
 
 
 /**
@@ -44,6 +45,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private SkillComponent skillComponent;
     private PlayableComponent playableComponent;
     private XPComponent xpComponent;
+
     private HealthComponent healthComponent;
 
 
@@ -55,8 +57,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         super();
         playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
-
-
         setupXPComponent();
 
         setupVelocityComponent();
@@ -86,7 +86,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
                 new Skill(
                     new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
         playableComponent.setSkillSlot2(secondSkill);
-        System.out.println("SpeedSKill unlocked");
+
 
     }
 
@@ -96,7 +96,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
                 new Skill(
                     new StunningStrikeSkill(4), StunningStrikeCoolDown));
         playableComponent.setSkillSlot3(thirdSkill);
-        System.out.println("StunningStrikeSkill unlocked");
+
     }
 
     /**
@@ -109,8 +109,14 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         System.out.println("Level: " + nextLevel);
         System.out.println("Points: " + xpComponent.getCurrentXP());
         System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
-        if (nextLevel == 2) setupSpeedSkill();
-       if (nextLevel == 3) setupStunningStrikeSkill();
+        if (nextLevel == 2){
+            setupSpeedSkill();
+            IngameUI.updateSkillsBar("-","More Speed","-");
+        }
+       if (nextLevel == 3){
+           setupStunningStrikeSkill();
+           IngameUI.updateSkillsBar("-","More Speed","StunningStrike");
+       }
     }
 
     private void setupSkillComponent() {
@@ -227,6 +233,11 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     public SkillComponent getSkillComponent() {
         return skillComponent;
     }
+
+    public HealthComponent getHealthComponent() {
+        return healthComponent;
+    }
+
 
     /**
      * @return Return the XpComponent from the Hero
