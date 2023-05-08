@@ -15,8 +15,8 @@ import controller.SystemController;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
-import ecs.entities.Traps.Bananenschale;
-import ecs.entities.Traps.Giftwolke;
+import ecs.entities.Traps.Bananapeel;
+import ecs.entities.Traps.Poisoncloud;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
@@ -177,8 +177,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createMonster();
         addXPToEntity();
 
-        Trap gifwolke = new Giftwolke();
-        Trap bananenschale = new Bananenschale();
+        Trap gifwolke = new Poisoncloud();
+        Trap bananenschale = new Bananapeel();
         if (rand.nextBoolean()) {
             Ghost ghost = new Ghost();
         }

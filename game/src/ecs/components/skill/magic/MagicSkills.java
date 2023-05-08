@@ -5,7 +5,6 @@ import ecs.entities.Entity;
 
 public abstract class MagicSkills implements ISkillFunction {
 
-
     protected int skillHealthCosts;
     protected float skillDuration;
 
@@ -19,7 +18,10 @@ public abstract class MagicSkills implements ISkillFunction {
         this.skillDuration = skillDuration;
     }
 
-
+    /**
+     *
+     * @param entity which uses the skill
+     */
     @Override
     public abstract void execute(Entity entity);
 

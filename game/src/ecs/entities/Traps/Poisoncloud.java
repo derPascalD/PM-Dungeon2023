@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Giftwolke extends Trap implements ICollide {
+public class Poisoncloud extends Trap implements ICollide {
 
-    public Giftwolke() {
+    public Poisoncloud() {
         super();
         visible = active = this.createRandomBooleanValue();
         if (visible && active) {

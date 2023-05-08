@@ -3,7 +3,6 @@ package ecs.components.skill.magic;
 import ecs.components.HealthComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
-import ecs.entities.Traps.Bananenschale;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -3,6 +3,8 @@ package ecs.entities.Traps;
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.collision.ICollide;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import level.elements.tile.Tile;
@@ -11,9 +13,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Bananenschale extends Trap implements ICollide {
+public class Bananapeel extends Trap implements ICollide {
 
-    public Bananenschale() {
+    public Bananapeel() {
         super();
 
         // 50% chance that a trap appears in a level
@@ -31,7 +33,7 @@ public class Bananenschale extends Trap implements ICollide {
     /**
      * @param damage is the damage a bananapeel can do to an entity by collision
      */
-    public Bananenschale(int damage) {
+    public Bananapeel(int damage) {
         super();
 
         // 50% chance that a trap appears in a level
@@ -79,7 +81,7 @@ public class Bananenschale extends Trap implements ICollide {
         System.out.println("actuall healthhpoints: " + healthpoints);
 
         // sets the new healthpoints after the damage
-        healthComponent.setCurrentHealthpoints(healthpoints = healthpoints - damageValue);
+        healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL,this));
         System.out.println("new healthpoints: " + healthpoints);
 
         // Original Speed from Hero

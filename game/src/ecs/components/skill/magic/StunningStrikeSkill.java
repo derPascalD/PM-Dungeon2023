@@ -11,6 +11,8 @@ import ecs.components.ai.idle.RadiusWalk;
 import ecs.components.ai.transition.RangeTransition;
 import ecs.components.skill.ITargetSelection;
 import ecs.components.skill.SkillComponent;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.Monsters.Monster;
@@ -58,7 +60,8 @@ public class StunningStrikeSkill extends MagicSkills {
         // getting the healthComponent and current health of the Hero
         HealthComponent healthComponent = (HealthComponent) entity.getComponent(HealthComponent.class)
             .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
-        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()-skillHealthCosts);
+
+        healthComponent.receiveHit(new Damage(skillHealthCosts, DamageType.PHYSICAL,entity));
         System.out.println("INFORMATION:" + "Damage received due to the use of spells");
 
         // getting all monster entities
