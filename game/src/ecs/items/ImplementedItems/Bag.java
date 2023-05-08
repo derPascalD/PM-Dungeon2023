@@ -1,30 +1,50 @@
 package ecs.items.ImplementedItems;
 
 import dslToGame.AnimationBuilder;
-import ecs.components.DamageComponent;
 import ecs.components.InventoryComponent;
+import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import ecs.items.Item;
-import ecs.items.ItemData;
-import ecs.items.ItemType;
+import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
-public class Bags extends Item {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Bag extends ItemData implements IOnCollect, IOnUse,IOnDrop {
 
-    public Bags() {
-        super(new ItemData(
-            ItemType.Armor,
+    private List<ItemData> list;
+    private final int maxsize = 5;
+
+    public Bag() {
+        super(
+            ItemType.Bag,
             AnimationBuilder.buildAnimation("items.bag"),
             AnimationBuilder.buildAnimation("items.bag"),
             "Bag",
             "Holds up to 5 Items of an specific Item"
-        ));
-        itemData.setOnCollect(this);
-        itemData.setOnDrop(this);
-        itemData.setOnUse(this);
+        );
+        this.setOnCollect(this);
+        this.setOnDrop(this);
+        this.setOnUse(this);
+
+        list = new ArrayList<>();
+        Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
+        new PositionComponent(worldItemEntity);
+    }
+
+    public boolean addToBag(ItemData itemData) {
+        if(list.size()>=maxsize) return false;
+        return list.add(itemData);
+    }
+
+    public void removeFromBag(ItemData itemData) {
+        list.remove(itemData);
+    }
+
+    public List<ItemData> getBag() {
+        return list;
     }
 
     @Override
@@ -34,9 +54,9 @@ public class Bags extends Item {
                 (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
 
             if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(itemData);
+                inventoryCompnent.addItem(this);
                 Game.removeEntity(WorldItemEntity);
-                System.out.println(itemData.getItemName() + " collected");
+                System.out.println(this.getItemName() + " collected");
             } else {
                 System.out.println("Inventory full, didnt pick up the Item");
             }

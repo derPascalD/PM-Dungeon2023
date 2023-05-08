@@ -81,7 +81,7 @@ public class Bananenschale extends Trap implements ICollide {
 
         // gets the Currenthealthpoints from b
         int healthpoints = healthComponent.getCurrentHealthpoints();
-        System.out.println("actuall healthhpoints: " +  healthpoints);
+        System.out.println("actual healthhpoints: " +  healthpoints);
 
         // sets the new healthpoints after the damage
         healthComponent.setCurrentHealthpoints(healthpoints = healthpoints - damageValue);

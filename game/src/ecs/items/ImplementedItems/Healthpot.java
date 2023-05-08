@@ -1,40 +1,39 @@
-package ecs.items;
+package ecs.items.ImplementedItems;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.utils.Logger;
 import dslToGame.AnimationBuilder;
 import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
-import ecs.components.ItemComponent;
-import ecs.components.stats.DamageModifier;
+import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import graphic.Animation;
+import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
-public class Healthpot extends Item {
-
-
+public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
     public Healthpot() {
-        super(new ItemData(
+        super(
             ItemType.Healing,
             AnimationBuilder.buildAnimation("items.healthpot"),
             AnimationBuilder.buildAnimation("items.healthpot"),
             "Healthpot",
-            "Heals the Player on Use",
-            null,
-            null,
-            null,
-            new DamageModifier()
-            ));
-        itemData.setOnCollect(this);
-        itemData.setOnDrop(this);
-        itemData.setOnUse(this);
+            "Heals the Player on Use"
+            );
+        this.setOnCollect(this);
+        this.setOnDrop(this);
+        this.setOnUse(this);
+
+        Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
+        new PositionComponent(worldItemEntity);
     }
 
+    private void healHero(Entity e) {
+        HealthComponent healthComponent =
+            (HealthComponent) e.getComponent(HealthComponent.class).get();
+        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
+        System.out.println("Healpotion used, gained 10 HP");
+    }
 
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
@@ -42,10 +41,22 @@ public class Healthpot extends Item {
             InventoryComponent inventoryCompnent =
                 (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
 
+            // Adds Item to Bag, if Bag is in Inventory
+            for(ItemData item:inventoryCompnent.getItems()) {
+                if(item instanceof Bag) {
+                    Bag bag = (Bag)item;
+                    if(bag.addToBag(this)) {
+                        Game.removeEntity(WorldItemEntity);
+                        System.out.println(this.getItemName() + " collected");
+                        return;
+                    }
+                }
+            }
+
             if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(itemData);
+                inventoryCompnent.addItem(this);
                 Game.removeEntity(WorldItemEntity);
-                System.out.println("Healthpotion collected");
+                System.out.println(this.getItemName() + " collected");
             } else {
                 System.out.println("Inventory full, didnt pick up the Item");
             }
@@ -54,17 +65,24 @@ public class Healthpot extends Item {
 
     @Override
     public void onDrop(Entity user, ItemData which, Point position) {
-        // Mit den anderen drüber reden
+
     }
 
     @Override
     public void onUse(Entity e, ItemData item) {
         InventoryComponent inventoryCompnent =
             (InventoryComponent) e.getComponent(InventoryComponent.class).get();
-        HealthComponent healthComponent =
-            (HealthComponent) e.getComponent(HealthComponent.class).get();
-        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
+
+        for(ItemData itemFromInventory:inventoryCompnent.getItems()) {
+            if(itemFromInventory instanceof Bag) {
+                Bag bag = (Bag)itemFromInventory;
+                healHero(e);
+                bag.removeFromBag(item);
+                return;
+            }
+        }
+
         inventoryCompnent.removeItem(item);
-        System.out.println("Healpotion used, gained 10 HP");
+        healHero(e);
     }
 }

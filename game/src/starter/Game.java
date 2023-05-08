@@ -23,7 +23,10 @@ import ecs.entities.Entity;
 import ecs.entities.NPCs.Ghost;
 import ecs.entities.Hero;
 import ecs.entities.Traps.Trap;
-import ecs.items.Healthpot;
+import ecs.items.ImplementedItems.Bag;
+import ecs.items.ImplementedItems.Chestplate;
+import ecs.items.ImplementedItems.Healthpot;
+import ecs.items.ImplementedItems.SimpleWand;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
@@ -182,11 +185,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         Trap gifwolke = new Giftwolke();
         Trap bananenschale = new Bananenschale();
+
         if(rand.nextBoolean()) {
             Ghost ghost = new Ghost();
         }
 
         new Healthpot();
+        new Chestplate();
+        new SimpleWand();
+        new Bag();
     }
 
     private void manageEntitiesSets() {

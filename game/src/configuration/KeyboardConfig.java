@@ -23,5 +23,5 @@ public class KeyboardConfig {
     public static final ConfigKey<Integer> SECOND_SKILL =
             new ConfigKey<>(new String[] {"skill", "second"}, new ConfigIntValue(Input.Keys.R));
     public static final ConfigKey<Integer> HEAL_POTION =
-        new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.NUM_1));
+        new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.X));
 }

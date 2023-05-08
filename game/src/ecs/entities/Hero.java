@@ -41,7 +41,7 @@ public class Hero extends Entity implements IOnDeathFunction {
      */
     public Hero() {
         super();
-        this.health =  new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
+        //this.health =  new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
         new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
@@ -55,6 +55,7 @@ public class Hero extends Entity implements IOnDeathFunction {
 
         setupHealthComponent();
         setupInventoryComponent();
+        setupDamageComponent();
     }
 
     private void setupVelocityComponent() {
@@ -85,7 +86,11 @@ public class Hero extends Entity implements IOnDeathFunction {
     }
 
     private void setupInventoryComponent() {
-        inventory = new InventoryComponent(this,9);
+        inventory = new InventoryComponent(this,5);
+    }
+
+    private void setupDamageComponent() {
+        new DamageComponent(this);
     }
 
     public Animation attackAnimation() {

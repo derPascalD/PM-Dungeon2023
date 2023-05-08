@@ -1,38 +1,33 @@
-package ecs.items;
+package ecs.items.ImplementedItems;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.utils.Logger;
 import dslToGame.AnimationBuilder;
 import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
-import ecs.components.ItemComponent;
-import ecs.components.stats.DamageModifier;
+import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import graphic.Animation;
+import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
-public class Chestplate extends Item {
+public class Chestplate extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
 
 
     public Chestplate() {
-        super(new ItemData(
+        super(
             ItemType.Armor,
             AnimationBuilder.buildAnimation("items.chestplate"),
             AnimationBuilder.buildAnimation("items.chestplate"),
             "Chestplate",
-            "Protects the Player",
-            null,
-            null,
-            null,
-            new DamageModifier()
-        ));
-        itemData.setOnCollect(this);
-        itemData.setOnDrop(this);
-        itemData.setOnUse(this);
+            "Protects the Player"
+        );
+        this.setOnCollect(this);
+        this.setOnDrop(this);
+        this.setOnUse(this);
+
+        Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
+        new PositionComponent(worldItemEntity);
     }
 
 
@@ -43,13 +38,13 @@ public class Chestplate extends Item {
                 (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
 
             if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(itemData);
+                inventoryCompnent.addItem(this);
                 HealthComponent healthComponent =
                     (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
                 healthComponent.setMaximalHealthpoints(healthComponent.getMaximalHealthpoints()+10);
                 healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
                 Game.removeEntity(WorldItemEntity);
-                System.out.println("Healthpotion collected");
+                System.out.println(this.getItemName() + " collected");
             } else {
                 System.out.println("Inventory full, didnt pick up the Item");
             }
@@ -58,11 +53,11 @@ public class Chestplate extends Item {
 
     @Override
     public void onDrop(Entity user, ItemData which, Point position) {
-        // Mit den anderen drüber reden
+
     }
 
     @Override
     public void onUse(Entity e, ItemData item) {
-        // nix
+
     }
 }
