@@ -26,39 +26,47 @@ import java.util.stream.Stream;
 
 public class StunningStrikeSkill extends MagicSkills {
 
+    // the radius in which the entities can be stunnded.
     private final int stunningRadius = 2;
 
-
-
-    ArrayList<Entity> entitiesInRadius = new ArrayList<>();
-    private ArrayList<ITargetSelection> StunningSkillITargetSelectionList;
-
+    /**
+     *
+     * @param skillDuration defines how long a monster entity is stunned.
+     */
     public StunningStrikeSkill(int skillDuration) {
         super(1, skillDuration);
     }
 
+
+    /**
+     *
+     * @param entity which uses the skill
+     */
     @Override
     public void execute(Entity entity) {
 
+        // checking entity is null
         if (entity == null){
             return;
         }
 
+        // getting the positionComponent and current Position of the Hero
         PositionComponent positionComponent  = (PositionComponent) entity.getComponent(PositionComponent.class)
             .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
         Point currentPos = positionComponent.getPosition();
 
+        // getting the healthComponent and current health of the Hero
         HealthComponent healthComponent = (HealthComponent) entity.getComponent(HealthComponent.class)
             .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
         healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()-skillHealthCosts);
         System.out.println("INFORMATION:" + "Damage received due to the use of spells");
 
-
+        // getting all monster entities
         List<Entity> allMonsterEnities = new ArrayList<>(Game.getEntities().stream()
             .filter(e -> e instanceof Monster)
             .toList());
 
-
+        // adding all monster entities which are in stunning range to a list
         ArrayList<Entity> entitiesInRange = new ArrayList<>();
         for (Entity e : allMonsterEnities) {
             PositionComponent positionComponentEntity  = (PositionComponent) e.getComponent(PositionComponent.class).get();
@@ -68,11 +76,12 @@ public class StunningStrikeSkill extends MagicSkills {
                 }
             }
 
+        // getting AIComponents based of "entitiesInRange"
         List<AIComponent> savedAIComponentsFromMonsters = entitiesInRange.stream()
             .map(e -> (AIComponent) e.getComponent(AIComponent.class).get())
             .toList();
 
-
+        // removing the aicomponent for each monster
         for(Entity e :entitiesInRange) {
             e.removeComponent(AIComponent.class) ;
             System.out.println(e.getClass().getSimpleName()+ " got stunned.");
@@ -81,7 +90,11 @@ public class StunningStrikeSkill extends MagicSkills {
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
+            /**
+             * set up the previous aicomponent for each monster after the delay.
+             */
             public void run() {
+
                 for (int i = 0; i < entitiesInRange.size(); i++) {
                     entitiesInRange.get(i).addComponent(savedAIComponentsFromMonsters.get(i));
                 }
