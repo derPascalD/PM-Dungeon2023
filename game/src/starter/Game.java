@@ -15,8 +15,8 @@ import controller.SystemController;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
-import ecs.entities.Traps.Bananenschale;
-import ecs.entities.Traps.Giftwolke;
+import ecs.entities.Traps.Bananapeel;
+import ecs.entities.Traps.Poisoncloud;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
@@ -83,7 +83,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      * Saves the level
      */
     private static int levelDepth;
-
 
 
     /**
@@ -170,6 +169,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+
+
     }
 
     @Override
@@ -179,10 +180,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
 
         createMonster();
+        addXPToEntity();
 
-        Trap gifwolke = new Giftwolke();
-        Trap bananenschale = new Bananenschale();
-        if(rand.nextBoolean()) {
+        Trap gifwolke = new Poisoncloud();
+        Trap bananenschale = new Bananapeel();
+        if (rand.nextBoolean()) {
             Ghost ghost = new Ghost();
         }
 
@@ -256,7 +258,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
     /**
      * English:
      * Here different monsters are created and implemented into the level.
@@ -272,18 +273,21 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public void createMonster() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             int monster = (int) (Math.random() * 3);
-            if (monster == 0) {
-                new Demon(levelDepth);
-            } else if (monster == 1) {
-                new Skeleton(levelDepth);
-            } else if (monster == 2) {
-                new PumpkinKiller(levelDepth);
-            }
+            if (monster == 0) new Demon(levelDepth);
+            else if (monster == 1) new Skeleton(levelDepth);
+            else if (monster == 2) new PumpkinKiller(levelDepth);
         }
-        if(levelDepth >=  6){LevelDepthSize = LevelSize.MEDIUM;}
-        if(levelDepth >=  48){LevelDepthSize = LevelSize.LARGE;}
-        System.out.println("Level depth is "+ (levelDepth+1) +".");
+        if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
+        if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
+        System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
+    }
+
+    public void addXPToEntity() {
+        if (Game.hero != null) {
+            Hero hero1 = (Hero) Game.hero;
+            hero1.getXpComponent().addXP(50);
+        }
     }
 
 

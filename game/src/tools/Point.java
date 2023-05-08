@@ -1,6 +1,8 @@
 package tools;
 
+import ecs.components.PositionComponent;
 import level.tools.Coordinate;
+import starter.Game;
 
 /**
  * For easy handling of positions in the dungeon. <br>
@@ -66,6 +68,7 @@ public class Point {
     public static float calculateDistance(Point p1, Point p2) {
         float xDiff = p1.x - p2.x;
         float yDiff = p1.y - p2.y;
-        return (float) Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        return  (float) Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
+
 }

@@ -14,6 +14,9 @@ import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide {
+
+
+
     /**
      * English:
      * Entity with Components.
@@ -41,8 +44,14 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
         new HealthComponent(this);
 
 
-        new AIComponent(this, new CollideAI(0f), new PatrouilleWalk(4f, 4,
-            2000, PatrouilleWalk.MODE.RANDOM), new RangeTransition(2f));
+        new AIComponent(
+            this,
+        new CollideAI(0f),
+        new PatrouilleWalk(4f,
+            4,
+            2000,
+            PatrouilleWalk.MODE.RANDOM),
+        new RangeTransition(2f));
 
 
         this.hit = AnimationBuilder.buildAnimation("monster/pumpkinKiller/idleLeft");
@@ -134,6 +143,4 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
     public void setAttackDamage(int attackDamage) {
         super.setAttackDamage(attackDamage);
     }
-
-
 }
