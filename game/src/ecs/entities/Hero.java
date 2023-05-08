@@ -41,7 +41,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private Skill thirdSkill;
 
     protected HealthComponent health;
-
+    protected InventoryComponent inventory;
 
     /**
      * Entity with Components
@@ -63,7 +63,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
 
         setupHealthComponent();
-
+        setupInventoryComponent();
     }
 
     private void setupXPComponent() {
@@ -99,6 +99,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
             (you, other, direction) -> System.out.println("Hero ausser gefahr")
 
         );
+    }
+
+    private void setupInventoryComponent() {
+        inventory = new InventoryComponent(this,9);
     }
 
     public Animation attackAnimation() {
