@@ -26,7 +26,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     // Original Speed from Hero
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
-    private String hitAnimation = "knight/hit";
+    private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
 
 
     private String pathToIdleLeft = "knight/idleLeft";
@@ -64,7 +64,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         setupHealthComponent();
         setupHitboxComponent();
         setupSkillComponent();
-        setupStunningStrikeSkill();
 
         setupXPComponent();
 
@@ -124,7 +123,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private void setupHealthComponent() {
 
-        healthComponent = new HealthComponent(this, 100, this, null, null);
+        healthComponent = new HealthComponent(this, 100, this, hitAnimation(), null);
 
     }
 

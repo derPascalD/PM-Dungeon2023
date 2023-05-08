@@ -38,7 +38,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     }
 
     public static void updateHPBar(int newHealthPoints) {
-        screenText.setText("Healthpoints: " + newHealthPoints);
+       screenText.setText("Healthpoints: " + newHealthPoints);
     }
 
 }

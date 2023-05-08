@@ -21,14 +21,11 @@ public class KeyboardConfig {
     public static final ConfigKey<Integer> FIRST_SKILL =
         new ConfigKey<>(new String[]{"skill", "first"}, new ConfigIntValue(Input.Keys.NUM_1));
     public static final ConfigKey<Integer> SECOND_SKILL =
-<<<<<<< HEAD
-            new ConfigKey<>(new String[] {"skill", "second"}, new ConfigIntValue(Input.Keys.R));
-    public static final ConfigKey<Integer> HEAL_POTION =
-        new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.NUM_1));
-=======
-        new ConfigKey<>(new String[]{"skill", "second"}, new ConfigIntValue(Input.Keys.NUM_2));
+            new ConfigKey<>(new String[] {"skill", "second"}, new ConfigIntValue(Input.Keys.NUM_2));
     public static final ConfigKey<Integer> THIRD_SKILL =
         new ConfigKey<>(new String[]{"skill", "third"}, new ConfigIntValue(Input.Keys.NUM_3));
+    public static final ConfigKey<Integer> HEAL_POTION =
+        new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.Q));
 
->>>>>>> Skills
+
 }

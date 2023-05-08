@@ -82,7 +82,7 @@ public class Bananapeel extends Trap implements ICollide {
 
         // sets the new healthpoints after the damage
         healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL,this));
-        System.out.println("new healthpoints: " + healthpoints);
+        System.out.println("new healthpoints: " + healthComponent.getCurrentHealthpoints());
 
         // Original Speed from Hero
         float xSpeed = 0;
