@@ -2,10 +2,8 @@ package ecs.items.ImplementedItems;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.DamageComponent;
-import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
-import ecs.components.stats.DamageModifier;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.items.*;

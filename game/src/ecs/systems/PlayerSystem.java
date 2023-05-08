@@ -8,7 +8,6 @@ import ecs.components.PlayableComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
 import ecs.items.ImplementedItems.Bag;
-import ecs.items.Item;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.tools.interaction.InteractionTool;
