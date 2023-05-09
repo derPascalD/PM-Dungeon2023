@@ -76,9 +76,10 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         for(ItemData itemFromInventory:inventoryCompnent.getItems()) {
             if(itemFromInventory instanceof Bag) {
                 Bag bag = (Bag)itemFromInventory;
-                healHero(e);
-                bag.removeFromBag(item);
-                return;
+                if(bag.removeFromBag(item)) {
+                    healHero(e);
+                    return;
+                }
             }
         }
 

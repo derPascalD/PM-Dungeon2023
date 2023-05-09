@@ -39,8 +39,8 @@ public class Bag extends ItemData implements IOnCollect, IOnUse,IOnDrop {
         return list.add(itemData);
     }
 
-    public void removeFromBag(ItemData itemData) {
-        list.remove(itemData);
+    public boolean removeFromBag(ItemData itemData) {
+        return list.remove(itemData);
     }
 
     public List<ItemData> getBag() {

@@ -190,10 +190,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             Ghost ghost = new Ghost();
         }
 
-        new Healthpot();
-        new Chestplate();
-        new SimpleWand();
-        new Bag();
+        createItems();
     }
 
     private void manageEntitiesSets() {
@@ -291,6 +288,18 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if(levelDepth >=  48){LevelDepthSize = LevelSize.LARGE;}
         System.out.println("Level depth is "+ (levelDepth+1) +".");
         levelDepth++;
+    }
+
+    /**
+     * Creates Items in the Level depending on the levelDepth
+     */
+    public void createItems() {
+        for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
+           if(rand.nextBoolean()) new Healthpot();
+           else if(rand.nextInt(101)>30 && levelDepth >= 3) new Bag();
+           else if(rand.nextBoolean()) new Chestplate();
+           else if(rand.nextBoolean()) new SimpleWand();
+        }
     }
 
 
