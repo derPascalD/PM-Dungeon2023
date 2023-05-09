@@ -1,7 +1,6 @@
 package ecs.systems;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import configuration.KeyboardConfig;
 import ecs.components.InventoryComponent;
 import ecs.components.MissingComponentException;
@@ -13,7 +12,7 @@ import ecs.components.skill.SkillComponent;
 import ecs.components.skill.magic.MagicSkills;
 import ecs.components.skill.magic.SpeedSkill;
 import ecs.entities.Entity;
-import ecs.items.Healthpot;
+import ecs.items.ImplementedItems.Bag;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.tools.interaction.InteractionTool;
@@ -68,24 +67,55 @@ public class PlayerSystem extends ECS_System {
         }
     }
 
+    /**
+     * Displays the Inventory of the Hero in the console
+     * @param e Entity which inventory gets displayed, mostly the Hero
+     */
     private void showInventoryInConsole(Entity e) {
         InventoryComponent inventoryCompnent =
             (InventoryComponent) e.getComponent(InventoryComponent.class).get();
-        System.out.println("Inventory of the Hero:");
+        System.out.println("Inventory of the Hero: " + inventoryCompnent.filledSlots() + " / " + inventoryCompnent.getMaxSize() );
         for (ItemData item:inventoryCompnent.getItems()) {
-            System.out.println(item.getItemName());
+            // Iterates through Bag when Bag exists
+            if(item instanceof Bag) {
+                System.out.println("+ Bag:");
+                Bag bag = (Bag) item;
+                for(ItemData itemInBag:bag.getBag())  {
+                    System.out.println("+-- " + itemInBag.getItemName() + ": " + itemInBag.getDescription());
+                }
+            } else {
+                System.out.println("+ " + item.getItemName() + ": " + item.getDescription());
+            }
         }
     }
 
+    /**
+     * Uses an healing item from the entities inventory to heal the entity
+     * @param e Entity thats using the healpotion, mostly the Hero
+     */
     private void useHealPotion(Entity e) {
         InventoryComponent inventoryCompnent =
             (InventoryComponent) e.getComponent(InventoryComponent.class).get();
-        // Wenn heilpots da sind, heilen, sonst fehlermeldung
+        // Checks if healpotion is in Bag
+        for(ItemData item:inventoryCompnent.getItems()) {
+            if(item instanceof Bag) {
+                Bag bag = (Bag)item;
+                if(bag.getBagType()==ItemType.Healing) {
+                    for (ItemData itemInBag:bag.getBag()) {
+                        itemInBag.triggerUse(e);
+                        return;
+                    }
+                }
+            }
+        }
+        // Checks for normal Inventory
         for (ItemData item:inventoryCompnent.getItems()) {
             if(item.getItemType().equals(ItemType.Healing)) {
                 item.triggerUse(e);
+                return;
             }
         }
+        System.out.println("Hero has no Healpotions");
     }
 
     private KSData buildDataObject(PlayableComponent pc) {

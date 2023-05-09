@@ -27,5 +27,4 @@ public class KeyboardConfig {
     public static final ConfigKey<Integer> HEAL_POTION =
         new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.Q));
 
-
 }

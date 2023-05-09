@@ -7,6 +7,7 @@ import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.Monsters.Monster;
 import level.elements.tile.Tile;
 
 import java.util.Timer;
@@ -78,7 +79,8 @@ public class Bananapeel extends Trap implements ICollide {
 
         // gets the Currenthealthpoints from b
         int healthpoints = healthComponent.getCurrentHealthpoints();
-        System.out.println("actuall healthhpoints: " + healthpoints);
+        System.out.println("actual healthhpoints: " +  healthpoints);
+
 
         // sets the new healthpoints after the damage
         healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL,this));

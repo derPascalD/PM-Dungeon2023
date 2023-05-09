@@ -4,5 +4,8 @@ public enum ItemType {
     Basic,
     Active,
     Passive,
-    Healing
+    Healing,
+    Armor,
+    Weapon,
+    Bag
 }

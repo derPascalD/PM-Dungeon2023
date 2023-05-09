@@ -23,7 +23,11 @@ import ecs.entities.Entity;
 import ecs.entities.NPCs.Ghost;
 import ecs.entities.Hero;
 import ecs.entities.Traps.Trap;
-import ecs.items.Healthpot;
+import ecs.items.ImplementedItems.Bag;
+import ecs.items.ImplementedItems.Chestplate;
+import ecs.items.ImplementedItems.Healthpot;
+import ecs.items.ImplementedItems.SimpleWand;
+import ecs.items.ItemType;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
@@ -175,8 +179,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
 
 
-
-
     }
 
     @Override
@@ -196,7 +198,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             new Ghost();
         }
 
-        new Healthpot();
+        createItems();
+
     }
 
     private void manageEntitiesSets() {
@@ -292,10 +295,24 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelDepth++;
     }
 
+
     public void addXPToEntity() {
         if (Game.hero != null) {
             Hero hero1 = (Hero) Game.hero;
             hero1.getXpComponent().addXP(50);
+        }
+    }
+
+    /**
+     * Creates Items in the Level depending on the levelDepth
+     */
+    public void createItems() {
+        for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
+            if (rand.nextBoolean()) new Healthpot();
+            else if (rand.nextInt(101) > 30 && levelDepth >= 3) new Bag(ItemType.Healing);
+            else if (rand.nextBoolean()) new Chestplate();
+            else if (rand.nextBoolean()) new SimpleWand();
+
         }
     }
 

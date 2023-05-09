@@ -55,9 +55,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
      */
     public Hero() {
         super();
+
         playableComponent = new PlayableComponent(this);
+
+
         new PositionComponent(this);
-        setupXPComponent();
+
 
         setupVelocityComponent();
         setupAnimationComponent();
@@ -68,12 +71,11 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         setupXPComponent();
 
 
-
-        setupHealthComponent();
         setupInventoryComponent();
 
-
         setupFireballSkill();
+
+        setupDamageComponent();
 
     }
 
@@ -163,7 +165,11 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
 
     private void setupInventoryComponent() {
-        inventory = new InventoryComponent(this,9);
+        inventory = new InventoryComponent(this,5);
+    }
+
+    private void setupDamageComponent() {
+        new DamageComponent(this);
     }
 
 

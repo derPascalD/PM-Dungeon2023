@@ -33,6 +33,10 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         setupSkill();
     }
 
+    /**
+     * Visualizes the Healthpoints of the Player on the Screen
+     *
+     */
     private void setupHPBar() {
 
         hp = (HealthComponent) hero.getComponent(HealthComponent.class).get();
@@ -46,6 +50,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
                     .build());
         add((T) hpScreen);
     }
+
 
     private void setupSkill() {
 
@@ -62,6 +67,11 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     }
 
 
+
+    /**
+     * Gets called when Healthpoints of the Hero gets updated
+     * @param newHealthPoints new Healthpoints of the Hero
+     */
     public static void updateHPBar(int newHealthPoints) {
         hpScreen.setText("Healthpoints: " + newHealthPoints);
     }
