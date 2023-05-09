@@ -10,8 +10,14 @@ import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
+/**
+ * Can be used after collecting to gain 10 Healthpoints back
+ */
 public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
+    /**
+     * Creates a Healthpot item and spawns in the Level at a random spot
+     */
     public Healthpot() {
         super(
             ItemType.Healing,
@@ -28,6 +34,10 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         new PositionComponent(worldItemEntity);
     }
 
+    /**
+     * Heals the Hero for 10 Healthpoints
+     * @param e the Hero
+     */
     private void healHero(Entity e) {
         HealthComponent healthComponent =
             (HealthComponent) e.getComponent(HealthComponent.class).get();
@@ -35,6 +45,11 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         System.out.println("Healpotion used, gained 10 HP");
     }
 
+    /**
+     * The item gets collected if the Hero has any space left in the Inventory or in a Bag in his Inventory.
+     * @param WorldItemEntity the item thats collected
+     * @param whoCollides the Hero who collects the item
+     */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
         if(whoCollides instanceof Hero) {
@@ -68,6 +83,12 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
     }
 
+    /**
+     * Gives the healthpoitns upon usage, item is either in the Inventory or in a Bag in the Inventory
+     * Item gets removed after usage
+     * @param e the Hero
+     * @param item the item thats used
+     */
     @Override
     public void onUse(Entity e, ItemData item) {
         InventoryComponent inventoryCompnent =
