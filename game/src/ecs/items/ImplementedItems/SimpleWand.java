@@ -10,10 +10,15 @@ import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
+/**
+ * Gives the Hero more damage upon collecting
+ */
 public class SimpleWand extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
 
-
+    /**
+     * Creates a SimpleWand item and spawns it in the Level at a random spot
+     */
     public SimpleWand() {
         super(
             ItemType.Weapon,
@@ -30,7 +35,12 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         new PositionComponent(worldItemEntity);
     }
 
-
+    /**
+     * The item gets collected if the Hero has any space left in the Inventory.
+     * The item gives the Hero 5 more attackDamage
+     * @param WorldItemEntity the item thats collected
+     * @param whoCollides the Hero who collects the item
+     */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
         if(whoCollides instanceof Hero) {

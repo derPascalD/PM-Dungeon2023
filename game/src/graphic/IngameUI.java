@@ -3,7 +3,6 @@ package graphic;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
 import ecs.entities.Hero;
@@ -23,6 +22,10 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         setupHPBar();
     }
 
+    /**
+     * Visualizes the Healthpoints of the Player on the Screen
+     *
+     */
     private void setupHPBar() {
         Hero d = (Hero) Game.getHero().get();
         hp = (HealthComponent) d.getComponent(HealthComponent.class).get();
@@ -37,6 +40,10 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         add((T) screenText);
     }
 
+    /**
+     * Gets called when Healthpoints of the Hero gets updated
+     * @param newHealthPoints new Healthpoints of the Hero
+     */
     public static void updateHPBar(int newHealthPoints) {
         screenText.setText("Healthpoints: " + newHealthPoints);
     }

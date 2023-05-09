@@ -27,6 +27,7 @@ import ecs.items.ImplementedItems.Bag;
 import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
+import ecs.items.ItemType;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
@@ -296,7 +297,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public void createItems() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
            if(rand.nextBoolean()) new Healthpot();
-           else if(rand.nextInt(101)>30 && levelDepth >= 3) new Bag();
+           else if(rand.nextInt(101)>30 && levelDepth >= 3) new Bag(ItemType.Healing);
            else if(rand.nextBoolean()) new Chestplate();
            else if(rand.nextBoolean()) new SimpleWand();
         }

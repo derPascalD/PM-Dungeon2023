@@ -10,10 +10,15 @@ import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
+/**
+ * Gives the Hero more Health upon collecting
+ */
 public class Chestplate extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
 
-
+    /**
+     * Creates a Chestplate item and spawns it in the Level at a random spot
+     */
     public Chestplate() {
         super(
             ItemType.Armor,
@@ -30,7 +35,12 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         new PositionComponent(worldItemEntity);
     }
 
-
+    /**
+     * The item gets collected if the Hero has any space left in the Inventory.
+     * The item gives the Hero 10 more healthpoints
+     * @param WorldItemEntity the item thats collected
+     * @param whoCollides the Hero who collects the item
+     */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
         if(whoCollides instanceof Hero) {

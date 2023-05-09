@@ -152,7 +152,7 @@ public class HealthComponent extends Component {
     /**
      * English:
      * Sets the current life points, capped at the value of the maximum hit-points
-     *
+     * Updates the displayed healthpoints of the Hero, if the Hero is the Entity
      * @param amount new amount of current health-points
      */
     /**

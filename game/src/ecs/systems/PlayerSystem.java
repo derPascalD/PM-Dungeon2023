@@ -54,11 +54,16 @@ public class PlayerSystem extends ECS_System {
             ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));
     }
 
+    /**
+     * Displays the Inventory of the Hero in the console
+     * @param e Entity which inventory gets displayed, mostly the Hero
+     */
     private void showInventoryInConsole(Entity e) {
         InventoryComponent inventoryCompnent =
             (InventoryComponent) e.getComponent(InventoryComponent.class).get();
         System.out.println("Inventory of the Hero: " + inventoryCompnent.filledSlots() + " / " + inventoryCompnent.getMaxSize() );
         for (ItemData item:inventoryCompnent.getItems()) {
+            // Iterates through Bag when Bag exists
             if(item instanceof Bag) {
                 System.out.println("+ Bag:");
                 Bag bag = (Bag) item;
@@ -71,22 +76,26 @@ public class PlayerSystem extends ECS_System {
         }
     }
 
+    /**
+     * Uses an healing item from the entities inventory to heal the entity
+     * @param e Entity thats using the healpotion, mostly the Hero
+     */
     private void useHealPotion(Entity e) {
         InventoryComponent inventoryCompnent =
             (InventoryComponent) e.getComponent(InventoryComponent.class).get();
-
+        // Checks if healpotion is in Bag
         for(ItemData item:inventoryCompnent.getItems()) {
             if(item instanceof Bag) {
                 Bag bag = (Bag)item;
-                for (ItemData itemInBag:bag.getBag()) {
-                    if(itemInBag.getItemType().equals(ItemType.Healing)) {
+                if(bag.getBagType()==ItemType.Healing) {
+                    for (ItemData itemInBag:bag.getBag()) {
                         itemInBag.triggerUse(e);
                         return;
                     }
                 }
             }
         }
-
+        // Checks for normal Inventory
         for (ItemData item:inventoryCompnent.getItems()) {
             if(item.getItemType().equals(ItemType.Healing)) {
                 item.triggerUse(e);
