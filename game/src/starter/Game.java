@@ -192,6 +192,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         new Poisoncloud();
         new Bananapeel();
+        new Bananapeel();
 
 
         if (rand.nextBoolean()) {

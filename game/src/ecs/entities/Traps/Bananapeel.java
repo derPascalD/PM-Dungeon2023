@@ -65,65 +65,65 @@ public class Bananapeel extends Trap implements ICollide {
         // Same here but in this case it checks is the trap still active?
         if (!active) return;
 
+        if (b instanceof Hero || b instanceof Monster) {
+            // gets the components from the b entity
+            HealthComponent healthComponent = (HealthComponent) b.getComponent(HealthComponent.class)
+                .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
 
-        // gets the components from the b entity
-        HealthComponent healthComponent = (HealthComponent) b.getComponent(HealthComponent.class)
-            .orElseThrow(() -> new IllegalStateException("Entity does not have a HealthComponent"));
+            AnimationComponent animationComponent = (AnimationComponent) b.getComponent(AnimationComponent.class)
+                .orElseThrow(() -> new IllegalStateException("Entity does not have a AnimationComponent"));
 
-        AnimationComponent animationComponent = (AnimationComponent) b.getComponent(AnimationComponent.class)
-            .orElseThrow(() -> new IllegalStateException("Entity does not have a AnimationComponent"));
-
-        VelocityComponent velocityComponent = (VelocityComponent) b.getComponent(VelocityComponent.class)
-            .orElseThrow(() -> new IllegalStateException("Entity does not have a VelocityComponent"));
-
-
-        // gets the Currenthealthpoints from b
-        int healthpoints = healthComponent.getCurrentHealthpoints();
-        System.out.println("actual healthhpoints: " +  healthpoints);
+            VelocityComponent velocityComponent = (VelocityComponent) b.getComponent(VelocityComponent.class)
+                .orElseThrow(() -> new IllegalStateException("Entity does not have a VelocityComponent"));
 
 
-        // sets the new healthpoints after the damage
-        healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL,this));
-        System.out.println("new healthpoints: " + healthComponent.getCurrentHealthpoints());
-
-        // Original Speed from Hero
-        float xSpeed = 0;
-        float ySpeed = 0;
-
-        // sets the new X,Y Velocity of b
-        velocityComponent.setYVelocity(velocityComponent.getYVelocity() / 10);
-        velocityComponent.setXVelocity(velocityComponent.getXVelocity() / 10);
-
-        // in case b is the hero - animations will be setted
-        if (b instanceof Hero) {
-            hero = (Hero) b;
-            xSpeed = hero.getxSpeed();
-            ySpeed = hero.getySpeed();
-            animationComponent.setIdleLeft(AnimationBuilder.buildAnimation("knight/blood_idleLeft"));
-            animationComponent.setIdleRight(AnimationBuilder.buildAnimation("knight/blood_idleRight"));
-            velocityComponent.setMoveRightAnimation(AnimationBuilder.buildAnimation("knight/blood_runRight"));
-            velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation("knight/blood_runLeft"));
-        }
-
-        // set the new crushed animations for the banana peel.
-        idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
-        new AnimationComponent(this, idle);
+            // gets the Currenthealthpoints from b
+            int healthpoints = healthComponent.getCurrentHealthpoints();
+            System.out.println("actual healthhpoints: " + healthpoints);
 
 
-        // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
-        Timer timer = new Timer();
-        Hero finalHero = hero;
-        float finalXSpeed = xSpeed;
-        float finalYSpeed = ySpeed;
-        timer.schedule(new TimerTask() {
-            public void run() {
-                resetPlayerVelocity(timer, finalXSpeed, finalYSpeed, animationComponent, velocityComponent, finalHero);
+            // sets the new healthpoints after the damage
+            healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL, this));
+            System.out.println("new healthpoints: " + healthComponent.getCurrentHealthpoints());
+
+            // Original Speed from Hero
+            float xSpeed = 0;
+            float ySpeed = 0;
+
+            // sets the new X,Y Velocity of b
+            velocityComponent.setYVelocity(velocityComponent.getYVelocity() / 10);
+            velocityComponent.setXVelocity(velocityComponent.getXVelocity() / 10);
+
+            // in case b is the hero - animations will be setted
+            if (b instanceof Hero) {
+                hero = (Hero) b;
+                xSpeed = hero.getxSpeed();
+                ySpeed = hero.getySpeed();
+                animationComponent.setIdleLeft(AnimationBuilder.buildAnimation("knight/blood_idleLeft"));
+                animationComponent.setIdleRight(AnimationBuilder.buildAnimation("knight/blood_idleRight"));
+                velocityComponent.setMoveRightAnimation(AnimationBuilder.buildAnimation("knight/blood_runRight"));
+                velocityComponent.setMoveLeftAnimation(AnimationBuilder.buildAnimation("knight/blood_runLeft"));
             }
-        }, 5 * 1000);
 
-        // defines that the trap can be triggered just once.
-        active = false;
+            // set the new crushed animations for the banana peel.
+            idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
+            new AnimationComponent(this, idle);
 
+
+            // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
+            Timer timer = new Timer();
+            Hero finalHero = hero;
+            float finalXSpeed = xSpeed;
+            float finalYSpeed = ySpeed;
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    resetPlayerVelocity(timer, finalXSpeed, finalYSpeed, animationComponent, velocityComponent, finalHero);
+                }
+            }, 5 * 1000);
+
+            // defines that the trap can be triggered just once.
+            active = false;
+        }
     }
 
     /**
