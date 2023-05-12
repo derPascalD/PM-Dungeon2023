@@ -13,7 +13,7 @@ import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
-public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
+public class Skeleton extends Monster {
 
 
 
@@ -86,12 +86,12 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
     }
 
 
-    /*
+    /**
     English:
     The function is called as soon as different entities collide with each other.
     Then certain instructions can be executed.
     */
-    /*
+    /**
     German:
     Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander kollidieren.
     Da können dann bestimmte Anweisungen ausgeführt werden.
@@ -104,7 +104,7 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
     */
     @Override
     public void onDeath(Entity entity) {
-        System.out.println("Skeleton is Demon is dead");
+        System.out.println("Skeleton is dead");
     }
 
 
@@ -146,5 +146,10 @@ public class Skeleton extends Monster implements IOnDeathFunction, ICollide {
     @Override
     public void setAttackDamage(int attackDamage) {
         super.setAttackDamage(attackDamage);
+    }
+
+    @Override
+    public boolean isInFightMode(Entity entity) {
+        return false;
     }
 }
