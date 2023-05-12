@@ -5,6 +5,7 @@ import ecs.components.*;
 import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
+import ecs.components.collision.ICollide;
 import ecs.components.skill.*;
 import ecs.components.skill.magic.SpeedSkill;
 import ecs.components.skill.magic.StunningStrikeSkill;
@@ -12,13 +13,15 @@ import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
 import graphic.Animation;
 import graphic.IngameUI;
+import level.elements.tile.Tile;
+import starter.Game;
 
 
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
-public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
+public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
 
     private final int fireballCoolDown = 5;
     private final int StunningStrikeCoolDown = 3;
@@ -49,32 +52,23 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private HealthComponent healthComponent;
 
 
-
     /**
      * Entity with Components
      */
     public Hero() {
         super();
-
         playableComponent = new PlayableComponent(this);
-
-
         new PositionComponent(this);
-
-
         setupVelocityComponent();
         setupAnimationComponent();
         setupHealthComponent();
         setupHitboxComponent();
         setupSkillComponent();
-
+        setupFireballSkill();
         setupXPComponent();
 
 
         setupInventoryComponent();
-
-        setupFireballSkill();
-
         setupDamageComponent();
 
     }
@@ -111,14 +105,14 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         System.out.println("Level: " + nextLevel);
         System.out.println("Points: " + xpComponent.getCurrentXP());
         System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
-        if (nextLevel == 2){
+        if (nextLevel == 2) {
             setupSpeedSkill();
-            IngameUI.updateSkillsBar("-","More Speed","-");
+            IngameUI.updateSkillsBar("-", "More Speed", "-");
         }
-       if (nextLevel == 3){
-           setupStunningStrikeSkill();
-           IngameUI.updateSkillsBar("-","More Speed","StunningStrike");
-       }
+        if (nextLevel == 3) {
+            setupStunningStrikeSkill();
+            IngameUI.updateSkillsBar("-", "More Speed", "StunningStrike");
+        }
     }
 
     private void setupSkillComponent() {
@@ -147,9 +141,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private void setupHitboxComponent() {
         new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("Hero collide"),
-            (you, other, direction) -> System.out.println("Hero not collide")
+            this, this, this::onCollisionLeave
         );
     }
 
@@ -160,7 +152,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
     private void setupInventoryComponent() {
-        inventory = new InventoryComponent(this,5);
+        inventory = new InventoryComponent(this, 5);
     }
 
     private void setupDamageComponent() {
@@ -256,5 +248,32 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
      */
     public float getySpeed() {
         return ySpeed;
+    }
+
+    /*
+    English:
+    The function is called as soon as different entities no longer collide with each other.
+    Then certain instructions can be executed.
+    */
+    /*
+    German:
+    Die Funktion wird aufgerufen, sobald unterschiedliche Entities nicht mehr miteinander kollidieren.
+    Da können dann bestimmte Anweisungen ausgeführt werden.
+    */
+    private void onCollisionLeave(Entity entity, Entity entity1, Tile.Direction direction) {
+    }
+
+
+    /**
+     English:
+     The function is called as soon as different entities collide with each other.
+     Then certain instructions can be executed.
+     */
+    /**
+     German:
+     Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander kollidieren.
+     Da können dann bestimmte Anweisungen ausgeführt werden.
+     */
+    public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {
     }
 }
