@@ -12,11 +12,12 @@ import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
 import semanticAnalysis.types.DSLTypeMember;
 
-/**
- * AIComponent is a component that stores the idle and combat behavior of AI controlled entities
- */
+/** AIComponent is a component that stores the idle and combat behavior of AI controlled entities */
 
-/** AIComponent ist eine Komponente, die das Leerlauf- und Kampfverhalten von KI-gesteuerten Einheiten speichert */
+/**
+ * AIComponent ist eine Komponente, die das Leerlauf- und Kampfverhalten von KI-gesteuerten
+ * Einheiten speichert
+ */
 @DSLType(name = "ai_component")
 public class AIComponent extends Component {
 
@@ -27,6 +28,7 @@ public class AIComponent extends Component {
 
     /**
      * English:
+     *
      * @param entity associated entity
      * @param fightAI combat behavior
      * @param idleAI idle behavior
@@ -35,6 +37,7 @@ public class AIComponent extends Component {
 
     /**
      * German:
+     *
      * @param entity assoziierte entity
      * @param fightAI Kampfverhalten
      * @param idleAI Leerlaufverhalten
@@ -49,10 +52,12 @@ public class AIComponent extends Component {
 
     /**
      * English:
+     *
      * @param entity associated entity
      */
     /**
      * German:
+     *
      * @param entity entity assoziierte entity
      */
     public AIComponent(@DSLContextMember(name = "entity") Entity entity) {
@@ -60,8 +65,6 @@ public class AIComponent extends Component {
         idleAI = new RadiusWalk(5, 3);
         transitionAI = new RangeTransition(5f);
         fightAI = new CollideAI(2f);
-
-
     }
 
     /** Excecute the ai behavior */
@@ -72,14 +75,12 @@ public class AIComponent extends Component {
     }
 
     /**
-     * English:
-     * Set a new fight ai
+     * English: Set a new fight ai
      *
      * @param ai new fight ai
      */
     /**
-     * German:
-     * Setzt einen neuen Kampf ai
+     * German: Setzt einen neuen Kampf ai
      *
      * @param ai neuer Kampf ai
      */

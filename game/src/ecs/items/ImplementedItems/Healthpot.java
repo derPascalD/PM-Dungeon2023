@@ -7,7 +7,6 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.items.*;
 import tools.Point;
-
 import java.util.logging.Logger;
 
 /**
@@ -22,12 +21,11 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
      */
     public Healthpot() {
         super(
-            ItemType.Healing,
-            AnimationBuilder.buildAnimation("items.healthpot"),
-            AnimationBuilder.buildAnimation("items.healthpot"),
-            "Healthpot",
-            "Heals the Player on Use"
-            );
+                ItemType.Healing,
+                AnimationBuilder.buildAnimation("items.healthpot"),
+                AnimationBuilder.buildAnimation("items.healthpot"),
+                "Healthpot",
+                "Heals the Player on Use");
         this.setOnCollect(this);
         this.setOnDrop(this);
         this.setOnUse(this);
@@ -38,6 +36,7 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
     /**
      * Heals the Hero for 10 Healthpoints
+     *
      * @param e the Hero
      */
     private void healHero(Entity e) {
@@ -48,7 +47,9 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
     }
 
     /**
-     * The item gets collected if the Hero has any space left in the Inventory or in a Bag in his Inventory.
+     * The item gets collected if the Hero has any space left in the Inventory or in a Bag in his
+     * Inventory.
+     *
      * @param WorldItemEntity the item thats collected
      * @param whoCollides the Hero who collects the item
      */
@@ -58,31 +59,29 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
     }
 
     @Override
-    public void onDrop(Entity user, ItemData which, Point position) {
-
-    }
+    public void onDrop(Entity user, ItemData which, Point position) {}
 
     /**
-     * Gives the healthpoitns upon usage, item is either in the Inventory or in a Bag in the Inventory
-     * Item gets removed after usage
+     * Gives the healthpoitns upon usage, item is either in the Inventory or in a Bag in the
+     * Inventory Item gets removed after usage
+     *
      * @param e the Hero
      * @param item the item thats used
      */
     @Override
     public void onUse(Entity e, ItemData item) {
         InventoryComponent inventoryCompnent =
-            (InventoryComponent) e.getComponent(InventoryComponent.class).get();
+                (InventoryComponent) e.getComponent(InventoryComponent.class).get();
 
-        for(ItemData itemFromInventory:inventoryCompnent.getItems()) {
-            if(itemFromInventory instanceof Bag) {
-                Bag bag = (Bag)itemFromInventory;
-                if(bag.removeFromBag(item)) {
+        for (ItemData itemFromInventory : inventoryCompnent.getItems()) {
+            if (itemFromInventory instanceof Bag) {
+                Bag bag = (Bag) itemFromInventory;
+                if (bag.removeFromBag(item)) {
                     healHero(e);
                     return;
                 }
             }
         }
-
         inventoryCompnent.removeItem(item);
         healHero(e);
     }

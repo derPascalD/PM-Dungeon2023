@@ -1,13 +1,14 @@
 package ecs.entities.NPCs;
+
 import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import graphic.Animation;
-import starter.Game;
-
 import java.util.Random;
 import java.util.logging.Logger;
+import starter.Game;
+
 
 public class Tombstone extends Entity implements IInteraction {
 
@@ -17,32 +18,30 @@ public class Tombstone extends Entity implements IInteraction {
     public Tombstone() {
         super();
         Animation idle = AnimationBuilder.buildAnimation("ghost/tombstone");
-        AnimationComponent animationComponent = new AnimationComponent(this,idle);
-        new InteractionComponent(this,0.4F,false,this);
+        AnimationComponent animationComponent = new AnimationComponent(this, idle);
+        new InteractionComponent(this, 0.4F, false, this);
         new PositionComponent(this);
         setupHealthAmount();
     }
 
-    /**
-     *  Setting up the health amount for the giveEffect methode
-     */
+    /** Setting up the health amount for the giveEffect methode */
     public void setupHealthAmount() {
         Hero hero = (Hero) Game.getHero().get();
-        HealthComponent healthComponent = (HealthComponent) hero.getComponent(HealthComponent.class).get();
-        double HPpercent = (double) healthComponent.getCurrentHealthpoints()/100;
-        healthAmount = rand.nextInt(20)+1;
+        HealthComponent healthComponent =
+                (HealthComponent) hero.getComponent(HealthComponent.class).get();
+        double HPpercent = (double) healthComponent.getCurrentHealthpoints() / 100;
+        healthAmount = rand.nextInt(20) + 1;
         healthAmount = (int) (HPpercent * healthAmount);
     }
 
-    /**
-     *  Either gives the Hero the amount of health in healthAmount or takes the amount away
-     */
+    /** Either gives the Hero the amount of health in healthAmount or takes the amount away */
     public void giveEffect() {
         Hero hero = (Hero) Game.getHero().get();
-        HealthComponent healthComponent = (HealthComponent) hero.getComponent(HealthComponent.class).get();
+        HealthComponent healthComponent =
+                (HealthComponent) hero.getComponent(HealthComponent.class).get();
         int currentHP = healthComponent.getCurrentHealthpoints();
         // 70% that the Hero gets HP, 30% that the Hero loses HP
-        if(rand.nextInt(101)>=30) {
+        if (rand.nextInt(101) >= 30) {
             healthComponent.setCurrentHealthpoints(currentHP + healthAmount);
         } else {
             healthComponent.setCurrentHealthpoints(currentHP - healthAmount);

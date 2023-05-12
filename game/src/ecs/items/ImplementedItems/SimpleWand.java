@@ -10,23 +10,17 @@ import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
-/**
- * Gives the Hero more damage upon collecting
- */
-public class SimpleWand extends ItemData implements IOnCollect, IOnDrop,IOnUse {
+/** Gives the Hero more damage upon collecting */
+public class SimpleWand extends ItemData implements IOnCollect, IOnDrop, IOnUse {
 
-
-    /**
-     * Creates a SimpleWand item and spawns it in the Level at a random spot
-     */
+    /** Creates a SimpleWand item and spawns it in the Level at a random spot */
     public SimpleWand() {
         super(
-            ItemType.Weapon,
-            AnimationBuilder.buildAnimation("items.simplewand"),
-            AnimationBuilder.buildAnimation("items.simplewand"),
-            "SimpleWand",
-            "Gives the Player more Attack Damage"
-        );
+                ItemType.Weapon,
+                AnimationBuilder.buildAnimation("items.simplewand"),
+                AnimationBuilder.buildAnimation("items.simplewand"),
+                "SimpleWand",
+                "Gives the Player more Attack Damage");
         this.setOnCollect(this);
         this.setOnDrop(this);
         this.setOnUse(this);
@@ -36,8 +30,9 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop,IOnUse {
     }
 
     /**
-     * The item gets collected if the Hero has any space left in the Inventory.
-     * The item gives the Hero 5 more attackDamage
+     * The item gets collected if the Hero has any space left in the Inventory. The item gives the
+     * Hero 5 more attackDamage
+     *
      * @param WorldItemEntity the item thats collected
      * @param whoCollides the Hero who collects the item
      */
@@ -51,12 +46,8 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop,IOnUse {
     }
 
     @Override
-    public void onDrop(Entity user, ItemData which, Point position) {
-
-    }
+    public void onDrop(Entity user, ItemData which, Point position) {}
 
     @Override
-    public void onUse(Entity e, ItemData item) {
-
-    }
+    public void onUse(Entity e, ItemData item) {}
 }

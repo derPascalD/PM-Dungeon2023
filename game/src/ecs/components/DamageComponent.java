@@ -7,8 +7,9 @@ public class DamageComponent extends Component {
     private int attackDamage;
 
     /**
-     * Create a DamageComponent and add it to the associated entity
-     * Sets the attackDamage to 1 as default
+     * Create a DamageComponent and add it to the associated entity Sets the attackDamage to 1 as
+     * default
+     *
      * @param entity associated entity
      */
     public DamageComponent(Entity entity) {
@@ -29,6 +30,7 @@ public class DamageComponent extends Component {
 
     /**
      * Sets the attackDamage of the Entity
+     *
      * @param attackDamage new attackDamage of the Entity
      */
     public void setAttackDamage(int attackDamage) {
@@ -37,6 +39,7 @@ public class DamageComponent extends Component {
 
     /**
      * Returns the attackDamage of the Entity
+     *
      * @return the attackDamage of the Entity
      */
     public int getAttackDamage() {
