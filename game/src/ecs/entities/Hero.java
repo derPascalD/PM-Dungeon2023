@@ -6,34 +6,48 @@ import ecs.components.AnimationComponent;
 import ecs.components.PositionComponent;
 import ecs.components.VelocityComponent;
 import ecs.components.skill.*;
+import ecs.components.skill.magic.SpeedSkill;
+import ecs.components.skill.magic.StunningStrikeSkill;
+import ecs.components.xp.ILevelUp;
+import ecs.components.xp.XPComponent;
 import graphic.Animation;
+import graphic.IngameUI;
 
 
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
-public class Hero extends Entity implements IOnDeathFunction {
-
+public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     private final int fireballCoolDown = 5;
+    private final int StunningStrikeCoolDown = 3;
+    private final int SpeedSkillCoolDown = 20;
+
+    // Original Speed from Hero
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
-    private String hitAnimation = "knight/hit";
-    private String attackAnimation = "knight/attack";
-
-
-    // Life points from Hero
-    private int lifePoints = 20;
+    private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
 
 
     private String pathToIdleLeft = "knight/idleLeft";
     private String pathToIdleRight = "knight/idleRight";
     private String pathToRunLeft = "knight/runLeft";
     private String pathToRunRight = "knight/runRight";
-    private Skill firstSkill;
 
-    protected HealthComponent health;
+    // Skills from Hero
+    private Skill firstSkill;
+    private Skill secondSkill;
+    private Skill thirdSkill;
+
+    protected InventoryComponent inventory;
+
+    private SkillComponent skillComponent;
+    private PlayableComponent playableComponent;
+    private XPComponent xpComponent;
+
+    private HealthComponent healthComponent;
+
 
 
     /**
@@ -41,21 +55,82 @@ public class Hero extends Entity implements IOnDeathFunction {
      */
     public Hero() {
         super();
-        this.health =  new HealthComponent(this,lifePoints, this,hitAnimation(),attackAnimation());
+
+        playableComponent = new PlayableComponent(this);
+
+
         new PositionComponent(this);
+
+
         setupVelocityComponent();
         setupAnimationComponent();
         setupHealthComponent();
         setupHitboxComponent();
-        PlayableComponent pc = new PlayableComponent(this);
+        setupSkillComponent();
+
+        setupXPComponent();
+
+
+        setupInventoryComponent();
+
         setupFireballSkill();
-        pc.setSkillSlot1(firstSkill);
 
-
-
-        setupHealthComponent();
+        setupDamageComponent();
 
     }
+
+    /*
+    Adds the new Speed skill to allow the Hero to run faster for a short time.
+     */
+    private void setupSpeedSkill() {
+        skillComponent.addSkill(
+            secondSkill =
+                new Skill(
+                    new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
+        playableComponent.setSkillSlot2(secondSkill);
+
+
+    }
+
+    private void setupStunningStrikeSkill() {
+        skillComponent.addSkill(
+            thirdSkill =
+                new Skill(
+                    new StunningStrikeSkill(4), StunningStrikeCoolDown));
+        playableComponent.setSkillSlot3(thirdSkill);
+
+    }
+
+    /**
+     * Here abilities are unlocked, depending on the level of the hero
+     *
+     * @param nextLevel is the new level of the entity
+     */
+    @Override
+    public void onLevelUp(long nextLevel) {
+        System.out.println("Level: " + nextLevel);
+        System.out.println("Points: " + xpComponent.getCurrentXP());
+        System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
+        if (nextLevel == 2){
+            setupSpeedSkill();
+            IngameUI.updateSkillsBar("-","More Speed","-");
+        }
+       if (nextLevel == 3){
+           setupStunningStrikeSkill();
+           IngameUI.updateSkillsBar("-","More Speed","StunningStrike");
+       }
+    }
+
+    private void setupSkillComponent() {
+        skillComponent = new SkillComponent(this);
+    }
+
+    private void setupXPComponent() {
+        xpComponent = new XPComponent(this, this);
+    }
+
+  
+
 
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
@@ -69,33 +144,42 @@ public class Hero extends Entity implements IOnDeathFunction {
         new AnimationComponent(this, idleLeft, idleRight);
     }
 
+    private void setupHitboxComponent() {
+        new HitboxComponent(
+            this,
+            (you, other, direction) -> System.out.println("Hero collide"),
+            (you, other, direction) -> System.out.println("Hero not collide")
+        );
+    }
+
+
     private void setupFireballSkill() {
         firstSkill =
             new Skill(
                 new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
     }
 
-    private void setupHitboxComponent() {
-        new HitboxComponent(
-            this,
-            (you, other, direction) -> System.out.println("Hero Kollidiert"),
-            (you, other, direction) -> System.out.println("Hero ausser gefahr")
 
-        );
+    private void setupInventoryComponent() {
+        inventory = new InventoryComponent(this,5);
     }
 
-    public Animation attackAnimation() {
-        return AnimationBuilder.buildAnimation(attackAnimation);
-    }
-    public Animation hitAnimation(){
-       return AnimationBuilder.buildAnimation(hitAnimation);
+    private void setupDamageComponent() {
+        new DamageComponent(this);
     }
 
 
+    /**
+     * @return Return the Hit Animation from the Hero
+     */
+    public Animation hitAnimation() {
+        return AnimationBuilder.buildAnimation(hitAnimation);
+    }
 
-    /*
-     As soon as the entity dies, the content of the function is executed.
-    */
+
+    /**
+     * As soon as the entity dies, the content of the function is executed.
+     */
     @Override
     public void onDeath(Entity entity) {
         System.out.println("Hero is dead!");
@@ -103,41 +187,82 @@ public class Hero extends Entity implements IOnDeathFunction {
     }
 
     /**
-     *
      * @return Return the current data path of the Hero Animation left
      */
     public String getPathToIdleLeft() {
         return pathToIdleLeft;
     }
+
     /**
-     *
      * @return Return the current data path of the Hero Animation right
      */
     public String getPathToIdleRight() {
         return pathToIdleRight;
     }
+
     /**
-     *
      * @return Return the current data path of the Hero Animation run left
      */
     public String getPathToRunLeft() {
         return pathToRunLeft;
     }
+
     /**
-     *
      * @return Return the current data path of the Hero Animation run right
      */
     public String getPathToRunRight() {
         return pathToRunRight;
     }
 
-    private void setupHealthComponent()
-    {
-        Animation hit = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
-        new HealthComponent(this, 100, this::onDeath ,hit,hit);
+
+
+    /**
+     * @return Return the Second Skill
+     */
+    public Skill getSecondSkill() {
+        return secondSkill;
+    }
+
+    /**
+     * @return Return the Third Skill
+     */
+    public Skill getThirdSkill() {
+        return thirdSkill;
+    }
+
+    /**
+     * @return Return the SkillComponent from the Hero
+     */
+    public SkillComponent getSkillComponent() {
+        return skillComponent;
+    }
+
+    public HealthComponent getHealthComponent() {
+        return healthComponent;
+
+    
+      
+
+
+    /**
+     * @return Return the XpComponent from the Hero
+     */
+    public XPComponent getXpComponent() {
+        return xpComponent;
+    }
+
+    /**
+     * @return Return the Original xSpeed from Hero
+     */
+    public float getxSpeed() {
+        return xSpeed;
     }
 
 
-
-
+    /**
+     * @return Return the Original ySpeed from Hero
+     */
+    public float getySpeed() {
+        return ySpeed;
+    }
 }

@@ -15,16 +15,22 @@ import controller.SystemController;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
-import ecs.entities.Traps.Bananenschale;
-import ecs.entities.Traps.Giftwolke;
+import ecs.entities.Traps.Bananapeel;
+import ecs.entities.Traps.Poisoncloud;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.NPCs.Ghost;
 import ecs.entities.Hero;
 import ecs.entities.Traps.Trap;
+import ecs.items.ImplementedItems.Bag;
+import ecs.items.ImplementedItems.Chestplate;
+import ecs.items.ImplementedItems.Healthpot;
+import ecs.items.ImplementedItems.SimpleWand;
+import ecs.items.ItemType;
 import ecs.systems.*;
 import graphic.DungeonCamera;
+import graphic.IngameUI;
 import graphic.Painter;
 import graphic.hud.PauseMenu;
 
@@ -83,7 +89,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static int levelDepth;
 
 
-
     /**
      * All entities that are currently active in the dungeon
      */
@@ -107,6 +112,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static Entity hero;
     private Logger gameLogger;
     private Random rand = new Random();
+    private IngameUI ui;
 
     public static void main(String[] args) {
         // start the game
@@ -151,7 +157,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
+
+
         hero = new Hero();
+
+        ui = new IngameUI<>();
+        controller.add(ui);
+
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -165,6 +177,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+
+
     }
 
     @Override
@@ -174,14 +188,21 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         getHero().ifPresent(this::placeOnLevelStart);
 
         createMonster();
+        addXPToEntity();
 
-        Trap gifwolke = new Giftwolke();
-        Trap bananenschale = new Bananenschale();
+        new Poisoncloud();
+        new Bananapeel();
+        new Bananapeel();
 
-        if(rand.nextBoolean()) {
-            Ghost ghost = new Ghost();
+
+        if (rand.nextBoolean()) {
+            new Ghost();
         }
 
+        createItems();
+
+
+ 
 
     }
 
@@ -214,6 +235,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         } else camera.setFocusPoint(new Point(0, 0));
     }
 
+    // Collect with the
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
         if (isOnEndTile(hero)) levelAPI.loadLevel(LevelDepthSize);
     }
@@ -252,7 +274,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-
     /**
      * English:
      * Here different monsters are created and implemented into the level.
@@ -268,18 +289,35 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     public void createMonster() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             int monster = (int) (Math.random() * 3);
-            if (monster == 0) {
-                new Demon(levelDepth);
-            } else if (monster == 1) {
-                new Skeleton(levelDepth);
-            } else if (monster == 2) {
-                new PumpkinKiller(levelDepth);
-            }
+            if (monster == 0) new Demon(levelDepth);
+            else if (monster == 1) new Skeleton(levelDepth);
+            else if (monster == 2) new PumpkinKiller(levelDepth);
         }
-        if(levelDepth >=  6){LevelDepthSize = LevelSize.MEDIUM;}
-        if(levelDepth >=  48){LevelDepthSize = LevelSize.LARGE;}
-        System.out.println("Level depth is "+ (levelDepth+1) +".");
+        if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
+        if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
+        System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
+    }
+
+
+    public void addXPToEntity() {
+        if (Game.hero != null) {
+            Hero hero1 = (Hero) Game.hero;
+            hero1.getXpComponent().addXP(50);
+        }
+    }
+
+    /**
+     * Creates Items in the Level depending on the levelDepth
+     */
+    public void createItems() {
+        for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
+            if (rand.nextBoolean()) new Healthpot();
+            else if (rand.nextInt(101) > 30 && levelDepth >= 3) new Bag(ItemType.Healing);
+            else if (rand.nextBoolean()) new Chestplate();
+            else if (rand.nextBoolean()) new SimpleWand();
+
+        }
     }
 
 

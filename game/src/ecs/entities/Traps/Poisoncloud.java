@@ -4,15 +4,16 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import level.elements.tile.Tile;
 
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Giftwolke extends Trap implements ICollide {
+public class Poisoncloud extends Trap implements ICollide {
 
-    public Giftwolke() {
+    public Poisoncloud() {
         super();
         visible = active = this.createRandomBooleanValue();
         if (visible && active) {
@@ -40,19 +41,32 @@ public class Giftwolke extends Trap implements ICollide {
 
         VelocityComponent velocityComponent = (VelocityComponent) optionalVelocity.get();
 
-        float originalYVelocity = velocityComponent.getYVelocity();
-        float originalXVelocity = velocityComponent.getXVelocity();
+        // Original Speed from Hero
+        float xSpeed = 0;
+        float ySpeed = 0;
+
+        Hero hero = null;
+        if (b instanceof Hero)
+        {
+            hero = (Hero) b;
+            xSpeed = hero.getxSpeed();
+            ySpeed = hero.getySpeed();
+        }
 
         // sets the new X,Y Velocity of b
         velocityComponent.setYVelocity(velocityComponent.getYVelocity() / 2);
         velocityComponent.setXVelocity(velocityComponent.getXVelocity() / 2);
 
         Timer timer = new Timer();
+        Hero finalHero = hero;
+        float finalXSpeed = xSpeed;
+        float finalYSpeed = ySpeed;
         timer.schedule(new TimerTask() {
             public void run() {
-                velocityComponent.setYVelocity(originalYVelocity);
-                velocityComponent.setXVelocity(originalXVelocity);
-                System.out.println("10 Sekunden sind vorbei. Der Spieler hat jetzt wieder die selbe Geschwindigkeit.");
+                assert finalHero != null;
+                velocityComponent.setYVelocity(finalXSpeed);
+                velocityComponent.setXVelocity(finalYSpeed);
+                System.out.println("10 seconds over. The velocity is set back to the original values.");
             }
         }, 10 * 1000);
 
