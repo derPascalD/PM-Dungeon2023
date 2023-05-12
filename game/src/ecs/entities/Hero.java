@@ -14,16 +14,15 @@ import ecs.components.xp.XPComponent;
 import graphic.Animation;
 import graphic.IngameUI;
 import level.elements.tile.Tile;
-import starter.Game;
 
 
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
-public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
+public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide  {
 
-    private final int fireballCoolDown = 5;
+    private final int fireballCoolDown = 0;
     private final int StunningStrikeCoolDown = 3;
     private final int SpeedSkillCoolDown = 20;
 
@@ -42,6 +41,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
+
+    private Skill combatSkill;
 
     protected InventoryComponent inventory;
 
@@ -66,7 +67,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupSkillComponent();
         setupFireballSkill();
         setupXPComponent();
-
+        setupMeleeSkill();
 
         setupInventoryComponent();
         setupDamageComponent();
@@ -93,6 +94,22 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
                     new StunningStrikeSkill(4), StunningStrikeCoolDown));
         playableComponent.setSkillSlot3(thirdSkill);
 
+    }
+
+    private void setupFireballSkill() {
+        skillComponent.addSkill(
+            firstSkill =
+                new Skill(
+                    new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown));
+        playableComponent.setSkillSlot1(firstSkill);
+    }
+
+    private void setupMeleeSkill() {
+        skillComponent.addSkill(
+        combatSkill =
+            new Skill(
+                new Sword(1),1F));
+        playableComponent.setCombatSkill(combatSkill);
     }
 
     /**
@@ -145,11 +162,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         );
     }
 
-    private void setupFireballSkill() {
-        firstSkill =
-            new Skill(
-                new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
-    }
 
     private void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);
@@ -260,7 +272,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     Die Funktion wird aufgerufen, sobald unterschiedliche Entities nicht mehr miteinander kollidieren.
     Da können dann bestimmte Anweisungen ausgeführt werden.
     */
-    private void onCollisionLeave(Entity entity, Entity entity1, Tile.Direction direction) {
+    private void onCollisionLeave(Entity a, Entity b, Tile.Direction direction) {
     }
 
 
@@ -274,6 +286,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
      Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander kollidieren.
      Da können dann bestimmte Anweisungen ausgeführt werden.
      */
-    public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {
+    public void onCollision(Entity a, Entity b, Tile.Direction direction) {
+
     }
 }

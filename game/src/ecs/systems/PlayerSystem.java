@@ -45,15 +45,10 @@ public class PlayerSystem extends ECS_System {
             ksd.vc.setCurrentXVelocity(1 * ksd.vc.getXVelocity());
         else if (Gdx.input.isKeyPressed(KeyboardConfig.MOVEMENT_LEFT.get()))
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
-
-        if (Gdx.input.isKeyJustPressed(KeyboardConfig.INVENTORY_OPEN.get())) {
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.INVENTORY_OPEN.get()))
             showInventoryInConsole(ksd.e);
-        }
-
-        if (Gdx.input.isKeyJustPressed(KeyboardConfig.HEAL_POTION.get())) {
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.HEAL_POTION.get()))
             useHealPotion(ksd.e);
-        }
-
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 
@@ -64,9 +59,10 @@ public class PlayerSystem extends ECS_System {
         else if (Gdx.input.isKeyPressed(KeyboardConfig.SECOND_SKILL.get()))
             ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));
 
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.THIRD_SKILL.get())) {
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.THIRD_SKILL.get()))
             ksd.pc.getSkillSlot3().ifPresent(skill -> skill.execute(ksd.e));
-        }
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.COMBAT_ATTACK.get()))
+            ksd.pc.getCombatSkill().ifPresent(skill -> skill.execute(ksd.e));
     }
 
     /**
