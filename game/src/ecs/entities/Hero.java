@@ -129,8 +129,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         xpComponent = new XPComponent(this, this);
     }
 
-  
-
+    private void setupHealthComponent() {
+        healthComponent = new HealthComponent(this, 100, this, hitAnimation(), null);
+    }
 
     private void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
@@ -152,13 +153,11 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         );
     }
 
-
     private void setupFireballSkill() {
         firstSkill =
             new Skill(
                 new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
     }
-
 
     private void setupInventoryComponent() {
         inventory = new InventoryComponent(this,5);
@@ -168,14 +167,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         new DamageComponent(this);
     }
 
-
     /**
      * @return Return the Hit Animation from the Hero
      */
     public Animation hitAnimation() {
         return AnimationBuilder.buildAnimation(hitAnimation);
     }
-
 
     /**
      * As soon as the entity dies, the content of the function is executed.
@@ -214,8 +211,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         return pathToRunRight;
     }
 
-
-
     /**
      * @return Return the Second Skill
      */
@@ -240,9 +235,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     public HealthComponent getHealthComponent() {
         return healthComponent;
 
-    
-      
-
+    }
 
     /**
      * @return Return the XpComponent from the Hero
@@ -257,7 +250,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     public float getxSpeed() {
         return xSpeed;
     }
-
 
     /**
      * @return Return the Original ySpeed from Hero
