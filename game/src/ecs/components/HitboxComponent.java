@@ -21,8 +21,7 @@ public class HitboxComponent extends Component {
     private final Logger hitboxLogger = Logger.getLogger(this.getClass().getName());
 
     /**
-     * English:
-     * Creates A Hitbox
+     * English: Creates A Hitbox
      *
      * @param entity associated entity
      * @param offset the offset for the hitbox to the position
@@ -31,8 +30,7 @@ public class HitboxComponent extends Component {
      * @param iCollideLeave behaviour if a collision stopped
      */
     /**
-     * German:
-     * Erzeugt eine Hitbox
+     * German: Erzeugt eine Hitbox
      *
      * @param entity assoziierte entity
      * @param offset der Offset für die Hitbox zur Position
@@ -54,16 +52,16 @@ public class HitboxComponent extends Component {
     }
 
     /**
-     * English:
-     * Creates A Hitbox with a default offset of 0.25f x 0.25f and a default size of 0.5f x 0.5f
+     * English: Creates A Hitbox with a default offset of 0.25f x 0.25f and a default size of 0.5f x
+     * 0.5f
      *
      * @param entity associated entity
      * @param iCollideEnter behaviour if a collision started
      * @param iCollideLeave behaviour if a collision stopped
      */
     /**
-     * German:
-     * Erzeugt eine Hitbox mit einem Standard-Offset von 0.25f x 0.25f und einer Standardgröße von 0.5f x 0.5f
+     * German: Erzeugt eine Hitbox mit einem Standard-Offset von 0.25f x 0.25f und einer
+     * Standardgröße von 0.5f x 0.5f
      *
      * @param entity assoziierte Entität
      * @param iCollideEnter Verhalten, wenn eine Kollision begonnen hat

@@ -15,12 +15,11 @@ import graphic.Animation;
 import graphic.IngameUI;
 import level.elements.tile.Tile;
 
-
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
-public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide  {
+public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
 
     private final int fireballCoolDown = 0;
     private final int StunningStrikeCoolDown = 3;
@@ -30,7 +29,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
-
 
     private String pathToIdleLeft = "knight/idleLeft";
     private String pathToIdleRight = "knight/idleRight";
@@ -52,10 +50,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     private HealthComponent healthComponent;
 
-
-    /**
-     * Entity with Components
-     */
+    /** Entity with Components */
     public Hero() {
         super();
         playableComponent = new PlayableComponent(this);
@@ -71,7 +66,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
         setupInventoryComponent();
         setupDamageComponent();
-
     }
 
     /*
@@ -79,36 +73,29 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
      */
     private void setupSpeedSkill() {
         skillComponent.addSkill(
-            secondSkill =
-                new Skill(
-                    new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
+                secondSkill =
+                        new Skill(
+                                new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
         playableComponent.setSkillSlot2(secondSkill);
-
-
     }
 
     private void setupStunningStrikeSkill() {
         skillComponent.addSkill(
-            thirdSkill =
-                new Skill(
-                    new StunningStrikeSkill(4), StunningStrikeCoolDown));
+                thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
         playableComponent.setSkillSlot3(thirdSkill);
-
     }
 
     private void setupFireballSkill() {
         skillComponent.addSkill(
-            firstSkill =
-                new Skill(
-                    new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown));
+                firstSkill =
+                        new Skill(
+                                new FireballSkill(SkillTools::getCursorPositionAsPoint),
+                                fireballCoolDown));
         playableComponent.setSkillSlot1(firstSkill);
     }
 
     private void setupMeleeSkill() {
-        skillComponent.addSkill(
-        combatSkill =
-            new Skill(
-                new Sword(1),1F));
+        skillComponent.addSkill(combatSkill = new Skill(new Sword(1), 1F));
         playableComponent.setCombatSkill(combatSkill);
     }
 
@@ -157,11 +144,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     }
 
     private void setupHitboxComponent() {
-        new HitboxComponent(
-            this, this, this::onCollisionLeave
-        );
+        new HitboxComponent(this, this, this::onCollisionLeave);
     }
-
 
     private void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);
@@ -178,9 +162,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         return AnimationBuilder.buildAnimation(hitAnimation);
     }
 
-    /**
-     * As soon as the entity dies, the content of the function is executed.
-     */
+    /** As soon as the entity dies, the content of the function is executed. */
     @Override
     public void onDeath(Entity entity) {
         System.out.println("Hero is dead!");
@@ -238,7 +220,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     public HealthComponent getHealthComponent() {
         return healthComponent;
-
     }
 
     /**
@@ -272,21 +253,15 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     Die Funktion wird aufgerufen, sobald unterschiedliche Entities nicht mehr miteinander kollidieren.
     Da können dann bestimmte Anweisungen ausgeführt werden.
     */
-    private void onCollisionLeave(Entity a, Entity b, Tile.Direction direction) {
-    }
-
+    private void onCollisionLeave(Entity a, Entity b, Tile.Direction direction) {}
 
     /**
-     English:
-     The function is called as soon as different entities collide with each other.
-     Then certain instructions can be executed.
+     * English: The function is called as soon as different entities collide with each other. Then
+     * certain instructions can be executed.
      */
     /**
-     German:
-     Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander kollidieren.
-     Da können dann bestimmte Anweisungen ausgeführt werden.
+     * German: Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander
+     * kollidieren. Da können dann bestimmte Anweisungen ausgeführt werden.
      */
-    public void onCollision(Entity a, Entity b, Tile.Direction direction) {
-
-    }
+    public void onCollision(Entity a, Entity b, Tile.Direction direction) {}
 }

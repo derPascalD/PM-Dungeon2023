@@ -5,9 +5,7 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
-import ecs.entities.Monsters.Monster;
 import graphic.Animation;
-import level.elements.tile.Tile;
 import starter.Game;
 import tools.Point;
 
@@ -22,13 +20,12 @@ public abstract class CombatAttackSkill implements ISkillFunction {
 
     private Animation currentAnimation;
 
-
     public CombatAttackSkill(
-        String pathToTexturesOfCombatLeft,
-        String pathToTexturesOfCombatRight,
-        Point hitboxSize,
-        Damage combatDamage,
-        float combatRange) {
+            String pathToTexturesOfCombatLeft,
+            String pathToTexturesOfCombatRight,
+            Point hitboxSize,
+            Damage combatDamage,
+            float combatRange) {
         this.pathToTexturesOfCombatRight = pathToTexturesOfCombatRight;
         this.pathToTexturesOfCombatLeft = pathToTexturesOfCombatLeft;
         this.hitboxSize = hitboxSize;
@@ -37,36 +34,30 @@ public abstract class CombatAttackSkill implements ISkillFunction {
     }
 
     public CombatAttackSkill(
-        String pathToTexturesOfCombatLeft,
-        String pathToTexturesOfCombatRight,
-        Point hitboxSize,
-        Damage combatDamage) {
+            String pathToTexturesOfCombatLeft,
+            String pathToTexturesOfCombatRight,
+            Point hitboxSize,
+            Damage combatDamage) {
         this.pathToTexturesOfCombatRight = pathToTexturesOfCombatRight;
         this.pathToTexturesOfCombatLeft = pathToTexturesOfCombatLeft;
         this.hitboxSize = hitboxSize;
         this.combatDamage = combatDamage;
-
-
     }
-
-
-
 
     @Override
     public void execute(Entity entity) {
         Entity weapon = new Entity();
         PositionComponent epc =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
 
         AnimationComponent ac =
-            (AnimationComponent)
-                entity.getComponent(AnimationComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("AnimationComponent"));
-
+                (AnimationComponent)
+                        entity.getComponent(AnimationComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("AnimationComponent"));
 
         if (ac.getCurrentAnimation() == ac.getIdleLeft()) {
             weaponStartPoint = new Point(epc.getPosition().x - 1, epc.getPosition().y);
@@ -83,33 +74,44 @@ public abstract class CombatAttackSkill implements ISkillFunction {
 
         // Position from the Weapon
 
-        new ProjectileComponent(weapon, weaponStartPoint, new Point(weaponStartPoint.x - combatRange, weaponStartPoint.y));
+        new ProjectileComponent(
+                weapon,
+                weaponStartPoint,
+                new Point(weaponStartPoint.x - combatRange, weaponStartPoint.y));
 
         ICollide collide =
-            (a, b, from) -> {
-                if (b != entity) {
-                    b.getComponent(HealthComponent.class).ifPresent(hc -> {
-                        ((HealthComponent) hc).receiveHit(combatDamage);
-                        Game.removeEntity(weapon);
-                    });
-                }
-                if (b != entity && ac.getCurrentAnimation() == ac.getIdleRight()) {
-                    b.getComponent(VelocityComponent.class).ifPresent(pc -> {
-                            ((VelocityComponent) pc).setCurrentXVelocity(0.5F + ((VelocityComponent) pc).getXVelocity());
-                        }
-                    );
-                } else if (b != entity && ac.getCurrentAnimation() == ac.getIdleLeft()) {
-                    b.getComponent(VelocityComponent.class).ifPresent(pc -> {
-                            ((VelocityComponent) pc).setCurrentXVelocity(-0.5F + ((VelocityComponent) pc).getXVelocity());
-                        }
-                    );
-                }
-            };
+                (a, b, from) -> {
+                    if (b != entity) {
+                        b.getComponent(HealthComponent.class)
+                                .ifPresent(
+                                        hc -> {
+                                            ((HealthComponent) hc).receiveHit(combatDamage);
+                                            Game.removeEntity(weapon);
+                                        });
+                    }
+                    if (b != entity && ac.getCurrentAnimation() == ac.getIdleRight()) {
+                        b.getComponent(VelocityComponent.class)
+                                .ifPresent(
+                                        pc -> {
+                                            ((VelocityComponent) pc)
+                                                    .setCurrentXVelocity(
+                                                            0.5F
+                                                                    + ((VelocityComponent) pc)
+                                                                            .getXVelocity());
+                                        });
+                    } else if (b != entity && ac.getCurrentAnimation() == ac.getIdleLeft()) {
+                        b.getComponent(VelocityComponent.class)
+                                .ifPresent(
+                                        pc -> {
+                                            ((VelocityComponent) pc)
+                                                    .setCurrentXVelocity(
+                                                            -0.5F
+                                                                    + ((VelocityComponent) pc)
+                                                                            .getXVelocity());
+                                        });
+                    }
+                };
 
-
-        new HitboxComponent(
-            weapon, new Point(0.25f, 0.25f), hitboxSize, collide, null);
-
-
+        new HitboxComponent(weapon, new Point(0.25f, 0.25f), hitboxSize, collide, null);
     }
 }

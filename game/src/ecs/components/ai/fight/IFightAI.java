@@ -5,14 +5,12 @@ import ecs.entities.Entity;
 public interface IFightAI {
 
     /**
-     * English:
-     * Implements the combat behavior of an AI controlled entity
+     * English: Implements the combat behavior of an AI controlled entity
      *
      * @param entity associated entity
      */
     /**
-     * German:
-     * Implementiert das Kampfverhalten einer KI-gesteuerten Entität.
+     * German: Implementiert das Kampfverhalten einer KI-gesteuerten Entität.
      *
      * @param entity associated entity
      */

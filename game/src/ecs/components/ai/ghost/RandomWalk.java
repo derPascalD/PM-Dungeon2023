@@ -15,6 +15,7 @@ public class RandomWalk implements IIdleAI, ITransition {
 
     /**
      * Entity walks around the level in random paths
+     *
      * @param entity associated entity
      */
     @Override
@@ -26,6 +27,7 @@ public class RandomWalk implements IIdleAI, ITransition {
 
     /**
      * Is always false because the Entity just always idles around when following the Hero
+     *
      * @param entity associated entity
      * @return false
      */

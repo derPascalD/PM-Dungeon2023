@@ -4,7 +4,6 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.transition.ITransition;
 import ecs.components.collision.ICollide;
-import ecs.components.skill.SkillComponent;
 import ecs.entities.Entity;
 import graphic.Animation;
 
@@ -23,10 +22,7 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
     protected boolean diagonal;
     protected int attackDamage;
 
-
-    Monster() {
-
-    }
+    Monster() {}
 
     public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
@@ -38,13 +34,11 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
         Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
-
     }
 
     public void setLifePoints(int lifePoints) {
         this.lifePoints = lifePoints;
     }
-
 
     public int getLifePoints() {
         return lifePoints;

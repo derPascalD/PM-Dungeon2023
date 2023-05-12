@@ -87,7 +87,6 @@ public class PlayableComponent extends Component {
         this.combatSkill = combatSkill;
     }
 
-
     /**
      * @return skill on first skill slot
      */
@@ -115,7 +114,4 @@ public class PlayableComponent extends Component {
     public Optional<Skill> getCombatSkill() {
         return Optional.ofNullable(combatSkill);
     }
-
-
-
 }

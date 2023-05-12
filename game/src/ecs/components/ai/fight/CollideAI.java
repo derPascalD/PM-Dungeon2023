@@ -13,16 +13,14 @@ public class CollideAI implements IFightAI {
     private GraphPath<Tile> path;
 
     /**
-     * English:
-     * Attacks the player by colliding if he is within the given range. Otherwise, it will move
-     * towards the player.
+     * English: Attacks the player by colliding if he is within the given range. Otherwise, it will
+     * move towards the player.
      *
      * @param rushRange Range in which the faster collide logic should be executed
      */
     /**
-     * German:
-     * Greift den Spieler an, indem er mit ihm kollidiert, wenn er sich innerhalb der angegebenen Reichweite befindet. Andernfalls bewegt er sich
-     * in Richtung des Spielers.
+     * German: Greift den Spieler an, indem er mit ihm kollidiert, wenn er sich innerhalb der
+     * angegebenen Reichweite befindet. Andernfalls bewegt er sich in Richtung des Spielers.
      *
      * @param rushRange Bereich, in dem die schnellere Kollisionslogik ausgeführt werden soll
      */

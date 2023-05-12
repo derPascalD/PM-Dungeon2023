@@ -8,14 +8,12 @@ public class RangeTransition implements ITransition {
     private final float range;
 
     /**
-     * English:
-     * Switches to combat mode when the player is within range of the entity.
+     * English: Switches to combat mode when the player is within range of the entity.
      *
      * @param range Range of the entity.
      */
     /**
-     * German:
-     * Schaltet in den Kampfmodus, wenn sich der Spieler in Reichweite der Entität befindet.
+     * German: Schaltet in den Kampfmodus, wenn sich der Spieler in Reichweite der Entität befindet.
      *
      * @param range Bereich der Entität.
      */

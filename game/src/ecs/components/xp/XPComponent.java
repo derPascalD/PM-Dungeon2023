@@ -113,18 +113,17 @@ public class XPComponent extends Component {
     }
 
     /**
-     * English:
-     * Calculate xp left to next level. XP are calculated based on the following formula: {@code
-     * FORMULA_SLOPE * (currentLevel + 1)^2 + LEVEL_1_XP} It's a quadratic function with a slope of
-     * {@code FORMULAR_SLOPE} and a y-intercept of {@code LEVEL_1_XP}
+     * English: Calculate xp left to next level. XP are calculated based on the following formula:
+     * {@code FORMULA_SLOPE * (currentLevel + 1)^2 + LEVEL_1_XP} It's a quadratic function with a
+     * slope of {@code FORMULAR_SLOPE} and a y-intercept of {@code LEVEL_1_XP}
      *
      * @return xp left to next level
      */
     /**
-     * German:
-     * Berechne die XP, die bis zum nächsten Level übrig bleiben. Die XP werden nach der folgenden Formel berechnet: {@code
-     * FORMULA_SLOPE * (currentLevel + 1)^2 + LEVEL_1_XP} Es ist eine quadratische Funktion mit einer Steigung von
-     * {@code FORMULAR_SLOPE} und einem y-Abschnitt von {@code LEVEL_1_XP}
+     * German: Berechne die XP, die bis zum nächsten Level übrig bleiben. Die XP werden nach der
+     * folgenden Formel berechnet: {@code FORMULA_SLOPE * (currentLevel + 1)^2 + LEVEL_1_XP} Es ist
+     * eine quadratische Funktion mit einer Steigung von {@code FORMULAR_SLOPE} und einem
+     * y-Abschnitt von {@code LEVEL_1_XP}
      *
      * @return xp links zum nächsten Level
      */

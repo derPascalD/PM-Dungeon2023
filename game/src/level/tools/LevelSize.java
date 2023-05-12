@@ -20,6 +20,7 @@ public enum LevelSize {
 
     /**
      * Returns SMALL MEDIUM or LARGE
+     *
      * @return A random enum-value
      */
     public static LevelSize randomSize() {
@@ -29,7 +30,4 @@ public enum LevelSize {
         System.out.println(VALUES.get(RANDOM.nextInt(SIZE)));
         return VALUES.get(RANDOM.nextInt(SIZE));
     }
-
-
-
 }

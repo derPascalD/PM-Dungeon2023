@@ -5,11 +5,10 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
-import level.elements.tile.Tile;
-
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
+import level.elements.tile.Tile;
 
 public class Poisoncloud extends Trap implements ICollide {
 
@@ -24,9 +23,9 @@ public class Poisoncloud extends Trap implements ICollide {
     }
 
     /**
-     * @param a     is the current Entity
-     * @param b     is the Entity with whom the Collision happened
-     * @param from  the direction from a to b
+     * @param a is the current Entity
+     * @param b is the Entity with whom the Collision happened
+     * @param from the direction from a to b
      */
     @Override
     public void onCollision(Entity a, Entity b, Tile.Direction from) {
@@ -46,8 +45,7 @@ public class Poisoncloud extends Trap implements ICollide {
         float ySpeed = 0;
 
         Hero hero = null;
-        if (b instanceof Hero)
-        {
+        if (b instanceof Hero) {
             hero = (Hero) b;
             xSpeed = hero.getxSpeed();
             ySpeed = hero.getySpeed();
@@ -61,17 +59,19 @@ public class Poisoncloud extends Trap implements ICollide {
         Hero finalHero = hero;
         float finalXSpeed = xSpeed;
         float finalYSpeed = ySpeed;
-        timer.schedule(new TimerTask() {
-            public void run() {
-                assert finalHero != null;
-                velocityComponent.setYVelocity(finalXSpeed);
-                velocityComponent.setXVelocity(finalYSpeed);
-                System.out.println("10 seconds over. The velocity is set back to the original values.");
-            }
-        }, 10 * 1000);
+        timer.schedule(
+                new TimerTask() {
+                    public void run() {
+                        assert finalHero != null;
+                        velocityComponent.setYVelocity(finalXSpeed);
+                        velocityComponent.setXVelocity(finalYSpeed);
+                        System.out.println(
+                                "10 seconds over. The velocity is set back to the original values.");
+                    }
+                },
+                10 * 1000);
 
         // defines that the trap can be triggered just once.
         active = false;
     }
 }
-

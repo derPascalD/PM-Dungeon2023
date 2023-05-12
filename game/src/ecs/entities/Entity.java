@@ -2,11 +2,8 @@ package ecs.entities;
 
 import ecs.components.Component;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
-
 import semanticAnalysis.types.DSLContextPush;
 import semanticAnalysis.types.DSLType;
 import starter.Game;
@@ -54,6 +51,4 @@ public class Entity {
     public Optional<Component> getComponent(Class klass) {
         return Optional.ofNullable(components.get(klass));
     }
-
-
 }
