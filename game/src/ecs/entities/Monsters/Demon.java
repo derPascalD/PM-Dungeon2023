@@ -12,7 +12,7 @@ import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 
-public class Demon extends Monster implements IOnDeathFunction, ICollide {
+public class Demon extends Monster {
 
 
 
@@ -90,12 +90,12 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     }
 
 
-    /*
+    /**
     English:
     The function is called as soon as different entities collide with each other.
     Then certain instructions can be executed.
     */
-    /*
+    /**
     German:
     Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander kollidieren.
     Da können dann bestimmte Anweisungen ausgeführt werden.
@@ -152,4 +152,8 @@ public class Demon extends Monster implements IOnDeathFunction, ICollide {
     }
 
 
+    @Override
+    public boolean isInFightMode(Entity entity) {
+        return false;
+    }
 }

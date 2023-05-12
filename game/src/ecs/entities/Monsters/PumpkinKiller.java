@@ -13,7 +13,7 @@ import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
-public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide {
+public class PumpkinKiller extends Monster {
 
 
 
@@ -86,12 +86,12 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
     private void onCollisionLeave(Entity entity, Entity entity1, Tile.Direction direction) {
     }
 
-    /*
+    /**
     English:
     The function is called as soon as different entities collide with each other.
     Then certain instructions can be executed.
     */
-    /*
+    /**
     German:
     Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander kollidieren.
     Da können dann bestimmte Anweisungen ausgeführt werden.
@@ -104,7 +104,7 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
      */
     @Override
     public void onDeath(Entity entity) {
-        System.out.println("PumpkinKiller is Demon is dead");
+        System.out.println("PumpkinKiller is dead");
     }
 
     public void setLifePoints(int lifePoints) {
@@ -142,5 +142,10 @@ public class PumpkinKiller extends Monster implements IOnDeathFunction, ICollide
     @Override
     public void setAttackDamage(int attackDamage) {
         super.setAttackDamage(attackDamage);
+    }
+
+    @Override
+    public boolean isInFightMode(Entity entity) {
+        return false;
     }
 }
