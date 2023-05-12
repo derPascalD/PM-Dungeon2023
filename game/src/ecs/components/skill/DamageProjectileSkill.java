@@ -45,6 +45,8 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
                                         () -> new MissingComponentException("PositionComponent"));
         new PositionComponent(projectile, epc.getPosition());
 
+
+
         Animation animation = AnimationBuilder.buildAnimation(pathToTexturesOfProjectile);
         new AnimationComponent(projectile, animation);
 

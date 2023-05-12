@@ -4,6 +4,7 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.transition.ITransition;
 import ecs.components.collision.ICollide;
+import ecs.components.skill.SkillComponent;
 import ecs.entities.Entity;
 import graphic.Animation;
 
@@ -26,7 +27,6 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
     Monster() {
 
     }
-
 
     public void setupVelocityComponent() {
         Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);

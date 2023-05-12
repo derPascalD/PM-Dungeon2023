@@ -7,9 +7,12 @@ import ecs.components.IOnDeathFunction;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
+import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.PatrouilleWalk;
 import ecs.components.ai.transition.RangeTransition;
 import ecs.components.collision.ICollide;
+import ecs.components.skill.Skill;
+import ecs.components.skill.Sword;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
@@ -46,7 +49,8 @@ public class PumpkinKiller extends Monster {
 
         new AIComponent(
             this,
-        new CollideAI(0f),
+            new MeleeAI(5,new Skill(
+                new Sword(1),1)),
         new PatrouilleWalk(4f,
             4,
             2000,

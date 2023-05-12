@@ -194,15 +194,17 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new Bananapeel();
         new Bananapeel();
 
-
+/*
         if (rand.nextBoolean()) {
             new Ghost();
         }
 
+ */
+
         createItems();
 
 
- 
+
 
     }
 
@@ -288,7 +290,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public void createMonster() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
-            int monster = (int) (Math.random() * 3);
+            int monster = 0;
             if (monster == 0) new Demon(levelDepth);
             else if (monster == 1) new Skeleton(levelDepth);
             else if (monster == 2) new PumpkinKiller(levelDepth);

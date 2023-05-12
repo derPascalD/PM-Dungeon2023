@@ -5,15 +5,23 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
+import ecs.components.ai.fight.CombatAI;
+import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.PatrouilleWalk;
 import ecs.components.ai.transition.RangeTransition;
 import ecs.components.collision.ICollide;
+import ecs.components.skill.Combat;
+import ecs.components.skill.Skill;
+import ecs.components.skill.SkillComponent;
+import ecs.components.skill.Sword;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 
 public class Demon extends Monster {
 
+    private Skill combatFight;
+    private SkillComponent skillComponent;
 
 
     /**
@@ -48,21 +56,23 @@ public class Demon extends Monster {
             this,
             hit,
             die);
+        skillComponent = new SkillComponent(this);
+        setupMeleeSkill();
+        setupVelocityComponent();
+        setupAnimationComponent();
 
         new PositionComponent(this);
         new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
-
         new AIComponent(
             this,
-            new CollideAI(0f),
+            new CombatAI(2, combatFight),
             new PatrouilleWalk(3f,
                 4,
                 1000,
                 PatrouilleWalk.MODE.BACK_AND_FORTH),
-            new RangeTransition(2f));
+            new RangeTransition(2));
 
-        setupVelocityComponent();
-        setupAnimationComponent();
+
         this.lifePoints += levelDepth * 0.5;
         this.attackDamage += levelDepth* 0.3;
         this.xSpeed += levelDepth*0.02;
@@ -101,6 +111,14 @@ public class Demon extends Monster {
     Da können dann bestimmte Anweisungen ausgeführt werden.
     */
     public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {
+    }
+
+    private void setupMeleeSkill() {
+        skillComponent.addSkill(
+            combatFight =
+                new Skill(
+                    new Combat(1,pathToIdleLeft,pathToRunRight),2F));
+
     }
 
     /*
