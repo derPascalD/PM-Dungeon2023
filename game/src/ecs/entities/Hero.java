@@ -129,11 +129,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         xpComponent = new XPComponent(this, this);
     }
 
-    private void setupHealthComponent() {
-
-        healthComponent = new HealthComponent(this, 100, this, hitAnimation(), null);
-
-    }
+  
 
 
     private void setupVelocityComponent() {
@@ -219,6 +215,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     }
 
 
+
     /**
      * @return Return the Second Skill
      */
@@ -242,7 +239,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
     public HealthComponent getHealthComponent() {
         return healthComponent;
-    }
+
+    
+      
 
 
     /**

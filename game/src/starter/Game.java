@@ -201,6 +201,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         createItems();
 
+
+ 
+
     }
 
     private void manageEntitiesSets() {
