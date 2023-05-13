@@ -30,9 +30,9 @@ public class Demon extends Monster {
     public Demon(int levelDepth) {
         super();
         this.attackDamage = 1;
-        this.lifePoints = 8;
-        this.xSpeed = 0.1f;
-        this.ySpeed = 0.1f;
+        this.lifePoints = 10;
+        this.xSpeed = 0.05f;
+        this.ySpeed = 0.05f;
         this.diagonal = false;
         this.pathToIdleLeft = "monster/demon/idleLeft";
         this.pathToIdleRight = "monster/demon/idleRight";
@@ -44,7 +44,7 @@ public class Demon extends Monster {
 
         health = new HealthComponent(this, 8, this, hit, die);
         skillComponent = new SkillComponent(this);
-        setupMeleeSkill();
+        setupCombatSkill();
         setupVelocityComponent();
         setupAnimationComponent();
 
@@ -53,7 +53,7 @@ public class Demon extends Monster {
         new AIComponent(
                 this,
                 new CombatAI(2, combatFight),
-                new PatrouilleWalk(3f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
+                new PatrouilleWalk(2f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
                 new RangeTransition(2));
 
         this.lifePoints += levelDepth * 0.5;
@@ -94,7 +94,7 @@ public class Demon extends Monster {
      */
     public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {}
 
-    private void setupMeleeSkill() {
+    private void setupCombatSkill() {
         skillComponent.addSkill(
                 combatFight = new Skill(new Combat(1, pathToIdleLeft, pathToRunRight), 2F));
     }

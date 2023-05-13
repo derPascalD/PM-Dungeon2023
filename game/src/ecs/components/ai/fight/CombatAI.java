@@ -41,14 +41,6 @@ public class CombatAI implements IFightAI {
             AITools.move(entity, path);
             timeSinceLastUpdate = delay;
             fightSkill.execute(entity);
-        } else {
-            // check if new pathing update
-            if (timeSinceLastUpdate >= delay) {
-                path = AITools.calculatePathToHero(entity);
-                timeSinceLastUpdate = -1;
-            }
-            timeSinceLastUpdate++;
-            AITools.move(entity, path);
         }
     }
 }
