@@ -6,12 +6,19 @@ import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CollideAI;
+import ecs.components.ai.fight.CombatAI;
 import ecs.components.ai.idle.GoToHero;
 import ecs.components.ai.transition.RangeTransition;
+import ecs.components.skill.Combat;
+import ecs.components.skill.Skill;
+import ecs.components.skill.SkillComponent;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class Skeleton extends Monster {
+
+    private Skill combatFight;
+    private SkillComponent skillComponent;
 
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
@@ -36,8 +43,14 @@ public class Skeleton extends Monster {
 
         new PositionComponent(this);
         new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+        skillComponent = new SkillComponent(this);
+        setupCombatSkill();
 
-        new AIComponent(this, new CollideAI(0f), new GoToHero(2), new RangeTransition(1f));
+        new AIComponent(
+            this,
+            new CombatAI(1,combatFight),
+            new GoToHero(2),
+            new RangeTransition(1f));
 
         this.hit = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
@@ -83,6 +96,10 @@ public class Skeleton extends Monster {
      */
     public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {}
 
+    private void setupCombatSkill() {
+        skillComponent.addSkill(
+            combatFight = new Skill(new Combat(1, pathToIdleLeft, pathToRunRight), 2F));
+    }
     /*
      As soon as the entity dies, the content of the function is executed.
     */

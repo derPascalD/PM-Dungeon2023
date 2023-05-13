@@ -5,6 +5,8 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
+import ecs.entities.Monsters.Monster;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
@@ -19,6 +21,8 @@ public abstract class CombatAttackSkill implements ISkillFunction {
     private Point weaponStartPoint;
 
     private Animation currentAnimation;
+    private Point checkPointRight;
+    private Point getCheckPointLeft;
 
     public CombatAttackSkill(
             String pathToTexturesOfCombatLeft,
@@ -89,25 +93,65 @@ public abstract class CombatAttackSkill implements ISkillFunction {
                                             Game.removeEntity(weapon);
                                         });
                     }
+
                     if (b != entity && ac.getCurrentAnimation() == ac.getIdleRight()) {
-                        b.getComponent(VelocityComponent.class)
+                        b.getComponent(PositionComponent.class)
                                 .ifPresent(
                                         pc -> {
-                                            ((VelocityComponent) pc)
-                                                    .setCurrentXVelocity(
-                                                            0.5F
-                                                                    + ((VelocityComponent) pc)
-                                                                            .getXVelocity());
+                                            checkPointRight =
+                                                    new Point(
+                                                            ((PositionComponent) pc).getPosition().x
+                                                                    + 0.5F,
+                                                            ((PositionComponent) pc)
+                                                                    .getPosition()
+                                                                    .y);
+                                            if (Game.currentLevel
+                                                            .getTileAt(
+                                                                    checkPointRight.toCoordinate())
+                                                            .isAccessible()
+                                                    && (b instanceof Monster
+                                                            || b instanceof Hero)) {
+                                                ((PositionComponent) pc)
+                                                        .setPosition(
+                                                                new Point(
+                                                                        ((PositionComponent) pc)
+                                                                                        .getPosition()
+                                                                                        .x
+                                                                                + 0.5F,
+                                                                        ((PositionComponent) pc)
+                                                                                .getPosition()
+                                                                                .y));
+                                            } else {
+                                            }
                                         });
-                    } else if (b != entity && ac.getCurrentAnimation() == ac.getIdleLeft()) {
-                        b.getComponent(VelocityComponent.class)
+                    } else if (b != entity
+                            && ac.getCurrentAnimation() == ac.getIdleLeft()
+                            && (b instanceof Monster || b instanceof Hero)) {
+                        b.getComponent(PositionComponent.class)
                                 .ifPresent(
                                         pc -> {
-                                            ((VelocityComponent) pc)
-                                                    .setCurrentXVelocity(
-                                                            -0.5F
-                                                                    + ((VelocityComponent) pc)
-                                                                            .getXVelocity());
+                                            getCheckPointLeft =
+                                                    new Point(
+                                                            ((PositionComponent) pc).getPosition().x
+                                                                    - 0.5F,
+                                                            ((PositionComponent) pc)
+                                                                    .getPosition()
+                                                                    .y);
+                                            if (Game.currentLevel
+                                                    .getTileAt(getCheckPointLeft.toCoordinate())
+                                                    .isAccessible()) {
+                                                ((PositionComponent) pc)
+                                                        .setPosition(
+                                                                new Point(
+                                                                        ((PositionComponent) pc)
+                                                                                        .getPosition()
+                                                                                        .x
+                                                                                - 0.5F,
+                                                                        ((PositionComponent) pc)
+                                                                                .getPosition()
+                                                                                .y));
+                                            } else {
+                                            }
                                         });
                     }
                 };

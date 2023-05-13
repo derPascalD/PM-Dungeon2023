@@ -5,16 +5,22 @@ import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
+import ecs.components.ai.fight.CombatAI;
 import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.PatrouilleWalk;
 import ecs.components.ai.transition.RangeTransition;
+import ecs.components.skill.Combat;
 import ecs.components.skill.Skill;
+import ecs.components.skill.SkillComponent;
 import ecs.components.skill.Sword;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class PumpkinKiller extends Monster {
 
+
+    private Skill combatFight;
+    private SkillComponent skillComponent;
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
      * The monsters, depending on the level depth, have more life, give more damage and higher
@@ -39,9 +45,12 @@ public class PumpkinKiller extends Monster {
         new PositionComponent(this);
         new HealthComponent(this);
 
+        skillComponent = new SkillComponent(this);
+        setupCombatSkill();
+
         new AIComponent(
                 this,
-                new MeleeAI(5, new Skill(new Sword(1), 1)),
+                new CombatAI(2,combatFight),
                 new PatrouilleWalk(4f, 4, 2000, PatrouilleWalk.MODE.RANDOM),
                 new RangeTransition(2f));
 
@@ -89,7 +98,10 @@ public class PumpkinKiller extends Monster {
      * kollidieren. Da können dann bestimmte Anweisungen ausgeführt werden.
      */
     public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {}
-
+    private void setupCombatSkill() {
+        skillComponent.addSkill(
+            combatFight = new Skill(new Combat(1, pathToIdleLeft, pathToRunRight), 2F));
+    }
     /*
     As soon as the entity dies, the content of the function is executed.
      */
