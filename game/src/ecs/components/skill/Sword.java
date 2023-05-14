@@ -4,7 +4,7 @@ import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import tools.Point;
 
-public class Sword extends CombatAttackSkill {
+public class Sword extends CombatAttackSkills {
     public Sword(int damage) {
         super(
                 "character/knight/attackLeft/",
