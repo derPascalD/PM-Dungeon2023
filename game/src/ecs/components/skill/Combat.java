@@ -4,7 +4,7 @@ import ecs.damage.Damage;
 import ecs.damage.DamageType;
 import tools.Point;
 
-public class Combat extends CombatAttackSkill {
+public class Combat extends CombatAttackSkills {
     public Combat(int damage, String combatLeft, String combatRight) {
         super(
                 "animation/combat.png",

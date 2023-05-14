@@ -11,45 +11,33 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
-public abstract class CombatAttackSkill implements ISkillFunction {
+public abstract class CombatAttackSkills implements ISkillFunction {
 
-    private String pathToTexturesOfCombatRight;
-    private String pathToTexturesOfCombatLeft;
+    private String pathCombatRight;
+    private String pathCombatLeft;
     private float combatRange;
-    private Point hitboxSize;
+    private Point hitBoxSize;
     private Damage combatDamage;
+    private Point checkSetPoint;
     private Point weaponStartPoint;
 
-    private Animation currentAnimation;
-    private Point checkPointRight;
-    private Point getCheckPointLeft;
-
-    public CombatAttackSkill(
-            String pathToTexturesOfCombatLeft,
-            String pathToTexturesOfCombatRight,
-            Point hitboxSize,
+    public CombatAttackSkills(
+            String pathCombatLeft,
+            String pathCombatRight,
+            Point hitBoxSize,
             Damage combatDamage,
             float combatRange) {
-        this.pathToTexturesOfCombatRight = pathToTexturesOfCombatRight;
-        this.pathToTexturesOfCombatLeft = pathToTexturesOfCombatLeft;
-        this.hitboxSize = hitboxSize;
+        this.pathCombatRight = pathCombatRight;
+        this.pathCombatLeft = pathCombatLeft;
+        this.hitBoxSize = hitBoxSize;
         this.combatDamage = combatDamage;
         this.combatRange = combatRange;
     }
 
-    public CombatAttackSkill(
-            String pathToTexturesOfCombatLeft,
-            String pathToTexturesOfCombatRight,
-            Point hitboxSize,
-            Damage combatDamage) {
-        this.pathToTexturesOfCombatRight = pathToTexturesOfCombatRight;
-        this.pathToTexturesOfCombatLeft = pathToTexturesOfCombatLeft;
-        this.hitboxSize = hitboxSize;
-        this.combatDamage = combatDamage;
-    }
 
     @Override
     public void execute(Entity entity) {
+        Animation currentAnimation;
         Entity weapon = new Entity();
         PositionComponent epc =
                 (PositionComponent)
@@ -65,10 +53,10 @@ public abstract class CombatAttackSkill implements ISkillFunction {
 
         if (ac.getCurrentAnimation() == ac.getIdleLeft()) {
             weaponStartPoint = new Point(epc.getPosition().x - 1, epc.getPosition().y);
-            currentAnimation = AnimationBuilder.buildAnimation(pathToTexturesOfCombatLeft);
+            currentAnimation = AnimationBuilder.buildAnimation(pathCombatLeft);
         } else if (ac.getCurrentAnimation() == ac.getIdleRight()) {
             weaponStartPoint = new Point(epc.getPosition().x + 0.2F, epc.getPosition().y);
-            currentAnimation = AnimationBuilder.buildAnimation(pathToTexturesOfCombatRight);
+            currentAnimation = AnimationBuilder.buildAnimation(pathCombatRight);
         } else {
             return;
         }
@@ -85,20 +73,30 @@ public abstract class CombatAttackSkill implements ISkillFunction {
 
         ICollide collide =
                 (a, b, from) -> {
-                    if (b != entity) {
+                    if (b != entity && b instanceof Hero) {
                         b.getComponent(HealthComponent.class)
                                 .ifPresent(
                                         hc -> {
                                             ((HealthComponent) hc).receiveHit(combatDamage);
-                                            Game.removeEntity(weapon);
+                                            System.out.println("ONeB ist "+entity.getClass().getSimpleName());
+                                            System.out.println(((HealthComponent) hc).getCurrentHealthpoints());
+
                                         });
+                    }
+                    if (b != entity && b instanceof Monster) {
+                        b.getComponent(HealthComponent.class)
+                            .ifPresent(
+                                hc -> {
+                                    ((HealthComponent) hc).receiveHit(combatDamage);
+                                    System.out.println("TwoB ist "+entity.getClass().getSimpleName());
+                                });
                     }
 
                     if (b != entity && ac.getCurrentAnimation() == ac.getIdleRight()) {
                         b.getComponent(PositionComponent.class)
                                 .ifPresent(
                                         pc -> {
-                                            checkPointRight =
+                                            checkSetPoint =
                                                     new Point(
                                                             ((PositionComponent) pc).getPosition().x
                                                                     + 0.5F,
@@ -107,7 +105,7 @@ public abstract class CombatAttackSkill implements ISkillFunction {
                                                                     .y);
                                             if (Game.currentLevel
                                                             .getTileAt(
-                                                                    checkPointRight.toCoordinate())
+                                                                    checkSetPoint.toCoordinate())
                                                             .isAccessible()
                                                     && (b instanceof Monster
                                                             || b instanceof Hero)) {
@@ -130,7 +128,7 @@ public abstract class CombatAttackSkill implements ISkillFunction {
                         b.getComponent(PositionComponent.class)
                                 .ifPresent(
                                         pc -> {
-                                            getCheckPointLeft =
+                                            checkSetPoint =
                                                     new Point(
                                                             ((PositionComponent) pc).getPosition().x
                                                                     - 0.5F,
@@ -138,7 +136,7 @@ public abstract class CombatAttackSkill implements ISkillFunction {
                                                                     .getPosition()
                                                                     .y);
                                             if (Game.currentLevel
-                                                    .getTileAt(getCheckPointLeft.toCoordinate())
+                                                    .getTileAt(checkSetPoint.toCoordinate())
                                                     .isAccessible()) {
                                                 ((PositionComponent) pc)
                                                         .setPosition(
@@ -156,6 +154,6 @@ public abstract class CombatAttackSkill implements ISkillFunction {
                     }
                 };
 
-        new HitboxComponent(weapon, new Point(0.25f, 0.25f), hitboxSize, collide, null);
+        new HitboxComponent(weapon, new Point(0.25f, 0.25f), hitBoxSize, collide, null);
     }
 }

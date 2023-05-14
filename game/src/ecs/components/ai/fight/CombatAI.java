@@ -5,12 +5,9 @@ import ecs.components.ai.AITools;
 import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
-import tools.Constants;
 
 public class CombatAI implements IFightAI {
     private final float attackRange;
-    private final int delay = Constants.FRAME_RATE;
-    private int timeSinceLastUpdate = 0;
     private final Skill fightSkill;
     private GraphPath<Tile> path;
 
@@ -39,7 +36,6 @@ public class CombatAI implements IFightAI {
             // the faster pathing once a certain range is reached
             path = AITools.calculatePathToHero(entity);
             AITools.move(entity, path);
-            timeSinceLastUpdate = delay;
             fightSkill.execute(entity);
         }
     }
