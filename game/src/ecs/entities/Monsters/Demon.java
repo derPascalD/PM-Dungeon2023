@@ -42,7 +42,7 @@ public class Demon extends Monster {
         this.hit = AnimationBuilder.buildAnimation("monster/demon/hit");
         this.die = AnimationBuilder.buildAnimation("monster/demon/hit");
 
-        health = new HealthComponent(this, 8, this, hit, die);
+        health = new HealthComponent(this, lifePoints, this, hit, die);
         skillComponent = new SkillComponent(this);
         setupCombatSkill();
         setupVelocityComponent();
@@ -52,7 +52,7 @@ public class Demon extends Monster {
         new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
         new AIComponent(
                 this,
-                new CombatAI(2, combatFight),
+                new CombatAI(1.5F, combatFight),
                 new PatrouilleWalk(2f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
                 new RangeTransition(2));
 
@@ -96,7 +96,12 @@ public class Demon extends Monster {
 
     private void setupCombatSkill() {
         skillComponent.addSkill(
-                combatFight = new Skill(new Combat(1, pathToIdleLeft, pathToRunRight), 2F));
+                combatFight =
+                    new Skill(
+                        new Combat(1,
+                            "animation/standardCombat.png",
+                            "animation/standardCombat.png"
+                        ), 2F));
     }
 
     /*

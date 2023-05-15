@@ -34,7 +34,7 @@ public class Skeleton extends Monster {
         this.attackDamage = 1;
         this.xSpeed = 0.04f;
         this.ySpeed = 0.04f;
-        this.lifePoints = 6;
+        this.lifePoints = 5;
         this.diagonal = false;
         this.pathToIdleLeft = "monster/skeleton/idleLeft";
         this.pathToIdleRight = "monster/skeleton/idleRight";
@@ -55,7 +55,7 @@ public class Skeleton extends Monster {
         this.hit = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
 
-        health = new HealthComponent(this, 8, this, hit, die);
+        health = new HealthComponent(this, lifePoints, this, hit, die);
         setupVelocityComponent();
         setupAnimationComponent();
         this.lifePoints += levelDepth * 0.5;
@@ -98,7 +98,12 @@ public class Skeleton extends Monster {
 
     private void setupCombatSkill() {
         skillComponent.addSkill(
-            combatFight = new Skill(new Combat(1, pathToIdleLeft, pathToRunRight), 2F));
+            combatFight =
+                new Skill(
+                    new Combat(1,
+                        "animation/standardCombat.png",
+                        "animation/standardCombat.png"
+                    ), 2F));
     }
     /*
      As soon as the entity dies, the content of the function is executed.

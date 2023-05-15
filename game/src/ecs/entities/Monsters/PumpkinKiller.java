@@ -56,7 +56,7 @@ public class PumpkinKiller extends Monster {
 
         this.hit = AnimationBuilder.buildAnimation("monster/pumpkinKiller/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/pumpkinKiller/idleLeft");
-        health = new HealthComponent(this, 8, this, hit, die);
+        health = new HealthComponent(this, lifePoints, this, hit, die);
 
         setupVelocityComponent();
         setupAnimationComponent();
@@ -100,7 +100,12 @@ public class PumpkinKiller extends Monster {
     public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {}
     private void setupCombatSkill() {
         skillComponent.addSkill(
-            combatFight = new Skill(new Combat(1, pathToIdleLeft, pathToRunRight), 2F));
+            combatFight =
+                new Skill(
+                    new Combat(1,
+                        "animation/standardCombat.png",
+                        "animation/standardCombat.png"
+                    ), 2F));
     }
     /*
     As soon as the entity dies, the content of the function is executed.

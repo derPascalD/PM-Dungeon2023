@@ -5,12 +5,11 @@ import ecs.damage.DamageType;
 import tools.Point;
 
 public class Sword extends CombatAttackSkills {
-    public Sword(int damage) {
+    public Sword(int damage, String combatLeft, String combatRight) {
         super(
-                "character/knight/attackLeft/",
-                "character/knight/attackRight/",
-                new Point(1, 1),
-                new Damage(damage, DamageType.PHYSICAL, null),
-                0.6F);
+                combatLeft,
+                combatRight,
+                new Damage(damage, DamageType.PHYSICAL, null));
+
     }
 }
