@@ -7,10 +7,8 @@ import tools.Point;
 public class Combat extends CombatAttackSkills {
     public Combat(int damage, String combatLeft, String combatRight) {
         super(
-                "animation/combat.png",
-                "animation/combat.png",
-                new Point(10, 10),
-                new Damage(damage, DamageType.PHYSICAL, null),
-                0F);
+            combatLeft,
+            combatRight,
+            new Damage(damage, DamageType.PHYSICAL, null));
     }
 }

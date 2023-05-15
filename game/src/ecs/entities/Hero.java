@@ -95,7 +95,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     }
 
     private void setupMeleeSkill() {
-        skillComponent.addSkill(combatSkill = new Skill(new Sword(1), 1F));
+        skillComponent.addSkill(combatSkill =
+            new Skill(
+                new Sword(1,
+                    "character/knight/attackLeft/",
+                    "character/knight/attackRight/"
+                ), 1F));
         playableComponent.setCombatSkill(combatSkill);
     }
 
