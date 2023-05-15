@@ -13,6 +13,7 @@ import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
 import graphic.Animation;
 import graphic.IngameUI;
+import java.util.ArrayList;
 import level.elements.tile.Tile;
 
 /**
@@ -21,31 +22,26 @@ import level.elements.tile.Tile;
  */
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
 
-    private final int fireballCoolDown = 0;
+    private final int fireballCoolDown = 2;
     private final int StunningStrikeCoolDown = 3;
     private final int SpeedSkillCoolDown = 20;
-
-    // Original Speed from Hero
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
+    private final String pathToIdleLeft = "knight/idleLeft";
+    private final String pathToIdleRight = "knight/idleRight";
+    private final String pathToRunLeft = "knight/runLeft";
+    private final String pathToRunRight = "knight/runRight";
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
-
-    private String pathToIdleLeft = "knight/idleLeft";
-    private String pathToIdleRight = "knight/idleRight";
-    private String pathToRunLeft = "knight/runLeft";
-    private String pathToRunRight = "knight/runRight";
-
-    // Skills from Hero
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
-
     private Skill combatSkill;
 
-    protected InventoryComponent inventory;
+    private ArrayList<Entity> deadMonsters;
 
+    protected InventoryComponent inventory;
     private SkillComponent skillComponent;
-    private PlayableComponent playableComponent;
+    private final PlayableComponent playableComponent;
     private XPComponent xpComponent;
 
     private HealthComponent healthComponent;
@@ -63,7 +59,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupFireballSkill();
         setupXPComponent();
         setupMeleeSkill();
-
         setupInventoryComponent();
         setupDamageComponent();
     }
@@ -79,12 +74,18 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         playableComponent.setSkillSlot2(secondSkill);
     }
 
+    /*
+    Adds the new StunningStrike skill to allow the Hero to run faster for a short time.
+     */
     private void setupStunningStrikeSkill() {
         skillComponent.addSkill(
                 thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
         playableComponent.setSkillSlot3(thirdSkill);
     }
 
+    /*
+    Adds the new Fireball skill to allow the Hero to run faster for a short time.
+     */
     private void setupFireballSkill() {
         skillComponent.addSkill(
                 firstSkill =
@@ -94,13 +95,18 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         playableComponent.setSkillSlot1(firstSkill);
     }
 
+    /*
+    Adds the new Melee skill to allow the Hero to run faster for a short time.
+     */
     private void setupMeleeSkill() {
-        skillComponent.addSkill(combatSkill =
-            new Skill(
-                new Sword(1,
-                    "character/knight/attackLeft/",
-                    "character/knight/attackRight/"
-                ), 1F));
+        skillComponent.addSkill(
+                combatSkill =
+                        new Skill(
+                                new Sword(
+                                        1,
+                                        "character/knight/attackLeft/",
+                                        "character/knight/attackRight/"),
+                                1F));
         playableComponent.setCombatSkill(combatSkill);
     }
 
@@ -246,6 +252,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
      */
     public float getySpeed() {
         return ySpeed;
+    }
+
+    public ArrayList<Entity> getDeadMonsters() {
+        return deadMonsters;
     }
 
     /*

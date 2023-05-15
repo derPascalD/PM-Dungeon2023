@@ -15,7 +15,7 @@ import level.elements.tile.Tile;
 public class Demon extends Monster {
 
     private Skill combatFight;
-    private SkillComponent skillComponent;
+    private final SkillComponent skillComponent;
 
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
@@ -49,7 +49,7 @@ public class Demon extends Monster {
         setupAnimationComponent();
 
         new PositionComponent(this);
-        new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+        new HitboxComponent(this, this, this::onCollisionLeave);
         new AIComponent(
                 this,
                 new CombatAI(1.5F, combatFight),
@@ -60,16 +60,6 @@ public class Demon extends Monster {
         this.attackDamage += levelDepth * 0.3;
         this.xSpeed += levelDepth * 0.02;
         this.ySpeed += levelDepth * 0.02;
-
-        System.out.println(
-                this.getClass().getName() + " create with: " + this.lifePoints + " Healthpoints.");
-        System.out.println(
-                this.getClass().getName()
-                        + " create with: "
-                        + this.attackDamage
-                        + " AttackDamage.");
-        System.out.println(this.getClass().getName() + " " + this.xSpeed + " xSpeed.");
-        System.out.println(this.getClass().getName() + " " + this.ySpeed + " ySpeed.");
     }
 
     /*
@@ -97,20 +87,19 @@ public class Demon extends Monster {
     private void setupCombatSkill() {
         skillComponent.addSkill(
                 combatFight =
-                    new Skill(
-                        new Combat(1,
-                            "animation/standardCombat.png",
-                            "animation/standardCombat.png"
-                        ), 2F));
+                        new Skill(
+                                new Combat(
+                                        1,
+                                        "animation/standardCombat.png",
+                                        "animation/standardCombat.png"),
+                                2F));
     }
 
     /*
      As soon as the entity dies, the content of the function is executed.
     */
     @Override
-    public void onDeath(Entity entity) {
-        System.out.println("Demon is dead");
-    }
+    public void onDeath(Entity entity) {}
 
     @Override
     public void setLifePoints(int lifePoints) {

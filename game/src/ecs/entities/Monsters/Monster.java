@@ -15,7 +15,6 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
     protected Animation hit;
     protected Animation die;
     protected HealthComponent health;
-    protected HitboxComponent hitBox;
     protected int lifePoints;
     protected float xSpeed;
     protected float ySpeed;

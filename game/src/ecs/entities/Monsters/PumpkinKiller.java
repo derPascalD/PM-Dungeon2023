@@ -6,21 +6,19 @@ import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CombatAI;
-import ecs.components.ai.fight.MeleeAI;
 import ecs.components.ai.idle.PatrouilleWalk;
 import ecs.components.ai.transition.RangeTransition;
 import ecs.components.skill.Combat;
 import ecs.components.skill.Skill;
 import ecs.components.skill.SkillComponent;
-import ecs.components.skill.Sword;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
 public class PumpkinKiller extends Monster {
 
-
     private Skill combatFight;
-    private SkillComponent skillComponent;
+    private final SkillComponent skillComponent;
+
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
      * The monsters, depending on the level depth, have more life, give more damage and higher
@@ -41,7 +39,7 @@ public class PumpkinKiller extends Monster {
         this.pathToIdleRight = "monster/pumpkinKiller/idleRight";
         this.pathToRunLeft = "monster/pumpkinKiller/runLeft";
         this.pathToRunRight = "monster/pumpkinKiller/runRight";
-        new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+        new HitboxComponent(this, this, this::onCollisionLeave);
         new PositionComponent(this);
         new HealthComponent(this);
 
@@ -50,7 +48,7 @@ public class PumpkinKiller extends Monster {
 
         new AIComponent(
                 this,
-                new CombatAI(2,combatFight),
+                new CombatAI(2, combatFight),
                 new PatrouilleWalk(4f, 4, 2000, PatrouilleWalk.MODE.RANDOM),
                 new RangeTransition(2f));
 
@@ -65,16 +63,6 @@ public class PumpkinKiller extends Monster {
         this.attackDamage += levelDepth * 0.3;
         this.xSpeed += levelDepth * 0.015;
         this.ySpeed += levelDepth * 0.015;
-
-        System.out.println(
-                this.getClass().getName() + " create with: " + this.lifePoints + " Healthpoints.");
-        System.out.println(
-                this.getClass().getName()
-                        + " create with: "
-                        + this.attackDamage
-                        + " AttackDamage.");
-        System.out.println(this.getClass().getName() + " " + this.xSpeed + " xSpeed.");
-        System.out.println(this.getClass().getName() + " " + this.ySpeed + " ySpeed.");
     }
 
     /*
@@ -98,22 +86,22 @@ public class PumpkinKiller extends Monster {
      * kollidieren. Da können dann bestimmte Anweisungen ausgeführt werden.
      */
     public void onCollision(Entity entity, Entity entity1, Tile.Direction direction) {}
+
     private void setupCombatSkill() {
         skillComponent.addSkill(
-            combatFight =
-                new Skill(
-                    new Combat(1,
-                        "animation/standardCombat.png",
-                        "animation/standardCombat.png"
-                    ), 2F));
+                combatFight =
+                        new Skill(
+                                new Combat(
+                                        1,
+                                        "animation/standardCombat.png",
+                                        "animation/standardCombat.png"),
+                                2F));
     }
     /*
     As soon as the entity dies, the content of the function is executed.
      */
     @Override
-    public void onDeath(Entity entity) {
-        System.out.println("PumpkinKiller is dead");
-    }
+    public void onDeath(Entity entity) {}
 
     public void setLifePoints(int lifePoints) {
         this.lifePoints = lifePoints;

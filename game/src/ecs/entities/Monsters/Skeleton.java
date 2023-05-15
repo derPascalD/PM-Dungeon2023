@@ -5,7 +5,6 @@ import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
 import ecs.components.ai.AIComponent;
-import ecs.components.ai.fight.CollideAI;
 import ecs.components.ai.fight.CombatAI;
 import ecs.components.ai.idle.GoToHero;
 import ecs.components.ai.transition.RangeTransition;
@@ -18,7 +17,7 @@ import level.elements.tile.Tile;
 public class Skeleton extends Monster {
 
     private Skill combatFight;
-    private SkillComponent skillComponent;
+    private final SkillComponent skillComponent;
 
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
@@ -42,15 +41,12 @@ public class Skeleton extends Monster {
         this.pathToRunRight = "monster/skeleton/runRight";
 
         new PositionComponent(this);
-        new HitboxComponent(this, this::onCollision, this::onCollisionLeave);
+        new HitboxComponent(this, this, this::onCollisionLeave);
         skillComponent = new SkillComponent(this);
         setupCombatSkill();
 
         new AIComponent(
-            this,
-            new CombatAI(1,combatFight),
-            new GoToHero(2),
-            new RangeTransition(1f));
+                this, new CombatAI(1, combatFight), new GoToHero(2), new RangeTransition(1f));
 
         this.hit = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
@@ -62,16 +58,6 @@ public class Skeleton extends Monster {
         this.attackDamage += levelDepth * 0.3;
         this.xSpeed += levelDepth * 0.005;
         this.ySpeed += levelDepth * 0.005;
-
-        System.out.println(
-                this.getClass().getName() + " create with: " + this.lifePoints + " Healthpoints.");
-        System.out.println(
-                this.getClass().getName()
-                        + " create with: "
-                        + this.attackDamage
-                        + " AttackDamage.");
-        System.out.println(this.getClass().getName() + " " + this.xSpeed + " xSpeed.");
-        System.out.println(this.getClass().getName() + " " + this.ySpeed + " ySpeed.");
     }
 
     /*
@@ -98,20 +84,19 @@ public class Skeleton extends Monster {
 
     private void setupCombatSkill() {
         skillComponent.addSkill(
-            combatFight =
-                new Skill(
-                    new Combat(1,
-                        "animation/standardCombat.png",
-                        "animation/standardCombat.png"
-                    ), 2F));
+                combatFight =
+                        new Skill(
+                                new Combat(
+                                        1,
+                                        "animation/standardCombat.png",
+                                        "animation/standardCombat.png"),
+                                2F));
     }
     /*
      As soon as the entity dies, the content of the function is executed.
     */
     @Override
-    public void onDeath(Entity entity) {
-        System.out.println("Skeleton is dead");
-    }
+    public void onDeath(Entity entity) {}
 
     @Override
     public void setLifePoints(int lifePoints) {
