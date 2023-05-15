@@ -66,6 +66,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                 .ifPresent(
                                         hc -> {
                                             ((HealthComponent) hc).receiveHit(combatDamage);
+                                            Game.removeEntity(weapon);
                                         });
                     }
 
