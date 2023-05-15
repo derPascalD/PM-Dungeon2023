@@ -12,15 +12,13 @@ public class CombatAI implements IFightAI {
     private GraphPath<Tile> path;
 
     /**
-     * English: Attacks the player if he is within the given range. Otherwise, it will move towards
-     * the player.
+     * English: Attacks the player if he is within the specified range.
      *
      * @param attackRange Range in which the attack skill should be executed
      * @param fightSkill Skill to be used when an attack is performed
      */
     /**
      * German: Greift den Spieler an, wenn er sich innerhalb der angegebenen Reichweite befindet.
-     * Andernfalls bewegt er sich auf den Spieler.
      *
      * @param attackRange Bereich, in dem der Angriffsskill ausgeführt werden soll
      * @param fightSkill Fertigkeit, die bei einem Angriff verwendet werden soll
@@ -30,10 +28,14 @@ public class CombatAI implements IFightAI {
         this.fightSkill = fightSkill;
     }
 
+    /**
+     * Once the Hero is in the area, the NPC attacks and performs the melee sent along.
+     *
+     * @param entity associated entity
+     */
     @Override
     public void fight(Entity entity) {
         if (AITools.playerInRange(entity, attackRange)) {
-            // the faster pathing once a certain range is reached
             path = AITools.calculatePathToHero(entity);
             AITools.move(entity, path);
             fightSkill.execute(entity);

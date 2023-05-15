@@ -5,8 +5,6 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
-import ecs.entities.Monsters.Monster;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
@@ -18,16 +16,11 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     private final Damage combatDamage;
     private Point checkSetPoint;
 
-    public CombatAttackSkills(
-            String pathCombatLeft,
-            String pathCombatRight,
-            Damage combatDamage) {
+    public CombatAttackSkills(String pathCombatLeft, String pathCombatRight, Damage combatDamage) {
         this.pathCombatRight = pathCombatRight;
         this.pathCombatLeft = pathCombatLeft;
         this.combatDamage = combatDamage;
-
     }
-
 
     @Override
     public void execute(Entity entity) {
@@ -47,7 +40,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         float leftRight;
         Point weaponStartPoint;
         if (ac.getCurrentAnimation() == ac.getIdleLeft()) {
-            weaponStartPoint = new Point(epc.getPosition().x-0.5F, epc.getPosition().y);
+            weaponStartPoint = new Point(epc.getPosition().x - 0.5F, epc.getPosition().y);
             currentAnimation = AnimationBuilder.buildAnimation(pathCombatLeft);
             leftRight = -1;
         } else if (ac.getCurrentAnimation() == ac.getIdleRight()) {
@@ -59,13 +52,12 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         }
         new PositionComponent(weapon, weaponStartPoint);
         new AnimationComponent(weapon, currentAnimation);
-        new VelocityComponent(weapon, (0.08F *leftRight), 0, currentAnimation, currentAnimation);
+        new VelocityComponent(weapon, (0.08F * leftRight), 0, currentAnimation, currentAnimation);
         // Position from the Weapon
         new ProjectileComponent(
                 weapon,
-            weaponStartPoint,
-                new Point(weaponStartPoint.x + (0.5F) *leftRight, weaponStartPoint.y));
-
+                weaponStartPoint,
+                new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
 
         ICollide collide =
                 (a, b, from) -> {
@@ -74,7 +66,6 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                 .ifPresent(
                                         hc -> {
                                             ((HealthComponent) hc).receiveHit(combatDamage);
-                                             Game.removeEntity(weapon);
                                         });
                     }
 
@@ -85,16 +76,13 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                             checkSetPoint =
                                                     new Point(
                                                             ((PositionComponent) pc).getPosition().x
-                                                                    +1F,
+                                                                    + 1F,
                                                             ((PositionComponent) pc)
                                                                     .getPosition()
                                                                     .y);
                                             if (Game.currentLevel
-                                                            .getTileAt(
-                                                                    checkSetPoint.toCoordinate())
-                                                            .isAccessible()
-                                                    && (b instanceof Monster
-                                                            || b instanceof Hero)) {
+                                                    .getTileAt(checkSetPoint.toCoordinate())
+                                                    .isAccessible()) {
                                                 ((PositionComponent) pc)
                                                         .setPosition(
                                                                 new Point(
@@ -107,9 +95,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                                                                 .y));
                                             }
                                         });
-                    } else if (b != entity
-                            && ac.getCurrentAnimation() == ac.getIdleLeft()
-                            && (b instanceof Monster || b instanceof Hero)) {
+                    } else if (b != entity && ac.getCurrentAnimation() == ac.getIdleLeft()) {
                         b.getComponent(PositionComponent.class)
                                 .ifPresent(
                                         pc -> {
@@ -120,13 +106,16 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                                             ((PositionComponent) pc)
                                                                     .getPosition()
                                                                     .y);
-                                            if (Game.currentLevel.getTileAt(checkSetPoint.toCoordinate()).isAccessible()) {
+                                            if (Game.currentLevel
+                                                    .getTileAt(checkSetPoint.toCoordinate())
+                                                    .isAccessible()) {
                                                 ((PositionComponent) pc)
                                                         .setPosition(
                                                                 new Point(
                                                                         ((PositionComponent) pc)
                                                                                         .getPosition()
-                                                                                        .x - 1F,
+                                                                                        .x
+                                                                                - 1F,
                                                                         ((PositionComponent) pc)
                                                                                 .getPosition()
                                                                                 .y));

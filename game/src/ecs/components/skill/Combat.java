@@ -2,13 +2,10 @@ package ecs.components.skill;
 
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
-import tools.Point;
 
+/** Creation of a melee attack with the animations and damage of melee combat */
 public class Combat extends CombatAttackSkills {
     public Combat(int damage, String combatLeft, String combatRight) {
-        super(
-            combatLeft,
-            combatRight,
-            new Damage(damage, DamageType.PHYSICAL, null));
+        super(combatLeft, combatRight, new Damage(damage, DamageType.PHYSICAL, null));
     }
 }
