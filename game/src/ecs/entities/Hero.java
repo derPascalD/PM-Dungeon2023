@@ -56,7 +56,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupHealthComponent();
         setupHitboxComponent();
         setupSkillComponent();
-        setupFireballSkill();
         setupXPComponent();
         setupMeleeSkill();
         setupInventoryComponent();
@@ -117,16 +116,17 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
      */
     @Override
     public void onLevelUp(long nextLevel) {
-        System.out.println("Level: " + nextLevel);
-        System.out.println("Points: " + xpComponent.getCurrentXP());
-        System.out.println("Points to next Level: " + xpComponent.getXPToNextLevel());
-        if (nextLevel == 2) {
+        if (nextLevel == 1) {
+            setupFireballSkill();
+            IngameUI.updateSkillsBar("Fireball", "-", "-");
+        }
+            if (nextLevel == 2) {
             setupSpeedSkill();
-            IngameUI.updateSkillsBar("-", "More Speed", "-");
+            IngameUI.updateSkillsBar("Fireball", "More Speed", "-");
         }
         if (nextLevel == 3) {
             setupStunningStrikeSkill();
-            IngameUI.updateSkillsBar("-", "More Speed", "StunningStrike");
+            IngameUI.updateSkillsBar("Fireball", "More Speed", "StunningStrike");
         }
     }
 
@@ -176,8 +176,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     /** As soon as the entity dies, the content of the function is executed. */
     @Override
     public void onDeath(Entity entity) {
-        System.out.println("Hero is dead!");
-        System.exit(0);
     }
 
     /**

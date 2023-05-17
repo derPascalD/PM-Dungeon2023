@@ -9,6 +9,11 @@ import graphic.Animation;
 import starter.Game;
 import tools.Point;
 
+/**
+ * In the class, the melee behavior is managed for the entities.
+ * Attacks always take place in x direction, either left or right.
+ * The class is given a melee and then edited and implemented here in the class.
+ */
 public abstract class CombatAttackSkills implements ISkillFunction {
 
     private final String pathCombatRight;
@@ -22,6 +27,10 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         this.combatDamage = combatDamage;
     }
 
+    /**
+     *
+     * @param entity which uses the skill
+     */
     @Override
     public void execute(Entity entity) {
         Animation currentAnimation;
