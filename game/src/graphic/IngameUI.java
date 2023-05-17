@@ -15,6 +15,7 @@ import tools.Point;
 
 public class IngameUI<T extends Actor> extends ScreenController<T> {
 
+    private static ScreenText attackButton;
     private static ScreenText hpScreen;
     private static ScreenText skillsScreen;
 
@@ -29,33 +30,36 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         hero = (Hero) Game.getHero().get();
         setupHPBar();
         setupSkill();
+        attackButtonHero();
     }
 
-    /** Visualizes the Healthpoints of the Player on the Screen */
+    /**
+     * Visualizes the Healthpoints of the Player on the Screen
+     */
     private void setupHPBar() {
 
         hp = (HealthComponent) hero.getComponent(HealthComponent.class).get();
         hpScreen =
-                new ScreenText(
-                        "Healthpoints: " + hp.getCurrentHealthpoints(),
-                        new Point(10, 10),
-                        2,
-                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.RED)
-                                .build());
+            new ScreenText(
+                "Healthpoints: " + hp.getCurrentHealthpoints(),
+                new Point(10, 10),
+                2,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.RED)
+                    .build());
         add((T) hpScreen);
     }
 
     private void setupSkill() {
 
         skillsScreen =
-                new ScreenText(
-                        "-- Skills unlocked --\n 1. " + "-" + "\n 2. " + "-" + "\n 3. " + "-",
-                        new Point(Constants.WINDOW_WIDTH - 130, 0),
-                        3,
-                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.MAGENTA)
-                                .build());
+            new ScreenText(
+                "-- Skills unlocked --\n 1. " + "-" + "\n 2. " + "-" + "\n 3. " + "-",
+                new Point(Constants.WINDOW_WIDTH - 130, 0),
+                3,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.MAGENTA)
+                    .build());
 
         add((T) skillsScreen);
     }
@@ -71,6 +75,22 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
 
     public static void updateSkillsBar(String skill1, String skill2, String skill3) {
         skillsScreen.setText(
-                "-- Skills unlocked --\n 1. " + skill1 + "\n 2. " + skill2 + "\n 3. " + skill3);
+            "-- Skills unlocked --\n 1. " + skill1 + "\n 2. " + skill2 + "\n 3. " + skill3);
+    }
+
+    /*
+    Adds the melee button in the image
+     */
+    private void attackButtonHero() {
+        attackButton =
+            new ScreenText(
+                "Attack: R",
+                new Point(Constants.WINDOW_WIDTH-70, Constants.WINDOW_HEIGHT-20),
+                2,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.GREEN)
+                    .build());
+        add((T) attackButton);
+
     }
 }
