@@ -120,7 +120,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
             setupFireballSkill();
             IngameUI.updateSkillsBar("Fireball", "-", "-");
         }
-            if (nextLevel == 2) {
+        if (nextLevel == 2) {
             setupSpeedSkill();
             IngameUI.updateSkillsBar("Fireball", "More Speed", "-");
         }
@@ -175,8 +175,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /** As soon as the entity dies, the content of the function is executed. */
     @Override
-    public void onDeath(Entity entity) {
-    }
+    public void onDeath(Entity entity) {}
 
     /**
      * @return Return the current data path of the Hero Animation left
