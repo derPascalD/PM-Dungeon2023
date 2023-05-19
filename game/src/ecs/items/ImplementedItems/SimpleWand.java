@@ -43,21 +43,11 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop,IOnUse {
      */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
-        if(whoCollides instanceof Hero) {
-            InventoryComponent inventoryCompnent =
-                (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
-
-            if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(this);
-                DamageComponent damageComponent =
-                    (DamageComponent) whoCollides.getComponent(DamageComponent.class).get();
-                damageComponent.setAttackDamage(damageComponent.getAttackDamage()+5);
-                Game.removeEntity(WorldItemEntity);
-                System.out.println(this.getItemName() + " collected");
-            } else {
-                System.out.println("Inventory full, didnt pick up the Item");
-            }
-        }
+       if(defaultOnCollect(WorldItemEntity, whoCollides)) {
+            DamageComponent damageComponent =
+                (DamageComponent) whoCollides.getComponent(DamageComponent.class).get();
+            damageComponent.setAttackDamage(damageComponent.getAttackDamage()+5);
+       }
     }
 
     @Override

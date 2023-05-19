@@ -26,6 +26,7 @@ public class WorldItemBuilder {
                 (a, b, direction) -> {
                     itemData.triggerCollect(a, b);
                 });
+        component.setiCollideLeave(null);
         return droppedItem;
     }
 }

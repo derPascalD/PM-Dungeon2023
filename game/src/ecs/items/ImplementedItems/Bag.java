@@ -86,18 +86,7 @@ public class Bag extends ItemData implements IOnCollect, IOnUse,IOnDrop {
      */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
-        if(whoCollides instanceof Hero) {
-            InventoryComponent inventoryCompnent =
-                (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
-
-            if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(this);
-                Game.removeEntity(WorldItemEntity);
-                System.out.println(this.getItemName() + " collected");
-            } else {
-                System.out.println("Inventory full, didnt pick up the Item");
-            }
-        }
+        defaultOnCollect(WorldItemEntity, whoCollides);
     }
 
     @Override

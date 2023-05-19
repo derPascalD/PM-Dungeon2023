@@ -43,21 +43,11 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop,IOnUse {
      */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
-        if(whoCollides instanceof Hero) {
-            InventoryComponent inventoryCompnent =
-                (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
-
-            if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(this);
-                HealthComponent healthComponent =
-                    (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
-                healthComponent.setMaximalHealthpoints(healthComponent.getMaximalHealthpoints()+10);
-                healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
-                Game.removeEntity(WorldItemEntity);
-                System.out.println(this.getItemName() + " collected");
-            } else {
-                System.out.println("Inventory full, didnt pick up the Item");
-            }
+        if(defaultOnCollect(WorldItemEntity, whoCollides)) {
+            HealthComponent healthComponent =
+                (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
+            healthComponent.setMaximalHealthpoints(healthComponent.getMaximalHealthpoints()+10);
+            healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
         }
     }
 

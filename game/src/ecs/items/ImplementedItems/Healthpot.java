@@ -5,15 +5,17 @@ import ecs.components.HealthComponent;
 import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import ecs.items.*;
-import starter.Game;
 import tools.Point;
+
+import java.util.logging.Logger;
 
 /**
  * Can be used after collecting to gain 10 Healthpoints back
  */
 public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
+
+    private int healAmount = 0;
 
     /**
      * Creates a Healthpot item and spawns in the Level at a random spot
@@ -29,7 +31,7 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         this.setOnCollect(this);
         this.setOnDrop(this);
         this.setOnUse(this);
-
+        healAmount = 10;
         Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
         new PositionComponent(worldItemEntity);
     }
@@ -41,8 +43,8 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
     private void healHero(Entity e) {
         HealthComponent healthComponent =
             (HealthComponent) e.getComponent(HealthComponent.class).get();
-        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
-        System.out.println("Healpotion used, gained 10 HP");
+        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+healAmount);
+        Logger.getLogger(this.getClass().getName()).info("Player got healed for " + healAmount + " HP");
     }
 
     /**
@@ -52,30 +54,7 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
      */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
-        if(whoCollides instanceof Hero) {
-            InventoryComponent inventoryCompnent =
-                (InventoryComponent) whoCollides.getComponent(InventoryComponent.class).get();
-
-            // Adds Item to Bag, if Bag is in Inventory
-            for(ItemData item:inventoryCompnent.getItems()) {
-                if(item instanceof Bag) {
-                    Bag bag = (Bag)item;
-                    if(bag.addToBag(this)) {
-                        Game.removeEntity(WorldItemEntity);
-                        System.out.println(this.getItemName() + " collected");
-                        return;
-                    }
-                }
-            }
-
-            if (inventoryCompnent.getMaxSize() != inventoryCompnent.filledSlots()) {
-                inventoryCompnent.addItem(this);
-                Game.removeEntity(WorldItemEntity);
-                System.out.println(this.getItemName() + " collected");
-            } else {
-                System.out.println("Inventory full, didnt pick up the Item");
-            }
-        }
+        defaultOnCollect(WorldItemEntity, whoCollides);
     }
 
     @Override

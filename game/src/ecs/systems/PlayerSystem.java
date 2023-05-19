@@ -18,6 +18,8 @@ import ecs.items.ItemType;
 import ecs.tools.interaction.InteractionTool;
 import starter.Game;
 
+import java.util.logging.Logger;
+
 /**
  * Used to control the player
  */
@@ -115,7 +117,6 @@ public class PlayerSystem extends ECS_System {
                 return;
             }
         }
-        System.out.println("Hero has no Healpotions");
     }
 
     private KSData buildDataObject(PlayableComponent pc) {
