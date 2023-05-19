@@ -10,9 +10,9 @@ import starter.Game;
 import tools.Point;
 
 /**
- * In the class, the melee behavior is managed for the entities.
- * Attacks always take place in x direction, either left or right.
- * The class is given a melee and then edited and implemented here in the class.
+ * In the class, the melee behavior is managed for the entities. Attacks always take place in x
+ * direction, either left or right. The class is given a melee and then edited and implemented here
+ * in the class.
  */
 public abstract class CombatAttackSkills implements ISkillFunction {
 
@@ -21,6 +21,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     private final Damage combatDamage;
     private Point checkSetPoint;
 
+
     public CombatAttackSkills(String pathCombatLeft, String pathCombatRight, Damage combatDamage) {
         this.pathCombatRight = pathCombatRight;
         this.pathCombatLeft = pathCombatLeft;
@@ -28,6 +29,8 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     }
 
     /**
+     * In the method, the combat behavior is implemented.
+     * Depending on how the entity stands, the attack is executed differently.
      *
      * @param entity which uses the skill
      */
@@ -62,12 +65,64 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         new PositionComponent(weapon, weaponStartPoint);
         new AnimationComponent(weapon, currentAnimation);
         new VelocityComponent(weapon, (0.08F * leftRight), 0, currentAnimation, currentAnimation);
+
         // Position from the Weapon
         new ProjectileComponent(
                 weapon,
                 weaponStartPoint,
                 new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
 
+        ICollide collide =
+                (a, b, from) -> {
+                    if (b != entity && b.getComponent(HealthComponent.class).isPresent()) {
+                        HealthComponent hc =
+                                (HealthComponent)
+                                        b.getComponent(HealthComponent.class)
+                                                .orElseThrow(
+                                                        () ->
+                                                                new MissingComponentException(
+                                                                        "HealthComponent"));
+                        hc.receiveHit(combatDamage);
+                        Game.removeEntity(weapon);
+                        if (ac.getCurrentAnimation() == ac.getIdleRight()
+                                && b.getComponent(PositionComponent.class).isPresent()) {
+                            PositionComponent pc =
+                                    (PositionComponent)
+                                            b.getComponent(PositionComponent.class)
+                                                    .orElseThrow(
+                                                            () ->
+                                                                    new MissingComponentException(
+                                                                            "PositionComponent"));
+                            checkSetPoint = new Point(pc.getPosition().x + 1F, pc.getPosition().y);
+                            if (Game.currentLevel
+                                    .getTileAt(checkSetPoint.toCoordinate())
+                                    .isAccessible()) {
+                                pc.setPosition(
+                                        new Point(pc.getPosition().x + 1F, pc.getPosition().y));
+                            }
+                        } else if (ac.getCurrentAnimation() == ac.getIdleLeft()
+                                && b.getComponent(PositionComponent.class).isPresent()) {
+                            PositionComponent pc =
+                                    (PositionComponent)
+                                            b.getComponent(PositionComponent.class)
+                                                    .orElseThrow(
+                                                            () ->
+                                                                    new MissingComponentException(
+                                                                            "PositionComponent"));
+                            checkSetPoint = new Point(pc.getPosition().x - 1F, pc.getPosition().y);
+                            if (Game.currentLevel
+                                    .getTileAt(checkSetPoint.toCoordinate())
+                                    .isAccessible()) {
+                                pc.setPosition(
+                                        new Point(pc.getPosition().x - 1F, pc.getPosition().y));
+                            }
+                        }
+                    }
+                };
+
+        new HitboxComponent(weapon, collide, null);
+
+        /*
         ICollide collide =
                 (a, b, from) -> {
                     if (b != entity) {
@@ -133,7 +188,9 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                         });
                     }
                 };
+         */
+    }
+    public void meleePunch(Entity entity){
 
-        new HitboxComponent(weapon, collide, null);
     }
 }
