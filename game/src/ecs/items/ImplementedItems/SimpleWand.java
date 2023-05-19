@@ -41,7 +41,7 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop, IOnUse 
        if(defaultOnCollect(WorldItemEntity, whoCollides)) {
             DamageComponent damageComponent =
                 (DamageComponent) whoCollides.getComponent(DamageComponent.class).get();
-            damageComponent.setAttackDamage(damageComponent.getAttackDamage()+5);
+           damageComponent.setRangeDamage(damageComponent.getRangeDamage() + 5);
        }
     }
 

@@ -5,6 +5,7 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
@@ -57,6 +58,12 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
         VelocityComponent vc =
                 new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
+
+        if(entity instanceof Hero hero){
+            DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
+            projectileDamage = new Damage(dC.getRangeDamage(),projectileDamage.damageType(),null);
+        }
+
         ICollide collide =
                 (a, b, from) -> {
                     if (b != entity) {
