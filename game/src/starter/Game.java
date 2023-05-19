@@ -27,6 +27,7 @@ import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemType;
+import ecs.quest.LevelUpQuest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
@@ -142,6 +143,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+        createQuests();
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -276,6 +278,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    public void createQuests() {
+        new LevelUpQuest("Test","Just for Testing...");
+    }
+
     /**
      * Given entity will be added to the game in the next frame
      *
@@ -359,5 +365,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new XPSystem();
         new SkillSystem();
         new ProjectileSystem();
+        new QuestSystem();
     }
 }
