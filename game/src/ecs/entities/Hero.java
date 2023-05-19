@@ -23,7 +23,9 @@ import tools.Point;
  */
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
-    private final int fireballCoolDown = 5;
+    private final int fireballCoolDown = 0;
+
+    private final int NinjabladeCoolDown = 0;
     private final int StunningStrikeCoolDown = 3;
     private final int SpeedSkillCoolDown = 20;
 
@@ -163,15 +165,16 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
 
 
     private void setupFireballSkill() {
-        firstSkill =
+        skillComponent.addSkill(  firstSkill =
             new Skill(
-                new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
+                new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown));
+        playableComponent.setSkillSlot1(firstSkill);
     }
 
     private void setupNinjaBlade()
     {   skillComponent.addSkill(fifthSkill = new Skill(new NinjaBlade(0,false,"skills/ninjablade/ninja_blade_left",0.25f,
-        new Damage(2, DamageType.PHYSICAL, null), new Point(10, 10),SkillTools::getCursorPositionAsPoint,
-        5f), fireballCoolDown));
+        new Damage(2, DamageType.PHYSICAL, null), new Point(0.5f, 0.5f),SkillTools::getCursorPositionAsPoint,
+        5f), NinjabladeCoolDown));
         playableComponent.setSkillSlot5(fifthSkill);
     }
 

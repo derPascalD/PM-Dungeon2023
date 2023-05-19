@@ -9,7 +9,7 @@ import tools.Point;
 
 import static starter.Game.currentLevel;
 
-public abstract class RangedAbilities extends RangeProjecteSkill {
+public abstract class RangedAbilities extends RangeProjectileSkill {
 
         protected int damagerange;
         protected boolean bouncesOffWalls;
@@ -28,44 +28,13 @@ public abstract class RangedAbilities extends RangeProjecteSkill {
             return damagerange;
         }
 
-
         public boolean doesBounceOffWalls() {
             return bouncesOffWalls;
         }
 
-    public void setDamagerange(int damagerange) {
+        public void setDamagerange(int damagerange) {
         this.damagerange = damagerange;
     }
 
-    /**
-     * Applies a knock-back to the target entity based on the entity's distance and direction from the target.
-     *
-     * @param target is the target entity
-     * @param entity is the entity which uses the skill
-     * @param knockbackDistance is the distance of the knock-back
-     */
-    public void applyKnockback(Entity target, Entity entity, float knockbackDistance) {
-        PositionComponent targetPositionComponent =
-            (PositionComponent) target.getComponent(PositionComponent.class)
-                .orElseThrow(
-                    () -> new MissingComponentException("PositionComponent for target"));
-        PositionComponent entityPositionComponent =
-            (PositionComponent) entity.getComponent(PositionComponent.class)
-                .orElseThrow(
-                    () -> new MissingComponentException("PositionComponent for entity"));
 
-        Point direction = Point.getUnitDirectionalVector(targetPositionComponent.getPosition(), entityPositionComponent.getPosition());
-
-        Point newPosition = new Point(
-
-            targetPositionComponent.getPosition().x + direction.x * knockbackDistance,
-            targetPositionComponent.getPosition().y + direction.y * knockbackDistance
-        );
-
-        Tile newTile = currentLevel.getTileAt(newPosition.toCoordinate());
-        if (newTile.isAccessible()) {
-            targetPositionComponent.setPosition(newPosition);
-        }
-
-    }
 }

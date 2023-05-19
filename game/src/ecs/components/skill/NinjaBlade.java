@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public class NinjaBlade extends RangedAbilities {
 
+    public static int countOfUse  = 0;
     /**
      * @param damagerange is the damage range of the NinjaBlade
      * @param bouncesOffWalls define if the star can bounce of walls or not
@@ -36,8 +37,8 @@ public class NinjaBlade extends RangedAbilities {
      */
     public Point probabilityToHit(){
         // Adjust the aiming for NinjaBlade by some random offset
-        float offsetX = (float) (Math.random() * 0.1f - 0.5f);
-        float offsetY = (float) (Math.random() * 0.1f - 0.5f);
+        float offsetX = (float) (Math.random() * 0.5f - 0.9f);
+        float offsetY = (float) (Math.random() * 0.5f - 0.9f);
 
         return new Point( this.getSelectionFunction().selectTargetPoint().x + offsetX,
             this.getSelectionFunction().selectTargetPoint().y + offsetY);
@@ -49,15 +50,18 @@ public class NinjaBlade extends RangedAbilities {
      */
     @Override
     public void execute(Entity entity) {
-        // sets the new AimPoint
-        this.setAimedOn(probabilityToHit());
 
-        // Adjust the projectile speed and range for NinjaBlade
-        float modifiedSpeed = getProjectileSpeed() * 0.5f; // Slower speed
-        float modifiedRange = getProjectileRange() * 0.8f; // Shorter range
-        this.setProjectileRange(modifiedRange);
-        this.setProjectileSpeed(modifiedSpeed);
+        // sets the new AimPoint
+        if (countOfUse <= 5)
+        {
+            this.setAimedOn(probabilityToHit());
+        }
+        else
+        {
+            this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
+        }
         super.execute(entity);
+        countOfUse+=1;
 
 
         // checks if the on the current targetPosition is an entity to apply the knock-back on.
@@ -65,11 +69,13 @@ public class NinjaBlade extends RangedAbilities {
             if (targetEntitiy.getComponent(PositionComponent.class).isPresent()) {
                 PositionComponent pse = (PositionComponent) targetEntitiy.getComponent(PositionComponent.class).get();
                 if (pse.getPosition() == this.getTargetPoint()) {
-                    applyKnockback(targetEntitiy, entity,1.25f);
+
                     break;
                 }
             }
         }
+
+
     }
 }
 
