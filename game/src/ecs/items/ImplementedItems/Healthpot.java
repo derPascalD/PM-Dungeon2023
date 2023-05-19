@@ -9,10 +9,8 @@ import ecs.items.*;
 import tools.Point;
 import java.util.logging.Logger;
 
-/**
- * Can be used after collecting to gain 10 Healthpoints back
- */
-public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
+/** Can be used after collecting to gain 10 Healthpoints back */
+public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
 
     private int healAmount = 0;
 
@@ -44,6 +42,7 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
             (HealthComponent) e.getComponent(HealthComponent.class).get();
         healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+healAmount);
         Logger.getLogger(this.getClass().getName()).info("Player got healed for " + healAmount + " HP");
+
     }
 
     /**
