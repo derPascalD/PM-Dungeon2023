@@ -4,7 +4,8 @@ import ecs.entities.Entity;
 
 public class DamageComponent extends Component {
 
-    private int attackDamage;
+    private int meleeDamage;
+    private int rangeDamage;
 
     /**
      * Create a DamageComponent and add it to the associated entity Sets the attackDamage to 1 as
@@ -14,35 +15,51 @@ public class DamageComponent extends Component {
      */
     public DamageComponent(Entity entity) {
         super(entity);
-        attackDamage = 1;
+        meleeDamage = 1;
+        rangeDamage = 1;
     }
 
     /**
      * Create a DamageComponent and add it to the associated entity
      *
      * @param entity associated entity
-     * @param attackDamage damage for the entity
+     * @param meleeDamage damage for the entity
      */
-    public DamageComponent(Entity entity, int attackDamage) {
+    public DamageComponent(Entity entity, int meleeDamage, int rangeDamage) {
         super(entity);
-        this.attackDamage = attackDamage;
+        this.meleeDamage = meleeDamage;
+        this.rangeDamage = rangeDamage;
     }
 
     /**
-     * Sets the attackDamage of the Entity
      *
-     * @param attackDamage new attackDamage of the Entity
+     * @return
      */
-    public void setAttackDamage(int attackDamage) {
-        this.attackDamage = attackDamage;
+    public int getMeleeDamage() {
+        return meleeDamage;
     }
 
     /**
-     * Returns the attackDamage of the Entity
      *
-     * @return the attackDamage of the Entity
+     * @param meleeDamage
      */
-    public int getAttackDamage() {
-        return attackDamage;
+    public void setMeleeDamage(int meleeDamage) {
+        this.meleeDamage = meleeDamage;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getRangeDamage() {
+        return rangeDamage;
+    }
+
+    /**
+     *
+     * @param rangeDamage
+     */
+    public void setRangeDamage(int rangeDamage) {
+        this.rangeDamage = rangeDamage;
     }
 }

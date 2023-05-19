@@ -8,7 +8,7 @@ import ecs.components.ai.AIComponent;
 import ecs.components.ai.fight.CombatAI;
 import ecs.components.ai.idle.PatrouilleWalk;
 import ecs.components.ai.transition.RangeTransition;
-import ecs.components.skill.Combat;
+import ecs.components.skill.MonsterCombat;
 import ecs.components.skill.Skill;
 import ecs.components.skill.SkillComponent;
 import ecs.entities.Entity;
@@ -91,7 +91,7 @@ public class PumpkinKiller extends Monster {
         skillComponent.addSkill(
                 combatFight =
                         new Skill(
-                                new Combat(
+                                new MonsterCombat(
                                         1,
                                         "animation/standardCombat.png",
                                         "animation/standardCombat.png"),

@@ -46,7 +46,7 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop, IOnUse 
                 inventoryCompnent.addItem(this);
                 DamageComponent damageComponent =
                         (DamageComponent) whoCollides.getComponent(DamageComponent.class).get();
-                damageComponent.setAttackDamage(damageComponent.getAttackDamage() + 5);
+                damageComponent.setRangeDamage(damageComponent.getRangeDamage() + 5);
                 Game.removeEntity(WorldItemEntity);
                 System.out.println(this.getItemName() + " collected");
             } else {
