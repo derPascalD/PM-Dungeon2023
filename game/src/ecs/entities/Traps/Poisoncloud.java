@@ -29,6 +29,7 @@ public class Poisoncloud extends Trap implements ICollide {
      */
     @Override
     public void onCollision(Entity a, Entity b, Tile.Direction from) {
+
         // Makes sure the functions only runs if the entities are not null.
         if (a == null || b == null) return;
 

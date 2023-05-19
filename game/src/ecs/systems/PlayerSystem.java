@@ -37,7 +37,15 @@ public class PlayerSystem extends ECS_System {
             ksd.vc.setCurrentXVelocity(-1 * ksd.vc.getXVelocity());
         if (Gdx.input.isKeyJustPressed(KeyboardConfig.INVENTORY_OPEN.get()))
             showInventoryInConsole(ksd.e);
-        if (Gdx.input.isKeyJustPressed(KeyboardConfig.HEAL_POTION.get())) useHealPotion(ksd.e);
+
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.HEAL_POTION.get())) {
+            useHealPotion(ksd.e);
+        }
+
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.NINJA_BLADE.get())) {
+            ksd.pc.getSkillSlot5().ifPresent(skill -> skill.execute(ksd.e));
+        }
+
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 

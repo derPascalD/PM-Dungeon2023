@@ -11,12 +11,14 @@ import ecs.entities.Monsters.Monster;
 import java.util.Timer;
 import java.util.TimerTask;
 import level.elements.tile.Tile;
+import java.util.logging.Logger;
+
+
 
 public class Bananapeel extends Trap implements ICollide {
 
     public Bananapeel() {
         super();
-
         // 50% chance that a trap appears in a level
         visible = active = this.createRandomBooleanValue();
         this.damageValue = 10;
@@ -34,7 +36,6 @@ public class Bananapeel extends Trap implements ICollide {
      */
     public Bananapeel(int damage) {
         super();
-
         // 50% chance that a trap appears in a level
         visible = active = this.createRandomBooleanValue();
         damageValue = damage;
@@ -54,7 +55,6 @@ public class Bananapeel extends Trap implements ICollide {
      */
     @Override
     public void onCollision(Entity a, Entity b, Tile.Direction from) {
-
         Hero hero = null;
         // Makes sure the functions only runs if the entities are not null.
         if (a == null || b == null) return;
@@ -93,12 +93,9 @@ public class Bananapeel extends Trap implements ICollide {
 
             // sets the new healthpoints after the damage
             healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL, this));
-            System.out.println("new healthpoints: " + healthComponent.getCurrentHealthpoints());
-
             // Original Speed from Hero
             float xSpeed = 0;
             float ySpeed = 0;
-
             // sets the new X,Y Velocity of b
             velocityComponent.setYVelocity(velocityComponent.getYVelocity() / 10);
             velocityComponent.setXVelocity(velocityComponent.getXVelocity() / 10);
@@ -117,10 +114,10 @@ public class Bananapeel extends Trap implements ICollide {
                 velocityComponent.setMoveLeftAnimation(
                         AnimationBuilder.buildAnimation("knight/blood_runLeft"));
             }
-
             // set the new crushed animations for the banana peel.
             idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
             new AnimationComponent(this, idle);
+
 
             // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
             Timer timer = new Timer();
@@ -143,6 +140,9 @@ public class Bananapeel extends Trap implements ICollide {
 
             // defines that the trap can be triggered just once.
             active = false;
+
+            startTimer(hero, xSpeed, ySpeed, animationComponent, velocityComponent);
+
         }
     }
 
@@ -154,6 +154,7 @@ public class Bananapeel extends Trap implements ICollide {
      * @param velocityComponent is the velocityComponent of the b entity
      * @param finalHero is the hero
      */
+
     private void resetPlayerVelocity(
             Timer timer,
             float originalXVelocity,
@@ -161,6 +162,7 @@ public class Bananapeel extends Trap implements ICollide {
             AnimationComponent animationComponent,
             VelocityComponent velocityComponent,
             Hero finalHero) {
+
         velocityComponent.setYVelocity(originalYVelocity);
         velocityComponent.setXVelocity(originalXVelocity);
         if (finalHero != null) {
@@ -173,8 +175,25 @@ public class Bananapeel extends Trap implements ICollide {
             velocityComponent.setMoveLeftAnimation(
                     AnimationBuilder.buildAnimation(finalHero.getPathToRunLeft()));
         }
-
-        System.out.println("5 seconds over. The velocity is set back to the original values.");
         timer.cancel();
     }
+
+    private void startTimer(Hero hero, float xSpeed, float ySpeed, AnimationComponent animationComponent,
+                           VelocityComponent velocityComponent)
+    {
+        // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
+        Timer timer = new Timer();
+        Hero finalHero = hero;
+        float finalXSpeed = xSpeed;
+        float finalYSpeed = ySpeed;
+        timer.schedule(new TimerTask() {
+            public void run() {
+                resetPlayerVelocity(timer, finalXSpeed, finalYSpeed, animationComponent, velocityComponent, finalHero);
+            }
+        }, 5 * 1000);
+
+        // defines that the trap can be triggered just once.
+        active = false;
+    }
+
 }

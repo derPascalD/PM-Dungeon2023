@@ -31,7 +31,6 @@ public class StunningStrikeSkill extends MagicSkills {
      */
     @Override
     public void execute(Entity entity) {
-
         // checking entity is null
         if (entity == null) {
             return;
@@ -77,32 +76,39 @@ public class StunningStrikeSkill extends MagicSkills {
         }
 
         // getting AIComponents based of "entitiesInRange"
-        List<AIComponent> savedAIComponentsFromMonsters =
-                entitiesInRange.stream()
-                        .map(e -> (AIComponent) e.getComponent(AIComponent.class).get())
-                        .toList();
+        List<AIComponent> savedAIComponentsFromMonsters = entitiesInRange.stream()
+            .map(e -> (AIComponent) e.getComponent(AIComponent.class).get())
+            .toList();
 
         // removing the aicomponent for each monster
-        for (Entity e : entitiesInRange) {
-            e.removeComponent(AIComponent.class);
-            System.out.println(e.getClass().getSimpleName() + " got stunned.");
+        for(Entity e :entitiesInRange) {
+            e.removeComponent(AIComponent.class) ;
+            System.out.println(e.getClass().getSimpleName()+ " got stunned.");
+
         }
+        startTimer(entitiesInRange,savedAIComponentsFromMonsters);
+    }
 
+    /**
+     * starts the timer
+     * @param entitiesInRange  monster entities which are in stunning range
+     * @param savedAIComponentsFromMonsters AIComponents of "entitiesInRange"
+     */
+    private void startTimer(ArrayList<Entity> entitiesInRange, List<AIComponent> savedAIComponentsFromMonsters){
         Timer timer = new Timer();
-        timer.schedule(
-                new TimerTask() {
-                    /** set up the previous aicomponent for each monster after the delay. */
-                    public void run() {
+        timer.schedule(new TimerTask() {
+            /**
+             * set up the previous aicomponent for each monster after the delay.
+             */
+            public void run() {
 
-                        for (int i = 0; i < entitiesInRange.size(); i++) {
-                            entitiesInRange
-                                    .get(i)
-                                    .addComponent(savedAIComponentsFromMonsters.get(i));
-                        }
+                for (int i = 0; i < entitiesInRange.size(); i++) {
+                    entitiesInRange.get(i).addComponent(savedAIComponentsFromMonsters.get(i));
+                }
 
-                        System.out.println("The monsters are not stunned anymore");
-                    }
-                },
-                (long) this.skillDuration * 1000);
+                System.out.println("The monsters are not stunned anymore");
+            }
+        }, (long) this.skillDuration*1000);
+
     }
 }
