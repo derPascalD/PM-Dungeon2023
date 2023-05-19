@@ -2,12 +2,9 @@ package ecs.items.ImplementedItems;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.HealthComponent;
-import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import ecs.items.*;
-import starter.Game;
 import tools.Point;
 
 /** Gives the Hero more Health upon collecting */
@@ -38,11 +35,11 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop, IOnUse 
      */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
-        if(defaultOnCollect(WorldItemEntity, whoCollides)) {
+        if (defaultOnCollect(WorldItemEntity, whoCollides)) {
             HealthComponent healthComponent =
-                (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
-            healthComponent.setMaximalHealthpoints(healthComponent.getMaximalHealthpoints()+10);
-            healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+10);
+                    (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
+            healthComponent.setMaximalHealthpoints(healthComponent.getMaximalHealthpoints() + 10);
+            healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints() + 10);
         }
     }
 

@@ -1,14 +1,11 @@
 package ecs.items.ImplementedItems;
 
 import dslToGame.AnimationBuilder;
-import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import ecs.items.*;
 import java.util.ArrayList;
 import java.util.List;
-import starter.Game;
 import tools.Point;
 
 /** Creates a Bag Item of a specific ItemType which can hold up to 5 items of that ItemType */

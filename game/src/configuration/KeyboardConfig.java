@@ -24,6 +24,8 @@ public class KeyboardConfig {
             new ConfigKey<>(new String[] {"skill", "second"}, new ConfigIntValue(Input.Keys.NUM_2));
     public static final ConfigKey<Integer> THIRD_SKILL =
             new ConfigKey<>(new String[] {"skill", "third"}, new ConfigIntValue(Input.Keys.NUM_3));
+    public static final ConfigKey<Integer> EQUIQ_WEAPON =
+            new ConfigKey<>(new String[] {"skill", "weapon"}, new ConfigIntValue(Input.Keys.NUM_4));
     public static final ConfigKey<Integer> HEAL_POTION =
             new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.Q));
     public static final ConfigKey<Integer> COMBAT_ATTACK =

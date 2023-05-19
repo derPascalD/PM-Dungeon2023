@@ -7,6 +7,7 @@ import ecs.damage.Damage;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import graphic.Animation;
+import java.util.logging.Logger;
 import starter.Game;
 import tools.Point;
 
@@ -16,11 +17,13 @@ import tools.Point;
  * in the class.
  */
 public abstract class CombatAttackSkills implements ISkillFunction {
-    private record Weapon(Entity entity, PositionComponent epc, AnimationComponent ac){}
+    private record Weapon(Entity weapon, PositionComponent epc, AnimationComponent ac) {}
+
     private final String pathCombatRight;
     private final String pathCombatLeft;
     private Damage combatDamage;
     private Point checkSetPoint;
+    private Animation currentAnimation;
 
     public CombatAttackSkills(String pathCombatLeft, String pathCombatRight, Damage combatDamage) {
         this.pathCombatRight = pathCombatRight;
@@ -36,11 +39,9 @@ public abstract class CombatAttackSkills implements ISkillFunction {
      */
     @Override
     public void execute(Entity entity) {
-        Animation currentAnimation;
+        Logger.getLogger(entity.getClass().getName()).info("Launches a melee attack");
         Weapon wp = createWeapon(entity);
-
-
-        float leftRight;
+        int leftRight;
         Point weaponStartPoint;
         if (wp.ac().getCurrentAnimation() == wp.ac().getIdleLeft()) {
             weaponStartPoint = new Point(wp.epc().getPosition().x - 0.5F, wp.epc().getPosition().y);
@@ -53,24 +54,34 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         } else {
             return;
         }
-        new PositionComponent(wp.entity(), weaponStartPoint);
-        new AnimationComponent(wp.entity(), currentAnimation);
-        new VelocityComponent(wp.entity(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
+
+        setCombatComponents(wp, weaponStartPoint, leftRight);
+        setDamage(entity);
+        setCollide(wp, entity);
+    }
+    /*
+    Creates the melee blow.
+     */
+    private void setCombatComponents(Weapon wp, Point weaponStartPoint, int leftRight) {
+        new PositionComponent(wp.weapon(), weaponStartPoint);
+        new AnimationComponent(wp.weapon(), currentAnimation);
+        new VelocityComponent(
+                wp.weapon(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
 
         // Position from the Weapon
         new ProjectileComponent(
-                wp.entity(),
+                wp.weapon(),
                 weaponStartPoint,
                 new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
-
-
-        if(entity instanceof Hero hero){
-            DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
-            combatDamage = new Damage(dC.getMeleeDamage(),combatDamage.damageType(),null);
-        }
-
+    }
+    /*
+    As soon as the close-capture attack collides with an entity,
+    the entity is damaged and its position is changed.
+    */
+    private void setCollide(Weapon wp, Entity entity) {
         ICollide collide =
-            // b gets the damage
+
+                // b gets the damage
                 (a, b, from) -> {
                     if (b != entity && b.getComponent(HealthComponent.class).isPresent()) {
                         HealthComponent hc =
@@ -79,57 +90,69 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                         if ((hc.getCurrentHealthpoints() - combatDamage.damageAmount()) <= 0
                                 && entity instanceof Hero hero) {
                             hero.addKilledMonsters(b);
+                            Logger.getLogger(b.getClass().getName())
+                                    .info("Was added to the list of killed monsters");
                         }
-                        System.out.println(combatDamage);
                         hc.receiveHit(combatDamage);
-
-                        Game.removeEntity(wp.entity());
-                        if (wp.ac().getCurrentAnimation() == wp.ac().getIdleRight()
-                                && b.getComponent(PositionComponent.class).isPresent()) {
-                            PositionComponent pc =
-                                    (PositionComponent)
-                                            b.getComponent(PositionComponent.class).get();
-                            checkSetPoint = new Point(pc.getPosition().x + 1F, pc.getPosition().y);
-                            if (Game.currentLevel
-                                    .getTileAt(checkSetPoint.toCoordinate())
-                                    .isAccessible()) {
-                                pc.setPosition(
-                                        new Point(pc.getPosition().x + 1F, pc.getPosition().y));
-                            }
-                        } else if (wp.ac().getCurrentAnimation() == wp.ac().getIdleLeft()
-                                && b.getComponent(PositionComponent.class).isPresent()) {
-                            PositionComponent pc =
-                                    (PositionComponent)
-                                            b.getComponent(PositionComponent.class).get();
-                            checkSetPoint = new Point(pc.getPosition().x - 1F, pc.getPosition().y);
-                            if (Game.currentLevel
-                                    .getTileAt(checkSetPoint.toCoordinate())
-                                    .isAccessible()) {
-                                pc.setPosition(
-                                        new Point(pc.getPosition().x - 1F, pc.getPosition().y));
-                            }
-                        }
+                        Game.removeEntity(wp.weapon());
+                        throwback(wp, b);
                     }
                 };
 
-        new HitboxComponent(wp.entity(), collide, null);
+        new HitboxComponent(wp.weapon(), collide, null);
     }
 
-    private Weapon createWeapon(Entity entity){
+    /*
+    Resets the position of an entity a few steps backwards.
+    */
+    private void throwback(Weapon wp, Entity b) {
+        if (wp.ac().getCurrentAnimation() == wp.ac().getIdleRight()
+                && b.getComponent(PositionComponent.class).isPresent()) {
+            PositionComponent pc =
+                    (PositionComponent) b.getComponent(PositionComponent.class).get();
+            checkSetPoint = new Point(pc.getPosition().x + 1F, pc.getPosition().y);
+            if (Game.currentLevel.getTileAt(checkSetPoint.toCoordinate()).isAccessible()) {
+                pc.setPosition(new Point(pc.getPosition().x + 1F, pc.getPosition().y));
+            }
+        } else if (wp.ac().getCurrentAnimation() == wp.ac().getIdleLeft()
+                && b.getComponent(PositionComponent.class).isPresent()) {
+            PositionComponent pc =
+                    (PositionComponent) b.getComponent(PositionComponent.class).get();
+            checkSetPoint = new Point(pc.getPosition().x - 1F, pc.getPosition().y);
+            if (Game.currentLevel.getTileAt(checkSetPoint.toCoordinate()).isAccessible()) {
+                pc.setPosition(new Point(pc.getPosition().x - 1F, pc.getPosition().y));
+            }
+        }
+        Logger.getLogger(b.getClass().getName())
+                .info(b.getClass().getSimpleName() + " was pushed back.");
+    }
+
+    /*
+    Sets the damage of the melee.
+    */
+    private void setDamage(Entity entity) {
+        if (entity instanceof Hero hero) {
+            DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
+            combatDamage = new Damage(dC.getMeleeDamage(), combatDamage.damageType(), null);
+        }
+    }
+    /*
+    Creates the position/animation component of the close combat.
+    */
+    private Weapon createWeapon(Entity entity) {
         Entity weapon = new Entity();
         PositionComponent epc =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
 
         AnimationComponent ac =
-            (AnimationComponent)
-                entity.getComponent(AnimationComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("AnimationComponent"));
+                (AnimationComponent)
+                        entity.getComponent(AnimationComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("AnimationComponent"));
 
-        return new Weapon(weapon,epc,ac);
+        return new Weapon(weapon, epc, ac);
     }
-
 }

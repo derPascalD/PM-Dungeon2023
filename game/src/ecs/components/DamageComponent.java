@@ -32,7 +32,6 @@ public class DamageComponent extends Component {
     }
 
     /**
-     *
      * @return
      */
     public int getMeleeDamage() {
@@ -40,7 +39,6 @@ public class DamageComponent extends Component {
     }
 
     /**
-     *
      * @param meleeDamage
      */
     public void setMeleeDamage(int meleeDamage) {
@@ -48,7 +46,6 @@ public class DamageComponent extends Component {
     }
 
     /**
-     *
      * @return
      */
     public int getRangeDamage() {
@@ -56,7 +53,6 @@ public class DamageComponent extends Component {
     }
 
     /**
-     *
      * @param rangeDamage
      */
     public void setRangeDamage(int rangeDamage) {

@@ -255,7 +255,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
         if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
         if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
-        System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
     }
 
