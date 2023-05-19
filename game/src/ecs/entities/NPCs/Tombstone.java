@@ -7,6 +7,7 @@ import graphic.Animation;
 import starter.Game;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class Tombstone extends Entity implements IInteraction {
 
@@ -40,14 +41,13 @@ public class Tombstone extends Entity implements IInteraction {
         Hero hero = (Hero) Game.getHero().get();
         HealthComponent healthComponent = (HealthComponent) hero.getComponent(HealthComponent.class).get();
         int currentHP = healthComponent.getCurrentHealthpoints();
-        System.out.println(currentHP);
         // 70% that the Hero gets HP, 30% that the Hero loses HP
         if(rand.nextInt(101)>=30) {
             healthComponent.setCurrentHealthpoints(currentHP + healthAmount);
         } else {
             healthComponent.setCurrentHealthpoints(currentHP - healthAmount);
         }
-        System.out.println(healthComponent.getCurrentHealthpoints());
+        Logger.getLogger(this.getClass().getName()).info("Hero used the tombstone");
     }
 
     /**
@@ -58,6 +58,5 @@ public class Tombstone extends Entity implements IInteraction {
     @Override
     public void onInteraction(Entity entity) {
         giveEffect();
-        System.out.println("Tombstone Interaction");
     }
 }
