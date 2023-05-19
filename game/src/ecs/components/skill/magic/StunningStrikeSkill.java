@@ -46,7 +46,6 @@ public class StunningStrikeSkill extends MagicSkills {
      */
     @Override
     public void execute(Entity entity) {
-
         // checking entity is null
         if (entity == null){
             return;
@@ -78,19 +77,24 @@ public class StunningStrikeSkill extends MagicSkills {
                     entitiesInRange.add(e);
                 }
             }
-
         // getting AIComponents based of "entitiesInRange"
         List<AIComponent> savedAIComponentsFromMonsters = entitiesInRange.stream()
             .map(e -> (AIComponent) e.getComponent(AIComponent.class).get())
             .toList();
-
         // removing the aicomponent for each monster
         for(Entity e :entitiesInRange) {
             e.removeComponent(AIComponent.class) ;
             System.out.println(e.getClass().getSimpleName()+ " got stunned.");
         }
+        startTimer(entitiesInRange,savedAIComponentsFromMonsters);
+    }
 
-
+    /**
+     * starts the timer
+     * @param entitiesInRange  monster entities which are in stunning range
+     * @param savedAIComponentsFromMonsters AIComponents of "entitiesInRange"
+     */
+    private void startTimer(ArrayList<Entity> entitiesInRange, List<AIComponent> savedAIComponentsFromMonsters){
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             /**
@@ -105,40 +109,6 @@ public class StunningStrikeSkill extends MagicSkills {
                 System.out.println("The monsters are not stunned anymore");
             }
         }, (long) this.skillDuration*1000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 

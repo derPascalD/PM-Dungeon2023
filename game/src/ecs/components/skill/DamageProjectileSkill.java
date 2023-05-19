@@ -37,6 +37,7 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
 
     @Override
     public void execute(Entity entity) {
+
         Entity projectile = new Entity();
         PositionComponent epc =
                 (PositionComponent)
@@ -72,4 +73,8 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
         new HitboxComponent(
                 projectile, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
     }
+
 }
+
+
+

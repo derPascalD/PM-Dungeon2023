@@ -21,4 +21,6 @@ public interface ICollide {
      * @param from die Richtung von a nach b
      */
     void onCollision(Entity a, Entity b, Tile.Direction from);
+
+
 }

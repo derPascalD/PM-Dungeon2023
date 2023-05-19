@@ -10,8 +10,11 @@ import ecs.components.skill.magic.SpeedSkill;
 import ecs.components.skill.magic.StunningStrikeSkill;
 import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
+import ecs.damage.Damage;
+import ecs.damage.DamageType;
 import graphic.Animation;
 import graphic.IngameUI;
+import tools.Point;
 
 
 /**
@@ -29,7 +32,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private final float ySpeed = 0.3f;
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
 
-
     private String pathToIdleLeft = "knight/idleLeft";
     private String pathToIdleRight = "knight/idleRight";
     private String pathToRunLeft = "knight/runLeft";
@@ -39,6 +41,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
+
+    private Skill fifthSkill;
 
     protected InventoryComponent inventory;
 
@@ -74,6 +78,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         setupInventoryComponent();
 
         setupFireballSkill();
+        setupNinjaBlade();
 
         setupDamageComponent();
 
@@ -161,6 +166,13 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp {
         firstSkill =
             new Skill(
                 new FireballSkill(SkillTools::getCursorPositionAsPoint), fireballCoolDown);
+    }
+
+    private void setupNinjaBlade()
+    {   skillComponent.addSkill(fifthSkill = new Skill(new NinjaBlade(0,false,"skills/ninjablade/ninja_blade_left",0.25f,
+        new Damage(2, DamageType.PHYSICAL, null), new Point(10, 10),SkillTools::getCursorPositionAsPoint,
+        5f), fireballCoolDown));
+        playableComponent.setSkillSlot5(fifthSkill);
     }
 
 
