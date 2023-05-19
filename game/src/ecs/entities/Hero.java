@@ -26,10 +26,13 @@ import level.elements.tile.Tile;
  * all its components and attributes .
  */
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
-
-    private int fireballCoolDown = 2;
     private int StunningStrikeCoolDown = 3;
     private int SpeedSkillCoolDown = 20;
+    private final int fireballCoolDown = 0;
+    private final int NinjabladeCoolDown = 0;
+
+    // Original Speed from Hero
+
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
     private final String pathToIdleLeft = "knight/idleLeft";
@@ -174,11 +177,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     private void setupNinjaBlade()
     {   skillComponent.addSkill(fifthSkill = new Skill(new NinjaBlade(0,false,"skills/ninjablade/ninja_blade_left",0.25f,
-        new Damage(2, DamageType.PHYSICAL, null), new Point(10, 10),SkillTools::getCursorPositionAsPoint,
-        5f), fireballCoolDown));
+        new Damage(2, DamageType.PHYSICAL, null), new Point(0.5f, 0.5f),SkillTools::getCursorPositionAsPoint,
+        5f), NinjabladeCoolDown));
         playableComponent.setSkillSlot5(fifthSkill);
     }
-
 
 
     private void setupInventoryComponent() {

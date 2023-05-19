@@ -50,7 +50,7 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
         Animation animation = AnimationBuilder.buildAnimation(pathToTexturesOfProjectile);
         new AnimationComponent(projectile, animation);
 
-        Point aimedOn = selectionFunction.selectTargetPoint();
+       Point aimedOn = selectionFunction.selectTargetPoint();
         Point targetPoint =
                 SkillTools.calculateLastPositionInRange(
                         epc.getPosition(), aimedOn, projectileRange);

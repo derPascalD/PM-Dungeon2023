@@ -6,10 +6,13 @@ import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
 import graphic.Animation;
+import level.elements.tile.Tile;
 import starter.Game;
 import tools.Point;
 
-public class RangeProjecteSkill implements ISkillFunction {
+import static starter.Game.currentLevel;
+
+public class RangeProjectileSkill  implements ISkillFunction {
 
     private String pathToTexturesOfProjectile;
     private float projectileSpeed;
@@ -24,7 +27,7 @@ public class RangeProjecteSkill implements ISkillFunction {
 
     private ITargetSelection selectionFunction;
 
-    public RangeProjecteSkill(
+    public RangeProjectileSkill(
         String pathToTexturesOfProjectile,
         float projectileSpeed,
         Damage projectileDamage,
@@ -69,12 +72,46 @@ public class RangeProjecteSkill implements ISkillFunction {
                             hc -> {
                                 ((HealthComponent) hc).receiveHit(projectileDamage);
                                 Game.removeEntity(projectile);
+                                applyKnockback(b,a,1.25f);
+
                             });
                 }
             };
 
         new HitboxComponent(
             projectile, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
+    }
+
+    /**
+     * Applies a knock-back to the target entity based on the entity's distance and direction from the target.
+     *
+     * @param target is the target entity
+     * @param entity is the entity which uses the skill
+     * @param knockbackDistance is the distance of the knock-back
+     */
+    public void applyKnockback(Entity target, Entity entity, float knockbackDistance) {
+        PositionComponent targetPositionComponent =
+            (PositionComponent) target.getComponent(PositionComponent.class)
+                .orElseThrow(
+                    () -> new MissingComponentException("PositionComponent for target"));
+        PositionComponent entityPositionComponent =
+            (PositionComponent) entity.getComponent(PositionComponent.class)
+                .orElseThrow(
+                    () -> new MissingComponentException("PositionComponent for entity"));
+
+        Point direction = Point.getUnitDirectionalVector(targetPositionComponent.getPosition(), entityPositionComponent.getPosition());
+
+        Point newPosition = new Point(
+
+            targetPositionComponent.getPosition().x + direction.x * knockbackDistance,
+            targetPositionComponent.getPosition().y + direction.y * knockbackDistance
+        );
+
+        Tile newTile = currentLevel.getTileAt(newPosition.toCoordinate());
+        if (newTile.isAccessible()) {
+            targetPositionComponent.setPosition(newPosition);
+        }
+
     }
 
     public String getPathToTexturesOfProjectile() {
@@ -140,4 +177,6 @@ public class RangeProjecteSkill implements ISkillFunction {
     public Point getTargetPoint() {
         return targetPoint;
     }
+
+
 }
