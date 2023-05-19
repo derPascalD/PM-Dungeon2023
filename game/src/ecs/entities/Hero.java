@@ -25,11 +25,14 @@ import level.elements.tile.Tile;
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
  * all its components and attributes .
  */
+
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
-    private int StunningStrikeCoolDown = 3;
-    private int SpeedSkillCoolDown = 20;
+
     private final int fireballCoolDown = 0;
     private final int NinjabladeCoolDown = 0;
+    private final int StunningStrikeCoolDown = 3;
+    private final int SpeedSkillCoolDown = 20;
+
 
     // Original Speed from Hero
 
@@ -40,6 +43,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private final String pathToRunLeft = "knight/runLeft";
     private final String pathToRunRight = "knight/runRight";
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
+
 
     // Skills from Hero
     private Skill firstSkill;
@@ -307,4 +311,5 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
      */
     public void onCollision(Entity a, Entity b, Tile.Direction direction) {
     }
+
 }

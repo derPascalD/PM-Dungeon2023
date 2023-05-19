@@ -19,9 +19,9 @@ public class PlayableComponent extends Component {
     private Skill skillSlot1;
     private Skill skillSlot2;
     private Skill skillSlot3;
+
     private Skill combatSkill;
     private Skill skillSlot5;
-
 
     /**
      * @param entity associated entity
@@ -86,7 +86,6 @@ public class PlayableComponent extends Component {
     public void setSkillSlot5(Skill skillSlot5) {
         this.skillSlot5 = skillSlot5;
     }
-
 
 
     /**

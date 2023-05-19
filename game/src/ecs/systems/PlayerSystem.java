@@ -46,6 +46,10 @@ public class PlayerSystem extends ECS_System {
             ksd.pc.getSkillSlot5().ifPresent(skill -> skill.execute(ksd.e));
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/RangedAbility
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
 

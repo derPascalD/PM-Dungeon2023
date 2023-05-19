@@ -36,4 +36,7 @@ public class KeyboardConfig {
 
 
 
+    public static final ConfigKey<Integer> NINJA_BLADE =
+        new ConfigKey<>(new String[] {"skill", "fifth"}, new ConfigIntValue(Input.Keys.NUM_5));
+
 }

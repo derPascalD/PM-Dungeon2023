@@ -79,7 +79,6 @@ public class StunningStrikeSkill extends MagicSkills {
         List<AIComponent> savedAIComponentsFromMonsters = entitiesInRange.stream()
             .map(e -> (AIComponent) e.getComponent(AIComponent.class).get())
             .toList();
-
         // removing the aicomponent for each monster
         for(Entity e :entitiesInRange) {
             e.removeComponent(AIComponent.class) ;
@@ -109,6 +108,5 @@ public class StunningStrikeSkill extends MagicSkills {
                 System.out.println("The monsters are not stunned anymore");
             }
         }, (long) this.skillDuration*1000);
-
     }
 }

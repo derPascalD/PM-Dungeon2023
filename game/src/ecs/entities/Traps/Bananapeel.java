@@ -12,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import level.elements.tile.Tile;
 import java.util.logging.Logger;
-
+import java.util.logging.Logger;
 
 
 public class Bananapeel extends Trap implements ICollide {
@@ -119,6 +119,7 @@ public class Bananapeel extends Trap implements ICollide {
             new AnimationComponent(this, idle);
 
 
+
             // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
             Timer timer = new Timer();
             Hero finalHero = hero;
@@ -155,6 +156,7 @@ public class Bananapeel extends Trap implements ICollide {
      * @param finalHero is the hero
      */
 
+
     private void resetPlayerVelocity(
             Timer timer,
             float originalXVelocity,
@@ -162,6 +164,7 @@ public class Bananapeel extends Trap implements ICollide {
             AnimationComponent animationComponent,
             VelocityComponent velocityComponent,
             Hero finalHero) {
+
 
         velocityComponent.setYVelocity(originalYVelocity);
         velocityComponent.setXVelocity(originalXVelocity);
