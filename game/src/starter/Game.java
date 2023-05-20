@@ -27,6 +27,8 @@ import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemType;
+import ecs.quest.DemonSlayerQuest;
+import ecs.quest.HealQuest;
 import ecs.quest.LevelUpQuest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
@@ -257,7 +259,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
         if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
         if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
-        System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
     }
 
@@ -278,9 +279,22 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    /**
+     * Creates all the Quests in the Dungeon with their respective name and text
+     */
     public void createQuests() {
-        new LevelUpQuest("Test","Just for Testing...");
+        new LevelUpQuest("Deeper Pockets",
+            "Reach Dungeon depth 8 to get more 3 Inventory slots");
+        new HealQuest("More equals better, right?",
+            "Upon using 10 Healpotions the Hero will receive 10 more maximum Healthpoints");
+        new DemonSlayerQuest("Bloodrush",
+            "Kill 10 Demons to receive 'Demonslayer'");
     }
+
+    /**
+     * @return Returns the current levelDepth of the dungeon
+     */
+    public static int getLevelDepth() { return levelDepth; }
 
     /**
      * Given entity will be added to the game in the next frame

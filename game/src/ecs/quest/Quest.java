@@ -1,6 +1,7 @@
 package ecs.quest;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public abstract class Quest {
 
@@ -15,10 +16,13 @@ public abstract class Quest {
         allQuests.add(this);
     }
 
-
     public abstract String getProgress();
     public abstract boolean isComplete();
     public abstract void onComplete();
+
+    public void logCompletion() {
+        Logger.getLogger(this.getClass().getName()).info(this.getName() + " Completed");
+    }
 
     public String getDescription() { return description; }
 
