@@ -138,14 +138,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(pauseMenu);
 
         hero = new Hero();
-
+        createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
 
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
-        createQuests();
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -154,6 +153,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+        if(Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get())) IngameUI.toggleQuestText();
     }
 
     @Override

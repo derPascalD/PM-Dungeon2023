@@ -16,11 +16,11 @@ public class QuestSystem extends ECS_System {
     public void update() {
         Quest.getAllQuests().stream()
             .filter(Quest::isComplete)
-            .forEach(Quest::onComplete);
+            .forEach((quest) -> {
+                quest.onComplete();
+                quest.logCompletion();
+            });
 
-        Quest.getAllQuests().stream()
-            .filter(Quest::isComplete)
-            .forEach(Quest::logCompletion);
 
         Quest.getAllQuests().removeIf(Quest::isComplete);
     }
