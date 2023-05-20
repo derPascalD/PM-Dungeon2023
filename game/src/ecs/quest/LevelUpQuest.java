@@ -4,9 +4,10 @@ import ecs.components.InventoryComponent;
 import ecs.entities.Hero;
 import starter.Game;
 
-import java.util.logging.Logger;
 
 public class LevelUpQuest extends Quest{
+
+    private int questNumber = 8;
 
     public LevelUpQuest(String name, String description) {
         super(name, description);
@@ -14,12 +15,12 @@ public class LevelUpQuest extends Quest{
 
     @Override
     public String getProgress() {
-        return "Your currently at " + Game.getLevelDepth() + "/8 Dungeon depth";
+        return "Your currently at " + Game.getLevelDepth() + "/"+ questNumber +" Dungeon depth";
     }
 
     @Override
     public boolean isComplete() {
-        if(Game.getLevelDepth()>=2) return true;
+        if(Game.getLevelDepth()>=questNumber) return true;
         return false;
     }
 

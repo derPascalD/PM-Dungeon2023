@@ -7,18 +7,20 @@ import starter.Game;
 
 public class DemonSlayerQuest extends Quest {
 
+    private int questNumber = 10;
+
     public DemonSlayerQuest(String name, String description) {
         super(name, description);
     }
 
     @Override
     public String getProgress() {
-        return "Yout currently have slain" + countDemonsSlayn() + "/10 Demons";
+        return "Yout currently have slain" + countDemonsSlayn() + "/" + questNumber+ " Demons";
     }
 
     @Override
     public boolean isComplete() {
-        if(countDemonsSlayn() >= 10) return true;
+        if(countDemonsSlayn() >= questNumber) return true;
         return  false;
     }
 
