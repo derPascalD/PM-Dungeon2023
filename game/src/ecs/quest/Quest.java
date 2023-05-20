@@ -9,6 +9,7 @@ public abstract class Quest {
 
     protected String name;
     protected String description;
+    protected String progressText;
 
     protected Quest(String name, String description) {
         this.name = name;
@@ -17,6 +18,7 @@ public abstract class Quest {
     }
 
     public abstract String getProgress();
+    public abstract void updateProgress();
     public abstract boolean isComplete();
     public abstract void onComplete();
 

@@ -11,11 +11,17 @@ public class HealQuest extends Quest {
 
     public HealQuest(String name, String description) {
         super(name, description);
+        progressText = "0/" + questNumber + " Healthpots used";
     }
 
     @Override
     public String getProgress() {
-        return Healthpot.getUseCount() + "/" + questNumber + " Healthpots used";
+        return progressText;
+    }
+
+    @Override
+    public void updateProgress() {
+        progressText = Healthpot.getUseCount() + "/" + questNumber + " Healthpots used";
     }
 
     @Override

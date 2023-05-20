@@ -117,4 +117,12 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         if(questText.isVisible()) questText.setVisible(false);
         else questText.setVisible(true);
     }
+
+    public static void updateQuestText() {
+        StringBuilder text = new StringBuilder("Quest Progress:\n");
+        for(Quest quest:Quest.getAllQuests()) {
+            text.append(quest.getProgress()+ "\n");
+        }
+        questText.setText(text.toString());
+    }
 }

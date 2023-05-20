@@ -11,11 +11,17 @@ public class DemonSlayerQuest extends Quest {
 
     public DemonSlayerQuest(String name, String description) {
         super(name, description);
+        progressText =  "0/" + questNumber+ " Demons slain";
     }
 
     @Override
     public String getProgress() {
-        return "Yout currently have slain" + countDemonsSlayn() + "/" + questNumber+ " Demons";
+        return progressText;
+    }
+
+    @Override
+    public void updateProgress() {
+        progressText = countDemonsSlayn() + "/" + questNumber+ " Demons slain";
     }
 
     @Override

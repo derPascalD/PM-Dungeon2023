@@ -11,11 +11,17 @@ public class LevelUpQuest extends Quest{
 
     public LevelUpQuest(String name, String description) {
         super(name, description);
+        progressText = "0/"+ questNumber + " Dungeon Depth";
     }
 
     @Override
     public String getProgress() {
-        return "Your currently at " + Game.getLevelDepth() + "/"+ questNumber +" Dungeon depth";
+        return progressText;
+    }
+
+    @Override
+    public void updateProgress() {
+        progressText = Game.getLevelDepth() + "/"+ questNumber + " Dungeon Depth";
     }
 
     @Override

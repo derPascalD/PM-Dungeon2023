@@ -1,6 +1,7 @@
 package ecs.systems;
 
 import ecs.quest.Quest;
+import graphic.IngameUI;
 
 /**
  * Class for handling Quests in the dungeon
@@ -14,6 +15,12 @@ public class QuestSystem extends ECS_System {
      */
     @Override
     public void update() {
+        Quest.getAllQuests().stream()
+            .forEach((quest -> {
+                quest.updateProgress();
+                IngameUI.updateQuestText();
+            }));
+
         Quest.getAllQuests().stream()
             .filter(Quest::isComplete)
             .forEach((quest) -> {
