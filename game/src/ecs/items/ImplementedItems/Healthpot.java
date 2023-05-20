@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
 
     private int healAmount = 0;
+    private static int useCount = 0;
 
     /**
      * Creates a Healthpot item and spawns in the Level at a random spot
@@ -44,6 +45,7 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
             (HealthComponent) e.getComponent(HealthComponent.class).get();
         healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+healAmount);
         Logger.getLogger(this.getClass().getName()).info("Player got healed for " + healAmount + " HP");
+        useCount++;
     }
 
     /**
@@ -84,5 +86,12 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
         }
         inventoryCompnent.removeItem(item);
         healHero(e);
+    }
+
+    /**
+     * @return How many Healthpots the hero has used
+     */
+    public static int getUseCount() {
+        return useCount;
     }
 }
