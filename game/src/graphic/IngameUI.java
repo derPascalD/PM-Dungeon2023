@@ -16,6 +16,7 @@ import tools.Point;
 public class IngameUI<T extends Actor> extends ScreenController<T> {
 
     private static ScreenText attackButton;
+    private static ScreenText equiqMelee;
     private static ScreenText hpScreen;
     private static ScreenText skillsScreen;
 
@@ -31,6 +32,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         setupHPBar();
         setupSkill();
         attackButtonHero();
+        setEquiqMelee();
     }
 
     /** Visualizes the Healthpoints of the Player on the Screen */
@@ -77,17 +79,32 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     }
 
     /*
-    Adds the melee button in the image
-     */
+    Close combat attack indicator
+    */
     private void attackButtonHero() {
         attackButton =
                 new ScreenText(
                         "Attack: R",
-                        new Point(Constants.WINDOW_WIDTH - 70, Constants.WINDOW_HEIGHT - 20),
+                        new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 40),
                         2,
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.GREEN)
+                                .setFontcolor(Color.GOLD)
                                 .build());
         add((T) attackButton);
+    }
+
+    /*
+    Melee weapon equip indicator
+    */
+    private void setEquiqMelee() {
+        equiqMelee =
+            new ScreenText(
+                "Melee equip: 4",
+                new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 20),
+                2,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.GOLD)
+                    .build());
+        add((T) equiqMelee);
     }
 }
