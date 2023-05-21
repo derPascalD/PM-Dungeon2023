@@ -58,7 +58,6 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         } else {
             return;
         }
-
         setCombatComponents(wp, weaponStartPoint, leftRight);
         setDamage(entity);
         setCollide(wp, entity);
@@ -72,8 +71,6 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         new AnimationComponent(wp.weapon(), currentAnimation);
         new VelocityComponent(
                 wp.weapon(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
-
-        // Position from the Weapon
         new ProjectileComponent(
                 wp.weapon(),
                 weaponStartPoint,
@@ -82,7 +79,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
 
     /*
     As soon as the close-capture attack collides with an entity,
-    the entity is damaged and its position is changed.
+    the entity is damaged, and it's position is changed.
     */
     private void setCollide(Weapon wp, Entity entity) {
         ICollide collide =
