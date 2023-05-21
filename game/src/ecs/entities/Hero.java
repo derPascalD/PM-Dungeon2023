@@ -18,11 +18,11 @@ import level.elements.tile.Tile;
 
 /**
  * The Hero is the player character. It's entity in the ECS. This class helps to setup the hero with
- * all its components and attributes .
+ * all its components and attributes.
  */
 public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide {
 
-    private int fireballCoolDown = 2;
+    private int fireballCoolDown = 3;
     private int StunningStrikeCoolDown = 3;
     private int SpeedSkillCoolDown = 20;
     private final float xSpeed = 0.3f;
@@ -37,9 +37,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private Skill thirdSkill;
     private Skill combatSkill;
     private boolean equipWeapon = false;
-
     private final ArrayList<Entity> killedMonsters;
-
     protected InventoryComponent inventory;
     private SkillComponent skillComponent;
     private final PlayableComponent playableComponent;
@@ -65,7 +63,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /*
     Adds the new Speed skill to allow the Hero to run faster for a short time.
-     */
+    */
     private void setupSpeedSkill() {
         skillComponent.addSkill(
                 secondSkill =
@@ -76,7 +74,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /*
     Adds the new StunningStrike skill to allow the Hero to run faster for a short time.
-     */
+    */
     private void setupStunningStrikeSkill() {
         skillComponent.addSkill(
                 thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
@@ -85,7 +83,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /*
     Adds the new Fireball skill to allow the Hero to run faster for a short time.
-     */
+    */
     private void setupFireballSkill() {
         skillComponent.addSkill(
                 firstSkill =
@@ -97,7 +95,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /*
     Adds the new Melee skill to allow the Hero to run faster for a short time.
-     */
+    */
     private void setupMeleeSkill() {
         skillComponent.addSkill(
                 combatSkill =
@@ -252,26 +250,37 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         return ySpeed;
     }
 
+    /**
+     * @return Is weapon equiq or not
+     */
     public boolean isEquipWeapon() {
         return equipWeapon;
     }
 
+    /**
+     * @param equipWeapon Set Weapon Equiq or not
+     */
     public void setEquipWeapon(boolean equipWeapon) {
         this.equipWeapon = equipWeapon;
     }
 
+    /**
+     * @return List with killed Monsters
+     */
     public ArrayList<Entity> getKilledMonsters() {
         return killedMonsters;
     }
 
+    /**
+     * @param killedMonster add killed Monsters to the List
+     */
     public void addKilledMonsters(Entity killedMonster) {
         killedMonsters.add(killedMonster);
     }
 
     /*
-        English:
-        The function is called as soon as different entities no longer collide with each other.
-        Then certain instructions can be executed.
+    The function is called as soon as different entities no longer collide with each other.
+    Then certain instructions can be executed.
     */
     private void onCollisionLeave(Entity a, Entity b, Tile.Direction direction) {}
 

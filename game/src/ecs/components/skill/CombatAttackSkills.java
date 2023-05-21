@@ -22,9 +22,13 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     private final String pathCombatRight;
     private final String pathCombatLeft;
     private Damage combatDamage;
-    private Point checkSetPoint;
     private Animation currentAnimation;
 
+    /**
+     * @param pathCombatLeft Animation Path Left for the Entity
+     * @param pathCombatRight Animation Path Right for the Entity
+     * @param combatDamage Damage for the CombatAttack
+     */
     public CombatAttackSkills(String pathCombatLeft, String pathCombatRight, Damage combatDamage) {
         this.pathCombatRight = pathCombatRight;
         this.pathCombatLeft = pathCombatLeft;
@@ -59,9 +63,10 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         setDamage(entity);
         setCollide(wp, entity);
     }
+
     /*
     Creates the melee blow.
-     */
+    */
     private void setCombatComponents(Weapon wp, Point weaponStartPoint, int leftRight) {
         new PositionComponent(wp.weapon(), weaponStartPoint);
         new AnimationComponent(wp.weapon(), currentAnimation);
@@ -74,6 +79,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                 weaponStartPoint,
                 new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
     }
+
     /*
     As soon as the close-capture attack collides with an entity,
     the entity is damaged and its position is changed.
@@ -106,6 +112,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     Resets the position of an entity a few steps backwards.
     */
     private void throwback(Weapon wp, Entity b) {
+        Point checkSetPoint;
         if (wp.ac().getCurrentAnimation() == wp.ac().getIdleRight()
                 && b.getComponent(PositionComponent.class).isPresent()) {
             PositionComponent pc =
@@ -128,7 +135,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     }
 
     /*
-    Sets the damage of the melee.
+    Sets the damage to the melee.
     */
     private void setDamage(Entity entity) {
         if (entity instanceof Hero hero) {
@@ -136,6 +143,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
             combatDamage = new Damage(dC.getMeleeDamage(), combatDamage.damageType(), null);
         }
     }
+
     /*
     Creates the position/animation component of the close combat.
     */

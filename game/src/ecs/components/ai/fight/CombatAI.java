@@ -12,16 +12,10 @@ public class CombatAI implements IFightAI {
     private GraphPath<Tile> path;
 
     /**
-     * English: Attacks the player if he is within the specified range.
+     * Attacks the player if he is within the specified range.
      *
      * @param attackRange Range in which the attack skill should be executed
      * @param fightSkill Skill to be used when an attack is performed
-     */
-    /**
-     * German: Greift den Spieler an, wenn er sich innerhalb der angegebenen Reichweite befindet.
-     *
-     * @param attackRange Bereich, in dem der Angriffsskill ausgeführt werden soll
-     * @param fightSkill Fertigkeit, die bei einem Angriff verwendet werden soll
      */
     public CombatAI(float attackRange, Skill fightSkill) {
         this.attackRange = attackRange;
