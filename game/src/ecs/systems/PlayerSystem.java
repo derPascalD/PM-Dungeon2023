@@ -82,6 +82,9 @@ public class PlayerSystem extends ECS_System {
         }
     }
 
+    /*
+    Makes it possible to equip a melee weapon
+    */
     private void equipWeapon(Entity e) {
         if (e instanceof Hero hero && hero.isEquipWeapon()) {
             hero.setEquipWeapon(false);
@@ -94,6 +97,9 @@ public class PlayerSystem extends ECS_System {
         }
     }
 
+    /*
+    Method that checks whether a melee weapon is equipped or not on the Hero.
+    */
     private boolean meleeActive(Entity e) {
         if (e instanceof Hero hero) return hero.isEquipWeapon();
         return false;
