@@ -8,6 +8,7 @@ import ecs.items.*;
 import starter.Game;
 import tools.Point;
 
+/** Gives the Hero more melee damage upon collecting */
 public class DemonSword extends ItemData implements IOnCollect, IOnDrop, IOnUse {
 
     /**
@@ -25,6 +26,12 @@ public class DemonSword extends ItemData implements IOnCollect, IOnDrop, IOnUse 
         this.setOnUse(this);
     }
 
+    /**
+     * The item gets collected if the Hero has any space left in the Inventory or in a Bag in his Inventory.
+     *
+     * @param WorldItemEntity the item thats collected
+     * @param whoCollides the Hero who collects the item
+     */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
         defaultOnCollect(WorldItemEntity, whoCollides);

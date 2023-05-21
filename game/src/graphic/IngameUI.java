@@ -63,7 +63,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
 
         add((T) skillsScreen);
     }
-
+    // Creates a ScreenText for all the Quests to be displayed
     private void setupQuestText() {
         StringBuilder text = new StringBuilder("Quest Progress:\n");
         for(Quest quest:Quest.getAllQuests()) {
@@ -118,6 +118,9 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         else questText.setVisible(true);
     }
 
+    /**
+     * Updates the Text that is displayed to show the Hero his Progress
+     */
     public static void updateQuestText() {
         StringBuilder text = new StringBuilder("Quest Progress:\n");
         for(Quest quest:Quest.getAllQuests()) {

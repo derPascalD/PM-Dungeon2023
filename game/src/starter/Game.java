@@ -279,10 +279,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /**
-     * Creates all the Quests in the Dungeon with their respective name and text
-     */
-    public void createQuests() {
+    // Creates all the Quests in the Dungeon with their respective name and text
+    private void createQuests() {
         new LevelUpQuest("Deeper Pockets",
             "Reach Dungeon depth 8 to get more 3 Inventory slots");
         new HealQuest("More equals better, right?",
