@@ -6,21 +6,7 @@ import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import level.elements.tile.Tile;
 
-public class CombatAI implements IFightAI {
-    private final float attackRange;
-    private final Skill fightSkill;
-    private GraphPath<Tile> path;
-
-    /**
-     * Attacks the player if he is within the specified range.
-     *
-     * @param attackRange Range in which the attack skill should be executed
-     * @param fightSkill Skill to be used when an attack is performed
-     */
-    public CombatAI(float attackRange, Skill fightSkill) {
-        this.attackRange = attackRange;
-        this.fightSkill = fightSkill;
-    }
+public record CombatAI(float attackRange, Skill fightSkill) implements IFightAI{
 
     /**
      * Once the Hero is in the area, the NPC attacks and performs the melee sent along.
@@ -30,7 +16,7 @@ public class CombatAI implements IFightAI {
     @Override
     public void fight(Entity entity) {
         if (AITools.playerInRange(entity, attackRange)) {
-            path = AITools.calculatePathToHero(entity);
+            GraphPath<Tile> path = AITools.calculatePathToHero(entity);
             AITools.move(entity, path);
             fightSkill.execute(entity);
         }
