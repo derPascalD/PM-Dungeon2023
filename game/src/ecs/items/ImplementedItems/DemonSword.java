@@ -17,8 +17,8 @@ public class DemonSword extends ItemData implements IOnCollect, IOnDrop, IOnUse 
     public DemonSword() {
         super(
             ItemType.Weapon,
-            AnimationBuilder.buildAnimation("items.bag"),
-            AnimationBuilder.buildAnimation("items.bag"),
+            AnimationBuilder.buildAnimation("items.demonsword"),
+            AnimationBuilder.buildAnimation("items.demonsword"),
             "DemonSword",
             "Gives the Hero 5 more melee damage");
         this.setOnCollect(this);
