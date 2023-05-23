@@ -11,9 +11,6 @@ import ecs.entities.Monsters.Monster;
 import java.util.Timer;
 import java.util.TimerTask;
 import level.elements.tile.Tile;
-import java.util.logging.Logger;
-import java.util.logging.Logger;
-
 
 public class Bananapeel extends Trap implements ICollide {
 
@@ -118,8 +115,6 @@ public class Bananapeel extends Trap implements ICollide {
             idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
             new AnimationComponent(this, idle);
 
-
-
             // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
             Timer timer = new Timer();
             Hero finalHero = hero;
@@ -143,7 +138,6 @@ public class Bananapeel extends Trap implements ICollide {
             active = false;
 
             startTimer(hero, xSpeed, ySpeed, animationComponent, velocityComponent);
-
         }
     }
 
@@ -155,8 +149,6 @@ public class Bananapeel extends Trap implements ICollide {
      * @param velocityComponent is the velocityComponent of the b entity
      * @param finalHero is the hero
      */
-
-
     private void resetPlayerVelocity(
             Timer timer,
             float originalXVelocity,
@@ -164,7 +156,6 @@ public class Bananapeel extends Trap implements ICollide {
             AnimationComponent animationComponent,
             VelocityComponent velocityComponent,
             Hero finalHero) {
-
 
         velocityComponent.setYVelocity(originalYVelocity);
         velocityComponent.setXVelocity(originalXVelocity);
@@ -181,22 +172,32 @@ public class Bananapeel extends Trap implements ICollide {
         timer.cancel();
     }
 
-    private void startTimer(Hero hero, float xSpeed, float ySpeed, AnimationComponent animationComponent,
-                           VelocityComponent velocityComponent)
-    {
+    private void startTimer(
+            Hero hero,
+            float xSpeed,
+            float ySpeed,
+            AnimationComponent animationComponent,
+            VelocityComponent velocityComponent) {
         // new Timer which sets the Velocity to the originalVelocity after a delay of 5 seconds.
         Timer timer = new Timer();
         Hero finalHero = hero;
         float finalXSpeed = xSpeed;
         float finalYSpeed = ySpeed;
-        timer.schedule(new TimerTask() {
-            public void run() {
-                resetPlayerVelocity(timer, finalXSpeed, finalYSpeed, animationComponent, velocityComponent, finalHero);
-            }
-        }, 5 * 1000);
+        timer.schedule(
+                new TimerTask() {
+                    public void run() {
+                        resetPlayerVelocity(
+                                timer,
+                                finalXSpeed,
+                                finalYSpeed,
+                                animationComponent,
+                                velocityComponent,
+                                finalHero);
+                    }
+                },
+                5 * 1000);
 
         // defines that the trap can be triggered just once.
         active = false;
     }
-
 }

@@ -21,6 +21,7 @@ public class PlayableComponent extends Component {
     private Skill skillSlot3;
 
     private Skill combatSkill;
+    private Skill skillSlot4;
     private Skill skillSlot5;
 
     /**
@@ -83,10 +84,13 @@ public class PlayableComponent extends Component {
         this.skillSlot3 = skillSlot3;
     }
 
+    public void setSkillSlot4(Skill skillSlot4) {
+        this.skillSlot4 = skillSlot4;
+    }
+
     public void setSkillSlot5(Skill skillSlot5) {
         this.skillSlot5 = skillSlot5;
     }
-
 
     /**
      * @param combatSkill skill that will be on the four skillslot
@@ -116,7 +120,6 @@ public class PlayableComponent extends Component {
         return Optional.ofNullable(skillSlot3);
     }
 
-
     /**
      * @return skill on four skill slot
      */
@@ -124,8 +127,11 @@ public class PlayableComponent extends Component {
         return Optional.ofNullable(combatSkill);
     }
 
+    public Optional<Skill> getSkillSlot4() {
+        return Optional.ofNullable(skillSlot4);
+    }
+
     public Optional<Skill> getSkillSlot5() {
         return Optional.ofNullable(skillSlot5);
-
     }
 }

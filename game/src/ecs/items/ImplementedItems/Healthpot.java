@@ -6,19 +6,15 @@ import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.items.*;
-import tools.Point;
 import java.util.logging.Logger;
+import tools.Point;
 
-/**
- * Can be used after collecting to gain 10 Healthpoints back
- */
-public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
+/** Can be used after collecting to gain 10 Healthpoints back */
+public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
 
     private int healAmount = 0;
 
-    /**
-     * Creates a Healthpot item and spawns in the Level at a random spot
-     */
+    /** Creates a Healthpot item and spawns in the Level at a random spot */
     public Healthpot() {
         super(
                 ItemType.Healing,
@@ -41,9 +37,11 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop,IOnUse {
      */
     private void healHero(Entity e) {
         HealthComponent healthComponent =
-            (HealthComponent) e.getComponent(HealthComponent.class).get();
-        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+healAmount);
-        Logger.getLogger(this.getClass().getName()).info("Player got healed for " + healAmount + " HP");
+                (HealthComponent) e.getComponent(HealthComponent.class).get();
+        healthComponent.setCurrentHealthpoints(
+                healthComponent.getCurrentHealthpoints() + healAmount);
+        Logger.getLogger(this.getClass().getName())
+                .info("Player got healed for " + healAmount + " HP");
     }
 
     /**

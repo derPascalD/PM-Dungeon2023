@@ -50,7 +50,7 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
         Animation animation = AnimationBuilder.buildAnimation(pathToTexturesOfProjectile);
         new AnimationComponent(projectile, animation);
 
-       Point aimedOn = selectionFunction.selectTargetPoint();
+        Point aimedOn = selectionFunction.selectTargetPoint();
         Point targetPoint =
                 SkillTools.calculateLastPositionInRange(
                         epc.getPosition(), aimedOn, projectileRange);
@@ -60,9 +60,9 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
                 new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
 
-        if(entity instanceof Hero hero){
+        if (entity instanceof Hero hero) {
             DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
-            projectileDamage = new Damage(dC.getRangeDamage(),projectileDamage.damageType(),null);
+            projectileDamage = new Damage(dC.getRangeDamage(), projectileDamage.damageType(), null);
         }
 
         ICollide collide =
@@ -80,8 +80,4 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
         new HitboxComponent(
                 projectile, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
     }
-
 }
-
-
-

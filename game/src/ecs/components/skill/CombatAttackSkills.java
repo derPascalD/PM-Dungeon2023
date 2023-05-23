@@ -16,7 +16,8 @@ import tools.Point;
  * in the class.
  */
 public abstract class CombatAttackSkills implements ISkillFunction {
-    private record Weapon(Entity entity, PositionComponent epc, AnimationComponent ac){}
+    private record Weapon(Entity entity, PositionComponent epc, AnimationComponent ac) {}
+
     private final String pathCombatRight;
     private final String pathCombatLeft;
     private Damage combatDamage;
@@ -39,7 +40,6 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         Animation currentAnimation;
         Weapon wp = createWeapon(entity);
 
-
         float leftRight;
         Point weaponStartPoint;
         if (wp.ac().getCurrentAnimation() == wp.ac().getIdleLeft()) {
@@ -55,7 +55,8 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         }
         new PositionComponent(wp.entity(), weaponStartPoint);
         new AnimationComponent(wp.entity(), currentAnimation);
-        new VelocityComponent(wp.entity(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
+        new VelocityComponent(
+                wp.entity(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
 
         // Position from the Weapon
         new ProjectileComponent(
@@ -63,14 +64,13 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                 weaponStartPoint,
                 new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
 
-
-        if(entity instanceof Hero hero){
+        if (entity instanceof Hero hero) {
             DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
-            combatDamage = new Damage(dC.getMeleeDamage(),combatDamage.damageType(),null);
+            combatDamage = new Damage(dC.getMeleeDamage(), combatDamage.damageType(), null);
         }
 
         ICollide collide =
-            // b gets the damage
+                // b gets the damage
                 (a, b, from) -> {
                     if (b != entity && b.getComponent(HealthComponent.class).isPresent()) {
                         HealthComponent hc =
@@ -115,21 +115,20 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         new HitboxComponent(wp.entity(), collide, null);
     }
 
-    private Weapon createWeapon(Entity entity){
+    private Weapon createWeapon(Entity entity) {
         Entity weapon = new Entity();
         PositionComponent epc =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
 
         AnimationComponent ac =
-            (AnimationComponent)
-                entity.getComponent(AnimationComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("AnimationComponent"));
+                (AnimationComponent)
+                        entity.getComponent(AnimationComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("AnimationComponent"));
 
-        return new Weapon(weapon,epc,ac);
+        return new Weapon(weapon, epc, ac);
     }
-
 }
