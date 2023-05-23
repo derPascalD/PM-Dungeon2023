@@ -89,4 +89,12 @@ public class InventoryComponent extends Component {
     public List<ItemData> getItems() {
         return new ArrayList<>(inventory);
     }
+
+    /**
+     * Increases the size of the Inventory
+     * @param numberToAdd how much the Inventory is going to be increased
+     */
+    public void increaseInventorySize(int numberToAdd) {
+        maxSize = maxSize + numberToAdd;
+    }
 }

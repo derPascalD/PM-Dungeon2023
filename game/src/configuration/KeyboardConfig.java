@@ -30,4 +30,6 @@ public class KeyboardConfig {
             new ConfigKey<>(new String[] {"item", "heal"}, new ConfigIntValue(Input.Keys.Q));
     public static final ConfigKey<Integer> COMBAT_ATTACK =
             new ConfigKey<>(new String[] {"melee", "attack"}, new ConfigIntValue(Input.Keys.R));
+    public static final ConfigKey<Integer> TOGGLE_QUESTS =
+        new ConfigKey<>(new String[] {"quest", "toggle"}, new ConfigIntValue(Input.Keys.L));
 }

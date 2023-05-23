@@ -27,6 +27,9 @@ import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemType;
+import ecs.quest.DemonSlayerQuest;
+import ecs.quest.HealQuest;
+import ecs.quest.LevelUpQuest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
@@ -135,7 +138,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(pauseMenu);
 
         hero = new Hero();
-
+        createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
 
@@ -150,6 +153,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+        if(Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get())) IngameUI.toggleQuestText();
     }
 
     @Override
@@ -275,6 +279,21 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    // Creates all the Quests in the Dungeon with their respective name and text
+    private void createQuests() {
+        new LevelUpQuest("Deeper Pockets",
+            "Reach Dungeon depth 8 to get more 3 Inventory slots");
+        new HealQuest("More equals better, right?",
+            "Upon using 10 Healpotions the Hero will receive 10 more maximum Healthpoints");
+        new DemonSlayerQuest("Bloodrush",
+            "Kill 10 Demons to receive 'Demonslayer'");
+    }
+
+    /**
+     * @return Returns the current levelDepth of the dungeon
+     */
+    public static int getLevelDepth() { return levelDepth; }
+
     /**
      * Given entity will be added to the game in the next frame
      *
@@ -358,5 +377,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new XPSystem();
         new SkillSystem();
         new ProjectileSystem();
+        new QuestSystem();
     }
 }
