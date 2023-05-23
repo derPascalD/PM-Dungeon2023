@@ -24,7 +24,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     private HealthComponent hp;
 
     // Mana
-    private int ma;
+    private int mana;
 
     public IngameUI() {
         super(new SpriteBatch());
@@ -98,13 +98,13 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     */
     private void setEquiqMelee() {
         equiqMelee =
-            new ScreenText(
-                "Melee equip: 4",
-                new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 20),
-                2,
-                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                    .setFontcolor(Color.GOLD)
-                    .build());
+                new ScreenText(
+                        "Melee equip: 4",
+                        new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 20),
+                        2,
+                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontcolor(Color.GOLD)
+                                .build());
         add((T) equiqMelee);
     }
 }
