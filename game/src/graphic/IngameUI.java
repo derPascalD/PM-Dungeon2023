@@ -17,6 +17,7 @@ import tools.Point;
 public class IngameUI<T extends Actor> extends ScreenController<T> {
 
     private static ScreenText attackButton;
+    private static ScreenText equiqMelee;
     private static ScreenText hpScreen;
     private static ScreenText skillsScreen;
     private static ScreenText questText;
@@ -33,6 +34,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         setupSkill();
         attackButtonHero();
         setupQuestText();
+        setEquiqMelee();
     }
 
     /** Visualizes the Healthpoints of the Player on the Screen */
@@ -96,16 +98,16 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     }
 
     /*
-    Adds the melee button in the image
-     */
+    Close combat attack indicator
+    */
     private void attackButtonHero() {
         attackButton =
                 new ScreenText(
                         "Attack: R",
-                        new Point(Constants.WINDOW_WIDTH - 70, Constants.WINDOW_HEIGHT - 20),
+                        new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 40),
                         2,
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.GREEN)
+                                .setFontcolor(Color.GOLD)
                                 .build());
         add((T) attackButton);
     }
@@ -123,9 +125,23 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
      */
     public static void updateQuestText() {
         StringBuilder text = new StringBuilder("Quest Progress:\n");
-        for(Quest quest:Quest.getAllQuests()) {
-            text.append(quest.getProgress()+ "\n");
+        for (Quest quest : Quest.getAllQuests()) {
+            text.append(quest.getProgress() + "\n");
         }
         questText.setText(text.toString());
+    }
+    /*
+    Melee weapon equip indicator
+    */
+    private void setEquiqMelee() {
+        equiqMelee =
+            new ScreenText(
+                "Melee equip: 4",
+                new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 20),
+                2,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.GOLD)
+                    .build());
+        add((T) equiqMelee);
     }
 }

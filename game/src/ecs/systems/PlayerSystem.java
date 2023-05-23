@@ -7,10 +7,12 @@ import ecs.components.MissingComponentException;
 import ecs.components.PlayableComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import ecs.items.ImplementedItems.Bag;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
 import ecs.tools.interaction.InteractionTool;
+import java.util.logging.Logger;
 import starter.Game;
 
 /** Used to control the player */
@@ -40,7 +42,7 @@ public class PlayerSystem extends ECS_System {
         if (Gdx.input.isKeyJustPressed(KeyboardConfig.HEAL_POTION.get())) useHealPotion(ksd.e);
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
-
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.EQUIQ_WEAPON.get())) equipWeapon(ksd.e);
         // check skills
         else if (Gdx.input.isKeyPressed(KeyboardConfig.FIRST_SKILL.get()))
             ksd.pc.getSkillSlot1().ifPresent(skill -> skill.execute(ksd.e));
@@ -48,7 +50,7 @@ public class PlayerSystem extends ECS_System {
             ksd.pc.getSkillSlot2().ifPresent(skill -> skill.execute(ksd.e));
         else if (Gdx.input.isKeyPressed(KeyboardConfig.THIRD_SKILL.get()))
             ksd.pc.getSkillSlot3().ifPresent(skill -> skill.execute(ksd.e));
-        else if (Gdx.input.isKeyPressed(KeyboardConfig.COMBAT_ATTACK.get()))
+        else if (Gdx.input.isKeyPressed(KeyboardConfig.COMBAT_ATTACK.get()) && meleeActive(ksd.e))
             ksd.pc.getCombatSkill().ifPresent(skill -> skill.execute(ksd.e));
     }
 
@@ -78,6 +80,29 @@ public class PlayerSystem extends ECS_System {
                 System.out.println("+ " + item.getItemName() + ": " + item.getDescription());
             }
         }
+    }
+
+    /*
+    Makes it possible to equip a melee weapon
+    */
+    private void equipWeapon(Entity e) {
+        if (e instanceof Hero hero && hero.isEquipWeapon()) {
+            hero.setEquipWeapon(false);
+            Logger.getLogger(e.getClass().getName())
+                    .info(e.getClass().getSimpleName() + " melee weapon returned");
+        } else if (e instanceof Hero hero && !hero.isEquipWeapon()) {
+            hero.setEquipWeapon(true);
+            Logger.getLogger(e.getClass().getName())
+                    .info(e.getClass().getSimpleName() + " close combat weapon equipped");
+        }
+    }
+
+    /*
+    Method that checks whether a melee weapon is equipped or not on the Hero.
+    */
+    private boolean meleeActive(Entity e) {
+        if (e instanceof Hero hero) return hero.isEquipWeapon();
+        return false;
     }
 
     /**

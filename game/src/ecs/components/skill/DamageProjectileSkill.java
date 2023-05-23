@@ -59,9 +59,9 @@ public abstract class DamageProjectileSkill implements ISkillFunction {
                 new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
 
-        if(entity instanceof Hero hero){
+        if (entity instanceof Hero hero) {
             DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
-            projectileDamage = new Damage(dC.getRangeDamage(),projectileDamage.damageType(),null);
+            projectileDamage = new Damage(dC.getRangeDamage(), projectileDamage.damageType(), null);
         }
 
         ICollide collide =

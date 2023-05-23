@@ -9,7 +9,6 @@ import java.util.Random;
 import java.util.logging.Logger;
 import starter.Game;
 
-
 public class Tombstone extends Entity implements IInteraction {
 
     private int healthAmount;

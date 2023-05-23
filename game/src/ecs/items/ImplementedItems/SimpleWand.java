@@ -2,12 +2,9 @@ package ecs.items.ImplementedItems;
 
 import dslToGame.AnimationBuilder;
 import ecs.components.DamageComponent;
-import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
-import ecs.entities.Hero;
 import ecs.items.*;
-import starter.Game;
 import tools.Point;
 
 /** Gives the Hero more damage upon collecting */
@@ -38,11 +35,11 @@ public class SimpleWand extends ItemData implements IOnCollect, IOnDrop, IOnUse 
      */
     @Override
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
-       if(defaultOnCollect(WorldItemEntity, whoCollides)) {
+        if (defaultOnCollect(WorldItemEntity, whoCollides)) {
             DamageComponent damageComponent =
-                (DamageComponent) whoCollides.getComponent(DamageComponent.class).get();
-           damageComponent.setRangeDamage(damageComponent.getRangeDamage() + 5);
-       }
+                    (DamageComponent) whoCollides.getComponent(DamageComponent.class).get();
+            damageComponent.setRangeDamage(damageComponent.getRangeDamage() + 5);
+        }
     }
 
     @Override
