@@ -84,7 +84,6 @@ public class GrenadeLauncher extends RangedAbilities {
                     yback = -1;
                 } else {
                     xOffset = -1;
-                    xback = -1;
                 }
             } else if (vC.getXVelocity() < 0) {
                 if (vC.getYVelocity() > 0) {
