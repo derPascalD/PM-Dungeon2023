@@ -2,10 +2,8 @@ package ecs.systems;
 
 import com.badlogic.gdx.Gdx;
 import configuration.KeyboardConfig;
-import ecs.components.InventoryComponent;
-import ecs.components.MissingComponentException;
-import ecs.components.PlayableComponent;
-import ecs.components.VelocityComponent;
+import dslToGame.AnimationBuilder;
+import ecs.components.*;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.items.ImplementedItems.Bag;
@@ -43,7 +41,6 @@ public class PlayerSystem extends ECS_System {
         if (Gdx.input.isKeyPressed(KeyboardConfig.INTERACT_WORLD.get()))
             InteractionTool.interactWithClosestInteractable(ksd.e);
         if (Gdx.input.isKeyJustPressed(KeyboardConfig.EQUIQ_WEAPON.get())) equipWeapon(ksd.e);
-        // check skills
         else if (Gdx.input.isKeyPressed(KeyboardConfig.FIRST_SKILL.get()))
             ksd.pc.getSkillSlot1().ifPresent(skill -> skill.execute(ksd.e));
         else if (Gdx.input.isKeyPressed(KeyboardConfig.SECOND_SKILL.get()))
@@ -54,7 +51,7 @@ public class PlayerSystem extends ECS_System {
             ksd.pc.getCombatSkill().ifPresent(skill -> skill.execute(ksd.e));
     }
 
-    /**
+    /*
      * Displays the Inventory of the Hero in the console
      *
      * @param e Entity which inventory gets displayed, mostly the Hero
@@ -88,24 +85,53 @@ public class PlayerSystem extends ECS_System {
     private void equipWeapon(Entity e) {
         if (e instanceof Hero hero && hero.isEquipWeapon()) {
             hero.setEquipWeapon(false);
+            setHeroWithWeapon(hero);
             Logger.getLogger(e.getClass().getName())
                     .info(e.getClass().getSimpleName() + " melee weapon returned");
         } else if (e instanceof Hero hero && !hero.isEquipWeapon()) {
             hero.setEquipWeapon(true);
+            setHeroWithoutWeapon(hero);
             Logger.getLogger(e.getClass().getName())
                     .info(e.getClass().getSimpleName() + " close combat weapon equipped");
         }
     }
 
-    /*
-    Method that checks whether a melee weapon is equipped or not on the Hero.
-    */
+    // Set the Path Hero with Weapon
+    private void setHeroWithWeapon(Hero hero) {
+        hero.setPathToIdleLeft("knight/idleCombatLeft");
+        hero.setPathToIdleRight("knight/idleCombatRight");
+        hero.setPathToRunLeft("knight/runCombatLeft");
+        hero.setPathToRunRight("knight/runCombatRight");
+        heroComponents(hero);
+    }
+
+    // The Animation and VelocityComponent for the Hero Animation
+    private void heroComponents(Hero hero) {
+        AnimationComponent aC =
+                (AnimationComponent) hero.getComponent(AnimationComponent.class).get();
+        aC.setIdleLeft(AnimationBuilder.buildAnimation(hero.getPathToIdleLeft()));
+        aC.setIdleRight(AnimationBuilder.buildAnimation(hero.getPathToIdleRight()));
+        VelocityComponent vC = (VelocityComponent) hero.getComponent(VelocityComponent.class).get();
+        vC.setMoveLeftAnimation(AnimationBuilder.buildAnimation(hero.getPathToRunLeft()));
+        vC.setMoveRightAnimation(AnimationBuilder.buildAnimation(hero.getPathToRunRight()));
+    }
+
+    // Set the Path Hero without Weapon
+    private void setHeroWithoutWeapon(Hero hero) {
+        hero.setPathToIdleLeft("knight/idleLeft");
+        hero.setPathToIdleRight("knight/idleRight");
+        hero.setPathToRunLeft("knight/runLeft");
+        hero.setPathToRunRight("knight/runRight");
+        heroComponents(hero);
+    }
+
+    // Method that checks whether a melee weapon is equipped or not on the Hero.
     private boolean meleeActive(Entity e) {
         if (e instanceof Hero hero) return hero.isEquipWeapon();
         return false;
     }
 
-    /**
+    /*
      * Uses an healing item from the entities inventory to heal the entity
      *
      * @param e Entity thats using the healpotion, mostly the Hero

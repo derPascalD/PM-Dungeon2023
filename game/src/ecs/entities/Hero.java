@@ -27,10 +27,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private int SpeedSkillCoolDown = 20;
     private final float xSpeed = 0.3f;
     private final float ySpeed = 0.3f;
-    private final String pathToIdleLeft = "knight/idleLeft";
-    private final String pathToIdleRight = "knight/idleRight";
-    private final String pathToRunLeft = "knight/runLeft";
-    private final String pathToRunRight = "knight/runRight";
+    private String pathToIdleLeft = "knight/idleCombatLeft";
+    private String pathToIdleRight = "knight/idleCombatRight";
+    private String pathToRunLeft = "knight/runCombatLeft";
+    private String pathToRunRight = "knight/runCombatRight";
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
     private Skill firstSkill;
     private Skill secondSkill;
@@ -288,9 +288,21 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
      * English: The function is called as soon as different entities collide with each other. Then
      * certain instructions can be executed.
      */
-    /**
-     * German: Die Funktion wird aufgerufen, sobald unterschiedliche Entities miteinander
-     * kollidieren. Da können dann bestimmte Anweisungen ausgeführt werden.
-     */
     public void onCollision(Entity a, Entity b, Tile.Direction direction) {}
+
+    public void setPathToIdleLeft(String pathToIdleLeft) {
+        this.pathToIdleLeft = pathToIdleLeft;
+    }
+
+    public void setPathToIdleRight(String pathToIdleRight) {
+        this.pathToIdleRight = pathToIdleRight;
+    }
+
+    public void setPathToRunLeft(String pathToRunLeft) {
+        this.pathToRunLeft = pathToRunLeft;
+    }
+
+    public void setPathToRunRight(String pathToRunRight) {
+        this.pathToRunRight = pathToRunRight;
+    }
 }
