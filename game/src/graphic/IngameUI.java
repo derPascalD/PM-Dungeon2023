@@ -68,18 +68,18 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     // Creates a ScreenText for all the Quests to be displayed
     private void setupQuestText() {
         StringBuilder text = new StringBuilder("Quest Progress:\n");
-        for(Quest quest:Quest.getAllQuests()) {
-            text.append(quest.getProgress()+ "\n");
+        for (Quest quest : Quest.getAllQuests()) {
+            text.append(quest.getProgress() + "\n");
         }
 
         questText =
-            new ScreenText(
-                text.toString(),
-                new Point(5,Constants.WINDOW_HEIGHT-95),
-                2,
-                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                    .setFontcolor(Color.RED)
-                    .build());
+                new ScreenText(
+                        text.toString(),
+                        new Point(5, Constants.WINDOW_HEIGHT - 95),
+                        2,
+                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontcolor(Color.RED)
+                                .build());
         questText.setVisible(false);
         add((T) questText);
     }
@@ -112,17 +112,13 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         add((T) attackButton);
     }
 
-    /**
-     * Toggles the Quest Text to be visible or not
-     */
+    /** Toggles the Quest Text to be visible or not */
     public static void toggleQuestText() {
-        if(questText.isVisible()) questText.setVisible(false);
+        if (questText.isVisible()) questText.setVisible(false);
         else questText.setVisible(true);
     }
 
-    /**
-     * Updates the Text that is displayed to show the Hero his Progress
-     */
+    /** Updates the Text that is displayed to show the Hero his Progress */
     public static void updateQuestText() {
         StringBuilder text = new StringBuilder("Quest Progress:\n");
         for (Quest quest : Quest.getAllQuests()) {

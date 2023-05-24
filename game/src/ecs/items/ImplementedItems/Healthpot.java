@@ -38,9 +38,11 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
      */
     private void healHero(Entity e) {
         HealthComponent healthComponent =
-            (HealthComponent) e.getComponent(HealthComponent.class).get();
-        healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints()+healAmount);
-        Logger.getLogger(this.getClass().getName()).info("Player got healed for " + healAmount + " HP");
+                (HealthComponent) e.getComponent(HealthComponent.class).get();
+        healthComponent.setCurrentHealthpoints(
+                healthComponent.getCurrentHealthpoints() + healAmount);
+        Logger.getLogger(this.getClass().getName())
+                .info("Player got healed for " + healAmount + " HP");
         useCount++;
     }
 

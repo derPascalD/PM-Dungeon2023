@@ -92,6 +92,7 @@ public class InventoryComponent extends Component {
 
     /**
      * Increases the size of the Inventory
+     *
      * @param numberToAdd how much the Inventory is going to be increased
      */
     public void increaseInventorySize(int numberToAdd) {

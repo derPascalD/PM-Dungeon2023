@@ -11,6 +11,7 @@ public class HealQuest extends Quest {
 
     /**
      * Creates a HealQuest with its given name and description
+     *
      * @param name name of the quest
      * @param description description of the quest
      */
@@ -19,31 +20,28 @@ public class HealQuest extends Quest {
         progressText = "0/" + questNumber + " Healthpots used";
     }
 
-    /**
-     * Updates the progressText
-     */
+    /** Updates the progressText */
     @Override
     public void updateProgress() {
         progressText = Healthpot.getUseCount() + "/" + questNumber + " Healthpots used";
     }
     /**
      * Checks if the Hero has used a certain amount of Healpotions
+     *
      * @return true if the Hero has used a certain amount of Healpotions otherwise false
      */
     @Override
     public boolean isComplete() {
-        if(Healthpot.getUseCount()>=questNumber) return true;
+        if (Healthpot.getUseCount() >= questNumber) return true;
         return false;
     }
 
-    /**
-     * Gives the Hero more Healthpoints
-     */
+    /** Gives the Hero more Healthpoints */
     @Override
     public void onComplete() {
         Hero hero = (Hero) Game.getHero().get();
         HealthComponent heroHealth =
-            (HealthComponent) hero.getComponent(HealthComponent.class).get();
-        heroHealth.setMaximalHealthpoints(heroHealth.getMaximalHealthpoints()+10);
+                (HealthComponent) hero.getComponent(HealthComponent.class).get();
+        heroHealth.setMaximalHealthpoints(heroHealth.getMaximalHealthpoints() + 10);
     }
 }

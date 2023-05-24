@@ -2,17 +2,15 @@ package ecs.components;
 
 import ecs.entities.Entity;
 
-/**
- * Represents the damage an entity can deal
- */
+/** Represents the damage an entity can deal */
 public class DamageComponent extends Component {
 
     private int meleeDamage;
     private int rangeDamage;
 
     /**
-     * Create a DamageComponent and add it to the associated entity Sets the melee and range damage to 1 as
-     * default
+     * Create a DamageComponent and add it to the associated entity Sets the melee and range damage
+     * to 1 as default
      *
      * @param entity associated entity
      */
@@ -37,6 +35,7 @@ public class DamageComponent extends Component {
 
     /**
      * Gets the meleeDamage of the entity
+     *
      * @return The meleeDamage of the entity
      */
     public int getMeleeDamage() {
@@ -45,6 +44,7 @@ public class DamageComponent extends Component {
 
     /**
      * Sets the meleeDamage of the entity
+     *
      * @param meleeDamage The meleeDamage of the entity
      */
     public void setMeleeDamage(int meleeDamage) {
@@ -53,6 +53,7 @@ public class DamageComponent extends Component {
 
     /**
      * Sets the rangeDamage of the entity
+     *
      * @return The rangeDamage of the entity
      */
     public int getRangeDamage() {
@@ -61,6 +62,7 @@ public class DamageComponent extends Component {
 
     /**
      * Sets the rangeDamage of the entity
+     *
      * @param rangeDamage The rangeDamage of the entity
      */
     public void setRangeDamage(int rangeDamage) {
