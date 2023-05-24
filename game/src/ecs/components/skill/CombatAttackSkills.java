@@ -71,11 +71,11 @@ public abstract class CombatAttackSkills implements ISkillFunction {
         new PositionComponent(wp.weapon(), weaponStartPoint);
         new AnimationComponent(wp.weapon(), currentAnimation);
         new VelocityComponent(
-            wp.weapon(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
+                wp.weapon(), (0.08F * leftRight), 0, currentAnimation, currentAnimation);
         new ProjectileComponent(
-            wp.weapon(),
-            weaponStartPoint,
-            new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
+                wp.weapon(),
+                weaponStartPoint,
+                new Point(weaponStartPoint.x + (0.5F) * leftRight, weaponStartPoint.y));
     }
 
     /*
@@ -85,22 +85,22 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     private void setCollide(Weapon wp, Entity entity) {
         ICollide collide =
 
-            // b gets the damage
-            (a, b, from) -> {
-                if (b != entity && b.getComponent(HealthComponent.class).isPresent()) {
-                    HealthComponent hc =
-                        (HealthComponent) b.getComponent(HealthComponent.class).get();
+                // b gets the damage
+                (a, b, from) -> {
+                    if (b != entity && b.getComponent(HealthComponent.class).isPresent()) {
+                        HealthComponent hc =
+                                (HealthComponent) b.getComponent(HealthComponent.class).get();
 
-                    if ((hc.getCurrentHealthpoints() - combatDamage.damageAmount()) <= 0
-                        && entity instanceof Hero hero) {
-                        hero.addKilledMonsters(b);
-                        combatLogger.info("Was added to the list of killed monsters");
+                        if ((hc.getCurrentHealthpoints() - combatDamage.damageAmount()) <= 0
+                                && entity instanceof Hero hero) {
+                            hero.addKilledMonsters(b);
+                            combatLogger.info("Was added to the list of killed monsters");
+                        }
+                        hc.receiveHit(combatDamage);
+                        Game.removeEntity(wp.weapon());
+                        throwback(wp, b);
                     }
-                    hc.receiveHit(combatDamage);
-                    Game.removeEntity(wp.weapon());
-                    throwback(wp, b);
-                }
-            };
+                };
 
         new HitboxComponent(wp.weapon(), collide, null);
     }
@@ -111,17 +111,17 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     private void throwback(Weapon wp, Entity b) {
         Point checkSetPoint;
         if (wp.ac().getCurrentAnimation() == wp.ac().getIdleRight()
-            && b.getComponent(PositionComponent.class).isPresent()) {
+                && b.getComponent(PositionComponent.class).isPresent()) {
             PositionComponent pc =
-                (PositionComponent) b.getComponent(PositionComponent.class).get();
+                    (PositionComponent) b.getComponent(PositionComponent.class).get();
             checkSetPoint = new Point(pc.getPosition().x + 1F, pc.getPosition().y);
             if (Game.currentLevel.getTileAt(checkSetPoint.toCoordinate()).isAccessible()) {
                 pc.setPosition(new Point(pc.getPosition().x + 1F, pc.getPosition().y));
             }
         } else if (wp.ac().getCurrentAnimation() == wp.ac().getIdleLeft()
-            && b.getComponent(PositionComponent.class).isPresent()) {
+                && b.getComponent(PositionComponent.class).isPresent()) {
             PositionComponent pc =
-                (PositionComponent) b.getComponent(PositionComponent.class).get();
+                    (PositionComponent) b.getComponent(PositionComponent.class).get();
             checkSetPoint = new Point(pc.getPosition().x - 1F, pc.getPosition().y);
             if (Game.currentLevel.getTileAt(checkSetPoint.toCoordinate()).isAccessible()) {
                 pc.setPosition(new Point(pc.getPosition().x - 1F, pc.getPosition().y));
@@ -145,16 +145,16 @@ public abstract class CombatAttackSkills implements ISkillFunction {
     private Weapon createWeapon(Entity entity) {
         Entity weapon = new Entity();
         PositionComponent epc =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
 
         AnimationComponent ac =
-            (AnimationComponent)
-                entity.getComponent(AnimationComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("AnimationComponent"));
+                (AnimationComponent)
+                        entity.getComponent(AnimationComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("AnimationComponent"));
 
         return new Weapon(weapon, epc, ac);
     }

@@ -29,7 +29,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private int StunningStrikeCoolDown = 3;
     private int SpeedSkillCoolDown = 20;
 
-
     private final int grenadeLauncherCoolDown = 1;
     private final int NinjabladeCoolDown = 0;
 
