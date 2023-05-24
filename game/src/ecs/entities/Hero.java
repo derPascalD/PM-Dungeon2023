@@ -158,9 +158,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
                                         "items/grenade/grenade.png",
                                         0.6f,
                                         new Damage(2, DamageType.FIRE, null),
-                                        new Point(0.5f, 0.5f),
+                                        new Point(1f, 1f),
                                         SkillTools::getCursorPositionAsPoint,
-                                        5f),
+                                        3f),
                                 grenadeLauncherCoolDown));
         playableComponent.setSkillSlot4(fourthSkill);
     }
@@ -198,7 +198,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
                 fifthSkill =
                         new Skill(
                                 new NinjaBlade(
-                                        0,
+                                        10,
                                         false,
                                         "skills/ninjablade/ninja_blade_left",
                                         0.25f,

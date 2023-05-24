@@ -10,6 +10,7 @@ import ecs.entities.Hero;
 import ecs.entities.Monsters.Monster;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 import level.elements.tile.Tile;
 
 public class Bananapeel extends Trap implements ICollide {
@@ -59,6 +60,7 @@ public class Bananapeel extends Trap implements ICollide {
         if (!active) return;
 
         if (b instanceof Hero || b instanceof Monster) {
+
             // gets the components from the b entity
             HealthComponent healthComponent =
                     (HealthComponent)
@@ -86,7 +88,6 @@ public class Bananapeel extends Trap implements ICollide {
 
             // gets the Currenthealthpoints from b
             int healthpoints = healthComponent.getCurrentHealthpoints();
-            System.out.println("actual healthhpoints: " + healthpoints);
 
             // sets the new healthpoints after the damage
             healthComponent.receiveHit(new Damage(damageValue, DamageType.PHYSICAL, this));
@@ -136,7 +137,7 @@ public class Bananapeel extends Trap implements ICollide {
 
             // defines that the trap can be triggered just once.
             active = false;
-
+            traplogger.log(Level.INFO, getClass().getSimpleName() + " activated");
             startTimer(hero, xSpeed, ySpeed, animationComponent, velocityComponent);
         }
     }

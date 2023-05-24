@@ -1,19 +1,20 @@
 package ecs.components.skill;
 
+import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
+import starter.Game;
 import tools.Point;
 
 public class NinjaBlade extends RangedAbilities {
-
     /*
-    Counts how often the hero used the NinjaBlade
+    the range in which the offset can be calculated.
      */
-    public static int countOfUse = 0;
-    private float from = 0.6f;
-    private float to = 1.4f;
+    private float from = 0.1f;
+    private float to = 3.0f;
     /**
-     * @param damagerange is the damage range of the NinjaBlade
+     * @param skilllearnedLevel is the level sine the skill is learned
      * @param bouncesOffWalls define if the star can bounce of walls or not
      * @param pathToTexturesOfProjectile is the path to the animation of the projectile
      * @param projectileSpeed is the speed of NinjaBlade
@@ -24,7 +25,7 @@ public class NinjaBlade extends RangedAbilities {
      * @param projectileRange is the range of the NinjaBlade
      */
     public NinjaBlade(
-            int damagerange,
+            int skilllearnedLevel,
             boolean bouncesOffWalls,
             String pathToTexturesOfProjectile,
             float projectileSpeed,
@@ -33,7 +34,7 @@ public class NinjaBlade extends RangedAbilities {
             ITargetSelection selectionFunction,
             float projectileRange) {
         super(
-                damagerange,
+                skilllearnedLevel,
                 bouncesOffWalls,
                 pathToTexturesOfProjectile,
                 projectileSpeed,
@@ -64,14 +65,20 @@ public class NinjaBlade extends RangedAbilities {
     @Override
     public void execute(Entity entity) {
 
-        // sets the new AimPoint
-        if (countOfUse <= 10) {
+        // getting the xpComponent from the hero
+        Hero hero = (Hero) Game.getHero().get();
+        XPComponent xpComponent = hero.getXpComponent();
+        long currentLevel = xpComponent.getCurrentLevel();
+
+        // setting the new AimPoint
+        if (currentLevel < skilllearnedLevel) {
             to -= 0.1f;
             this.setAimedOn(probabilityToHit());
+
+            // case: if the NinjaBlade Skill is completely learned
         } else {
             this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
         }
         super.execute(entity);
-        countOfUse += 1;
     }
 }

@@ -10,15 +10,10 @@ import ecs.damage.Damage;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import graphic.Animation;
-import level.elements.tile.Tile;
 import starter.Game;
 import tools.Point;
 
-import java.util.Vector;
-
 public class GrenadeLauncher extends RangedAbilities {
-
-    private final int AmountOfBounces = 4;
 
     public GrenadeLauncher(
             int damagerange,
@@ -47,13 +42,14 @@ public class GrenadeLauncher extends RangedAbilities {
     @Override
     public void execute(Entity entity) {
 
+        changeToLauncherAnimation(entity);
         Entity projectile = new Entity();
         PositionComponent epc =
                 (PositionComponent)
                         entity.getComponent(PositionComponent.class)
                                 .orElseThrow(
                                         () -> new MissingComponentException("PositionComponent"));
-        new PositionComponent(projectile, epc.getPosition());
+        PositionComponent pc = new PositionComponent(projectile, epc.getPosition());
 
         Animation animation = AnimationBuilder.buildAnimation(pathToTexturesOfProjectile);
         new AnimationComponent(projectile, animation);
@@ -68,11 +64,64 @@ public class GrenadeLauncher extends RangedAbilities {
                 new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
 
-        PositionComponent ppc = (PositionComponent) projectile.getComponent(PositionComponent.class).get();
-        Point direction = Point.getUnitDirectionalVector(targetPoint, ppc.getPosition());
+        collision(entity, projectile);
+        throwBack(targetPoint, vc, epc, entity);
+    }
 
+    /**
+     * @param point targetpoint
+     * @param vC is the velocityComponent of the procetile
+     * @param epc is the position component of the entity which uses the skill
+     * @param entity is the entity which uses the skill
+     */
+    public void throwBack(Point point, VelocityComponent vC, PositionComponent epc, Entity entity) {
+        if (currentLevel != null && !currentLevel.getTileAt(point.toCoordinate()).isAccessible()) {
+            float xOffset = 1, yOffset = 1, xback = 1, yback = 1;
+            if (vC.getXVelocity() > 0) {
+                if (vC.getYVelocity() > 0) {
+                    yOffset = -1;
+                    xOffset = -1;
+                    yback = -1;
+                } else {
+                    xOffset = -1;
+                    xback = -1;
+                }
+            } else if (vC.getXVelocity() < 0) {
+                if (vC.getYVelocity() > 0) {
+                    yOffset = -1;
+                    yback = -1;
+                    xback = -1;
+                } else {
+                    xback = -1;
+                }
+            }
+            float temp = 0;
+            Point tempP;
+            while (true) {
+                tempP = new Point(point.x + (temp * xOffset), point.y + (temp * yOffset));
+                if (currentLevel != null
+                        && currentLevel.getTileAt(tempP.toCoordinate()).isAccessible()) {
+                    break;
+                }
+                temp += 0.001f;
+            }
+            RecreatingReflectedPrjectileComponent(epc, entity, xback, yback, tempP);
+        }
+    }
 
+    private void RecreatingReflectedPrjectileComponent(
+            PositionComponent epc, Entity entity, float xback, float yback, Point tempP) {
+        Entity projectileBack = new Entity();
+        new PositionComponent(projectileBack, tempP);
+        Animation animation = AnimationBuilder.buildAnimation(pathToTexturesOfProjectile);
+        new AnimationComponent(projectileBack, animation);
+        new VelocityComponent(projectileBack, xback * 0.1F, yback * 0.1F, animation, animation);
+        new ProjectileComponent(projectileBack, tempP, epc.getPosition());
 
+        collision(entity, projectileBack);
+    }
+
+    private void collision(Entity entity, Entity projectileBack) {
         ICollide collide =
                 (a, b, from) -> {
                     if (b != entity) {
@@ -80,16 +129,31 @@ public class GrenadeLauncher extends RangedAbilities {
                                 .ifPresent(
                                         hc -> {
                                             ((HealthComponent) hc).receiveHit(projectileDamage);
-                                            Game.removeEntity(projectile);
-                                            doKnockback(b, a, 3.25f);
+                                            Game.removeEntity(projectileBack);
+                                            doKnockback(b, a, 2.25f);
                                         });
                     }
                 };
-
         new HitboxComponent(
-                projectile, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
+                projectileBack, new Point(0.25f, 0.25f), projectileHitboxSize, collide, null);
     }
 
+    /*
+    actual not in usage for later use eventually.
+     */
+    private Point reflectDirection(Point vector, Point newPoint) {
+        Vector2 vector2 = new Vector2(vector.x, vector.y);
+        float dotproduct = vector2.dot(newPoint.x, newPoint.y);
+
+        float reflectedX = vector.x - 2 * dotproduct * newPoint.x;
+        float reflectedY = vector.y - 2 * dotproduct * newPoint.y;
+        return new Point(reflectedX, reflectedY);
+    }
+
+    /*
+     * changes the hero animation
+     * @param entity is the entity which uses the skill
+     */
     private void changeToLauncherAnimation(Entity entity) {
         if (entity.getClass() != Hero.class) {
             return;
@@ -103,32 +167,5 @@ public class GrenadeLauncher extends RangedAbilities {
         ac.setIdleRight(AnimationBuilder.buildAnimation("knight/launcher_idleRight"));
         vc.setMoveRightAnimation(AnimationBuilder.buildAnimation("knight/launcher_runRight"));
         vc.setMoveLeftAnimation(AnimationBuilder.buildAnimation("knight/launcher_runLeft"));
-    }
-
-    public void resetGrenadeLauncherAnimation(Entity entity) {
-        if (entity == null) {
-            return;
-        }
-        if (entity instanceof Hero hero) {
-            if (hero.getComponent(AnimationComponent.class).isEmpty()) {
-                return;
-            }
-            if (hero.getComponent(VelocityComponent.class).isEmpty()) {
-                return;
-            }
-            AnimationComponent ac =
-                    (AnimationComponent) entity.getComponent(AnimationComponent.class).get();
-            VelocityComponent vc =
-                    (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
-
-            ac.setIdleLeft(AnimationBuilder.buildAnimation(hero.getPathToIdleLeft()));
-            ac.setIdleRight(AnimationBuilder.buildAnimation(hero.getPathToIdleRight()));
-            vc.setMoveRightAnimation(AnimationBuilder.buildAnimation(hero.getPathToRunRight()));
-            vc.setMoveLeftAnimation(AnimationBuilder.buildAnimation(hero.getPathToRunLeft()));
-        }
-    }
-
-    private  Point reflectDirection(Point vector) {
-        return new Point(-vector.x, -vector.y);
     }
 }

@@ -5,11 +5,12 @@ import tools.Point;
 
 public abstract class RangedAbilities extends RangeProjectileSkill {
 
-    protected int damagerange;
+    protected long skilllearnedLevel;
+
     protected boolean bouncesOffWalls;
 
     public RangedAbilities(
-            int damagerange,
+            long skilllearnedLevel,
             boolean bouncesOffWalls,
             String pathToTexturesOfProjectile,
             float projectileSpeed,
@@ -24,19 +25,23 @@ public abstract class RangedAbilities extends RangeProjectileSkill {
                 projectileHitboxSize,
                 selectionFunction,
                 projectileRange);
-        this.damagerange = damagerange;
         this.bouncesOffWalls = bouncesOffWalls;
+        this.skilllearnedLevel = skilllearnedLevel;
     }
 
-    public int getDamagerange() {
-        return damagerange;
+    public long getSkilllearnedLevel() {
+        return skilllearnedLevel;
     }
 
-    public boolean doesBounceOffWalls() {
+    public void setSkilllearnedLevel(long skilllearnedLevel) {
+        this.skilllearnedLevel = skilllearnedLevel;
+    }
+
+    public boolean isBouncesOffWalls() {
         return bouncesOffWalls;
     }
 
-    public void setDamagerange(int damagerange) {
-        this.damagerange = damagerange;
+    public void setBouncesOffWalls(boolean bouncesOffWalls) {
+        this.bouncesOffWalls = bouncesOffWalls;
     }
 }
