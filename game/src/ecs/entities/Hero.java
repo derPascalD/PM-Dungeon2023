@@ -138,7 +138,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     }
 
     private void setupHealthComponent() {
-        healthComponent = new HealthComponent(this, 100, this, hitAnimation(), null);
+        Animation hit = AnimationBuilder.buildAnimation(hitAnimation);
+        healthComponent = new HealthComponent(this, 10, this, hitAnimation(), hit);
     }
 
     private void setupVelocityComponent() {
