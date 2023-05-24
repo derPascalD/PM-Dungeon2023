@@ -19,6 +19,7 @@ import tools.Point;
 public abstract class CombatAttackSkills implements ISkillFunction {
     private record Weapon(Entity weapon, PositionComponent epc, AnimationComponent ac) {}
 
+    private Logger combatLogger = Logger.getLogger(getClass().getName());
     private final String pathCombatRight;
     private final String pathCombatLeft;
     private Damage combatDamage;
@@ -43,7 +44,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
      */
     @Override
     public void execute(Entity entity) {
-        Logger.getLogger(entity.getClass().getName()).info("Launches a melee attack");
+        combatLogger.info("Launches a melee attack");
         Weapon wp = createWeapon(entity);
         int leftRight;
         Point weaponStartPoint;
@@ -93,8 +94,7 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                         if ((hc.getCurrentHealthpoints() - combatDamage.damageAmount()) <= 0
                                 && entity instanceof Hero hero) {
                             hero.addKilledMonsters(b);
-                            Logger.getLogger(b.getClass().getName())
-                                    .info("Was added to the list of killed monsters");
+                            combatLogger.info("Was added to the list of killed monsters");
                         }
                         hc.receiveHit(combatDamage);
                         Game.removeEntity(wp.weapon());
@@ -127,8 +127,6 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                 pc.setPosition(new Point(pc.getPosition().x - 1F, pc.getPosition().y));
             }
         }
-        Logger.getLogger(b.getClass().getName())
-                .info(b.getClass().getSimpleName() + " was pushed back.");
     }
 
     /*
