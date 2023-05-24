@@ -17,7 +17,7 @@ import tools.Point;
 public class IngameUI<T extends Actor> extends ScreenController<T> {
 
     private static ScreenText attackButton;
-    private static ScreenText equiqMelee;
+    private static ScreenText equipMelee;
     private static ScreenText hpScreen;
     private static ScreenText skillsScreen;
     private static ScreenText questText;
@@ -34,7 +34,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         setupSkill();
         attackButtonHero();
         setupQuestText();
-        setEquiqMelee();
+        setEquipMelee();
     }
 
     /** Visualizes the Healthpoints of the Player on the Screen */
@@ -129,15 +129,15 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     /*
     Melee weapon equip indicator
     */
-    private void setEquiqMelee() {
-        equiqMelee =
+    private void setEquipMelee() {
+        equipMelee =
                 new ScreenText(
-                        "Melee equip: 4",
+                        "Melee equip: 6",
                         new Point(Constants.WINDOW_WIDTH - 100, Constants.WINDOW_HEIGHT - 20),
                         2,
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
                                 .setFontcolor(Color.GOLD)
                                 .build());
-        add((T) equiqMelee);
+        add((T) equipMelee);
     }
 }

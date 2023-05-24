@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import starter.Game;
 import tools.Point;
 
@@ -18,6 +20,9 @@ public class StunningStrikeSkill extends MagicSkills {
 
     // the radius in which the entities can be stunnded.
     private final int stunningRadius = 2;
+
+    // Logger
+    private Logger skillLoger = Logger.getLogger(getClass().getName());
 
     /**
      * @param skillDuration defines how long a monster entity is stunned.
@@ -31,7 +36,6 @@ public class StunningStrikeSkill extends MagicSkills {
      */
     @Override
     public void execute(Entity entity) {
-
         // checking entity is null
         if (entity == null) {
             return;
@@ -57,7 +61,6 @@ public class StunningStrikeSkill extends MagicSkills {
                                                         "Entity does not have a HealthComponent"));
 
         healthComponent.receiveHit(new Damage(skillHealthCosts, DamageType.PHYSICAL, entity));
-        System.out.println("INFORMATION:" + "Damage received due to the use of spells");
 
         // getting all monster entities
         List<Entity> allMonsterEnities =
@@ -81,13 +84,22 @@ public class StunningStrikeSkill extends MagicSkills {
                 entitiesInRange.stream()
                         .map(e -> (AIComponent) e.getComponent(AIComponent.class).get())
                         .toList();
-
         // removing the aicomponent for each monster
         for (Entity e : entitiesInRange) {
             e.removeComponent(AIComponent.class);
-            System.out.println(e.getClass().getSimpleName() + " got stunned.");
+            skillLoger.log(Level.INFO, e.getClass().getSimpleName() + " got stunned.");
         }
+        startTimer(entitiesInRange, savedAIComponentsFromMonsters);
+    }
 
+    /**
+     * starts the timer
+     *
+     * @param entitiesInRange monster entities which are in stunning range
+     * @param savedAIComponentsFromMonsters AIComponents of "entitiesInRange"
+     */
+    private void startTimer(
+            ArrayList<Entity> entitiesInRange, List<AIComponent> savedAIComponentsFromMonsters) {
         Timer timer = new Timer();
         timer.schedule(
                 new TimerTask() {
@@ -99,8 +111,6 @@ public class StunningStrikeSkill extends MagicSkills {
                                     .get(i)
                                     .addComponent(savedAIComponentsFromMonsters.get(i));
                         }
-
-                        System.out.println("The monsters are not stunned anymore");
                     }
                 },
                 (long) this.skillDuration * 1000);

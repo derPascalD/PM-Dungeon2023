@@ -4,6 +4,7 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import graphic.Animation;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public abstract class Trap extends Entity {
 
@@ -13,6 +14,8 @@ public abstract class Trap extends Entity {
     public int damageValue;
 
     public Animation idle;
+
+    protected Logger traplogger = Logger.getLogger(getClass().getName());
 
     public Trap() {
         super();
