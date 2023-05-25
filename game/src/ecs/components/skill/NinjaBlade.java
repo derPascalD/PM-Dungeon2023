@@ -73,7 +73,7 @@ public class NinjaBlade extends RangedAbilities {
          currentLevel = xpComponent.getCurrentLevel();
 
         // setting the new AimPoint
-        if (currentLevel < skilllearnedLevel && preLevel == currentLevel) {
+        if (currentLevel < skilllearnedLevel && preLevel != currentLevel) {
             to -= 0.1f;
             // case: if the NinjaBlade Skill is completely learned
         } else if (currentLevel >= skilllearnedLevel){
