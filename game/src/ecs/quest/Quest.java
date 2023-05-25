@@ -11,7 +11,7 @@ public abstract class Quest {
     protected String name;
     protected String description;
     protected String progressText;
-
+    protected boolean accepted = false;
     /**
      * Creates a Quest with a name and a description
      *
@@ -92,5 +92,13 @@ public abstract class Quest {
      */
     public static ArrayList<Quest> getAllQuests() {
         return allQuests;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
     }
 }

@@ -31,7 +31,7 @@ public class LevelUpQuest extends Quest {
      */
     @Override
     public boolean isComplete() {
-        if (Game.getLevelDepth() >= questNumber) return true;
+        if (Game.getLevelDepth() >= questNumber && accepted) return true;
         return false;
     }
 

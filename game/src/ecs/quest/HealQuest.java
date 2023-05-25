@@ -32,7 +32,7 @@ public class HealQuest extends Quest {
      */
     @Override
     public boolean isComplete() {
-        if (Healthpot.getUseCount() >= questNumber) return true;
+        if (Healthpot.getUseCount() >= questNumber && accepted) return true;
         return false;
     }
 

@@ -39,4 +39,8 @@ public class KeyboardConfig {
             new ConfigKey<>(new String[] {"melee", "attack"}, new ConfigIntValue(Input.Keys.R));
     public static final ConfigKey<Integer> TOGGLE_QUESTS =
             new ConfigKey<>(new String[] {"quest", "toggle"}, new ConfigIntValue(Input.Keys.L));
+    public static final ConfigKey<Integer> ACCEPT_QUEST =
+            new ConfigKey<>(new String[] {"quest", "accept"}, new ConfigIntValue(Input.Keys.H));
+    public static final ConfigKey<Integer> NEXT_QUESTS =
+            new ConfigKey<>(new String[] {"quest", "next"}, new ConfigIntValue(Input.Keys.K));
 }

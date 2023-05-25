@@ -30,6 +30,7 @@ import ecs.items.ItemType;
 import ecs.quest.DemonSlayerQuest;
 import ecs.quest.HealQuest;
 import ecs.quest.LevelUpQuest;
+import ecs.quest.Quest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
@@ -94,6 +95,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private Logger gameLogger;
     private Random rand = new Random();
     private IngameUI ui;
+    private int questNumber;
 
     public static void main(String[] args) {
         // start the game
@@ -155,6 +157,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
         if (Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get()))
             IngameUI.toggleQuestText();
+        if (levelDepth == 1) {
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.ACCEPT_QUEST.get())) acceptCurrentQuest();
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.NEXT_QUESTS.get())) skipQuest();
+        } else {
+            IngameUI.setQuestAcceptText(false);
+        }
     }
 
     @Override
@@ -283,12 +291,48 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     // Creates all the Quests in the Dungeon with their respective name and text
     private void createQuests() {
         new LevelUpQuest("Deeper Pockets", "Reach Dungeon depth 8 to get more 3 Inventory slots");
-        new HealQuest(
-                "More equals better, right?",
-                "Upon using 10 Healpotions the Hero will receive 10 more maximum Healthpoints");
+        new HealQuest("More equals better, right?", "Use 10 Healpots for more HP");
         new DemonSlayerQuest("Bloodrush", "Kill 10 Demons to receive 'Demonslayer'");
     }
 
+    private void acceptCurrentQuest() {
+        if (questNumber < Quest.getAllQuests().size()) {
+            Quest.getAllQuests().get(questNumber).setAccepted(true);
+            questNumber++;
+            if (questNumber >= Quest.getAllQuests().size()) {
+                IngameUI.setQuestAcceptText(false);
+            } else {
+                updateQuestAcceptText();
+                gameLogger.info(Quest.getAllQuests().get(questNumber).getName() + " got accepted");
+            }
+        } else {
+            IngameUI.updateQuestAcceptText("");
+        }
+        if (questNumber >= Quest.getAllQuests().size()) {
+            IngameUI.setQuestAcceptText(false);
+        }
+    }
+
+    private void skipQuest() {
+        questNumber++;
+        if (questNumber < Quest.getAllQuests().size()) {
+            updateQuestAcceptText();
+        } else {
+            IngameUI.updateQuestAcceptText("");
+        }
+    }
+
+    private void updateQuestAcceptText() {
+        if (questNumber < Quest.getAllQuests().size()) {
+            StringBuilder text = new StringBuilder();
+            text.append("Accept with 'H' and skip with 'K'");
+            text.append("\nQuest name: " + Quest.getAllQuests().get(questNumber).getName());
+            text.append(
+                    "\nQuest Description: "
+                            + Quest.getAllQuests().get(questNumber).getDescription());
+            IngameUI.updateQuestAcceptText(text.toString());
+        }
+    }
     /**
      * @return Returns the current levelDepth of the dungeon
      */

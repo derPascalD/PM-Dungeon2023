@@ -14,6 +14,7 @@ public class QuestSystem extends ECS_System {
     @Override
     public void update() {
         Quest.getAllQuests().stream()
+                .filter(Quest::isAccepted)
                 .forEach(
                         (quest -> {
                             quest.updateProgress();

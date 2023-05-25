@@ -21,6 +21,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     private static ScreenText hpScreen;
     private static ScreenText skillsScreen;
     private static ScreenText questText;
+    private static ScreenText questAcceptText;
     private Hero hero;
     private HealthComponent hp;
 
@@ -35,6 +36,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         attackButtonHero();
         setupQuestText();
         setEquipMelee();
+        setupQuestAcceptText();
     }
 
     /** Visualizes the Healthpoints of the Player on the Screen */
@@ -139,5 +141,31 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
                                 .setFontcolor(Color.GOLD)
                                 .build());
         add((T) equipMelee);
+    }
+
+    private void setupQuestAcceptText() {
+        StringBuilder text = new StringBuilder();
+        if (Quest.getAllQuests().size() > 0) {
+            text.append("Accept with 'H' and skip with 'K'");
+            text.append("\nQuest name: " + Quest.getAllQuests().get(0).getName());
+            text.append("\nQuest Description: " + Quest.getAllQuests().get(0).getDescription());
+        }
+        questAcceptText =
+                new ScreenText(
+                        text.toString(),
+                        new Point(10, 50),
+                        2,
+                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontcolor(Color.ORANGE)
+                                .build());
+        add((T) questAcceptText);
+    }
+
+    public static void updateQuestAcceptText(String text) {
+        questAcceptText.setText(text);
+    }
+
+    public static void setQuestAcceptText(boolean b) {
+        questAcceptText.setVisible(b);
     }
 }

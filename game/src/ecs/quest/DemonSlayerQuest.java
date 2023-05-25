@@ -36,7 +36,7 @@ public class DemonSlayerQuest extends Quest {
      */
     @Override
     public boolean isComplete() {
-        if (countDemonsSlayn() >= questNumber) return true;
+        if (countDemonsSlayn() >= questNumber && accepted) return true;
         return false;
     }
 
