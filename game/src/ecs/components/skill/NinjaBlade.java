@@ -11,6 +11,7 @@ public class NinjaBlade extends RangedAbilities {
     /*
     the range in which the offset can be calculated.
      */
+    long currentLevel;
     private float from = 0.1f;
     private float to = 3.0f;
     /**
@@ -68,17 +69,17 @@ public class NinjaBlade extends RangedAbilities {
         // getting the xpComponent from the hero
         Hero hero = (Hero) Game.getHero().get();
         XPComponent xpComponent = hero.getXpComponent();
-        long currentLevel = xpComponent.getCurrentLevel();
+        long preLevel = currentLevel;
+         currentLevel = xpComponent.getCurrentLevel();
 
         // setting the new AimPoint
-        if (currentLevel < skilllearnedLevel) {
+        if (currentLevel < skilllearnedLevel && preLevel == currentLevel) {
             to -= 0.1f;
-            this.setAimedOn(probabilityToHit());
-
             // case: if the NinjaBlade Skill is completely learned
-        } else {
+        } else if (currentLevel >= skilllearnedLevel){
             this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
         }
         super.execute(entity);
+        this.setAimedOn(probabilityToHit());
     }
 }
