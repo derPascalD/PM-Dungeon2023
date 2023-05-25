@@ -80,7 +80,6 @@ public abstract class CombatAttackSkills implements ISkillFunction {
                                 && entity instanceof Hero hero) {
                             hero.addKilledMonsters(b);
                         }
-                        System.out.println(combatDamage);
                         hc.receiveHit(combatDamage);
 
                         Game.removeEntity(wp.entity());

@@ -7,6 +7,7 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
+import ecs.entities.Hero;
 import graphic.Animation;
 import level.elements.tile.Tile;
 import starter.Game;
@@ -65,12 +66,21 @@ public class RangeProjectileSkill implements ISkillFunction {
                 new VelocityComponent(projectile, velocity.x, velocity.y, animation, animation);
         new ProjectileComponent(projectile, epc.getPosition(), targetPoint);
 
+        if (entity instanceof Hero hero) {
+            DamageComponent dC = (DamageComponent) hero.getComponent(DamageComponent.class).get();
+            projectileDamage = new Damage(dC.getRangeDamage(), projectileDamage.damageType(), null);
+        }
+
         ICollide collide =
                 (a, b, from) -> {
                     if (b != entity) {
                         b.getComponent(HealthComponent.class)
                                 .ifPresent(
                                         hc -> {
+                                            if ((((HealthComponent) hc).getCurrentHealthpoints() - projectileDamage.damageAmount()) <= 0
+                                                && entity instanceof Hero hero) {
+                                                hero.addKilledMonsters(b);
+                                            }
                                             ((HealthComponent) hc).receiveHit(projectileDamage);
                                             Game.removeEntity(projectile);
                                             doKnockback(b, a, 1.25f);
