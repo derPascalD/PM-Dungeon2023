@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
+import ecs.components.PositionComponent;
 import ecs.entities.Hero;
 import ecs.quest.Quest;
 import graphic.hud.FontBuilder;
@@ -19,10 +20,14 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     private static ScreenText attackButton;
     private static ScreenText equipMelee;
     private static ScreenText hpScreen;
+    //NEW
+    private static ScreenText hpScreenOver;
     private static ScreenText skillsScreen;
     private static ScreenText questText;
-    private Hero hero;
+    private final Hero hero;
     private HealthComponent hp;
+    //NEW
+    private static PositionComponent p;
 
     // Mana
     private int mana;
@@ -31,6 +36,8 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         super(new SpriteBatch());
         hero = (Hero) Game.getHero().get();
         setupHPBar();
+        //NEW
+        setupHPScreenOver();
         setupSkill();
         attackButtonHero();
         setupQuestText();
@@ -90,6 +97,17 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
      */
     public static void updateHPBar(int newHealthPoints) {
         hpScreen.setText("Healthpoints: " + newHealthPoints);
+        updateHPOverHero(newHealthPoints);
+    }
+
+    /**
+     * //TODO NEW
+     * @param newHealthPoints
+     */
+    public static void updateHPOverHero(int newHealthPoints) {
+        hpScreenOver.setPosition(((Constants.WINDOW_WIDTH)/2-20),((Constants.WINDOW_HEIGHT)/2)+30);
+        hpScreenOver.setText(newHealthPoints);
+
     }
 
     public static void updateSkillsBar(String skill1, String skill2, String skill3) {
@@ -139,5 +157,20 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
                                 .setFontcolor(Color.GOLD)
                                 .build());
         add((T) equipMelee);
+    }
+    private void setupHPScreenOver() {
+        p = (PositionComponent) hero.getComponent(PositionComponent.class).get();
+        hp = (HealthComponent) hero.getComponent(HealthComponent.class).get();
+
+        hpScreenOver =
+            new ScreenText(
+                "Healthpoints: " + hp.getCurrentHealthpoints(),
+                new Point(0, 00),
+                1F,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.RED)
+                    .build());
+
+        add((T) hpScreenOver);
     }
 }
