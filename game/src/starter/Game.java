@@ -380,5 +380,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new SkillSystem();
         new ProjectileSystem();
         new QuestSystem();
+        new HealingSystem();
     }
 }
