@@ -64,6 +64,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         super();
         playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
+        new HealingComponent(this);
         killedMonsters = new ArrayList<>();
         setupVelocityComponent();
         setupAnimationComponent();
