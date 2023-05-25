@@ -76,11 +76,10 @@ public class NinjaBlade extends RangedAbilities {
         if (currentLevel < skilllearnedLevel && preLevel != currentLevel) {
             to -= 0.1f;
             // case: if the NinjaBlade Skill is completely learned
-        } else if (currentLevel >= skilllearnedLevel){
+        } else if (currentLevel >= skilllearnedLevel) {
             this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
         }
-        if (currentLevel < skilllearnedLevel)
-        {
+        if (currentLevel < skilllearnedLevel) {
             this.setAimedOn(probabilityToHit());
         }
         super.execute(entity);

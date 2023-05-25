@@ -132,8 +132,11 @@ public class GrenadeLauncher extends RangedAbilities {
                         b.getComponent(HealthComponent.class)
                                 .ifPresent(
                                         hc -> {
-                                            if ((((HealthComponent) hc).getCurrentHealthpoints() - projectileDamage.damageAmount()) <= 0
-                                                && entity instanceof Hero hero) {
+                                            if ((((HealthComponent) hc).getCurrentHealthpoints()
+                                                                    - projectileDamage
+                                                                            .damageAmount())
+                                                            <= 0
+                                                    && entity instanceof Hero hero) {
                                                 hero.addKilledMonsters(b);
                                             }
                                             ((HealthComponent) hc).receiveHit(projectileDamage);
