@@ -70,7 +70,7 @@ public class NinjaBlade extends RangedAbilities {
         Hero hero = (Hero) Game.getHero().get();
         XPComponent xpComponent = hero.getXpComponent();
         long preLevel = currentLevel;
-         currentLevel = xpComponent.getCurrentLevel();
+        currentLevel = xpComponent.getCurrentLevel();
 
         // setting the new AimPoint
         if (currentLevel < skilllearnedLevel && preLevel != currentLevel) {
@@ -79,7 +79,10 @@ public class NinjaBlade extends RangedAbilities {
         } else if (currentLevel >= skilllearnedLevel){
             this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
         }
+        if (currentLevel < skilllearnedLevel)
+        {
+            this.setAimedOn(probabilityToHit());
+        }
         super.execute(entity);
-        this.setAimedOn(probabilityToHit());
     }
 }
