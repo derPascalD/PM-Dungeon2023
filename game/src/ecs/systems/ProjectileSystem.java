@@ -58,12 +58,18 @@ public class ProjectileSystem extends ECS_System {
     }
 
     /**
-     * checks if the endpoint is reached
+     * English: checks if the endpoint is reached
      *
      * @param start position to start the calculation
      * @param end point to check if projectile has reached its goal
      * @param current current position
      * @return true if the endpoint was reached or passed, else false
+     */
+    /**
+     * German: * prüft, ob der Endpunkt erreicht ist * * @param Startposition, um die Berechnung zu
+     * starten * @param end point, um zu prüfen, ob das Projektil sein Ziel erreicht hat * @param
+     * aktuelle aktuelle Position * @return true wenn der Endpunkt erreicht oder überschritten
+     * wurde, sonst false
      */
     public boolean hasReachedEndpoint(Point start, Point end, Point current) {
         float dx = start.x - current.x;

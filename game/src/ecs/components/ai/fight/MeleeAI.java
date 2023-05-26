@@ -15,17 +15,15 @@ public class MeleeAI implements IFightAI {
     private GraphPath<Tile> path;
 
     /**
-     * English:
-     * Attacks the player if he is within the given range. Otherwise, it will move towards the
-     * player.
+     * English: Attacks the player if he is within the given range. Otherwise, it will move towards
+     * the player.
      *
      * @param attackRange Range in which the attack skill should be executed
      * @param fightSkill Skill to be used when an attack is performed
      */
     /**
-     * German:
-     * Greift den Spieler an, wenn er sich innerhalb der angegebenen Reichweite befindet. Andernfalls bewegt er sich auf den
-     * Spieler.
+     * German: Greift den Spieler an, wenn er sich innerhalb der angegebenen Reichweite befindet.
+     * Andernfalls bewegt er sich auf den Spieler.
      *
      * @param attackRange Bereich, in dem der Angriffsskill ausgeführt werden soll
      * @param fightSkill Fertigkeit, die bei einem Angriff verwendet werden soll

@@ -10,5 +10,4 @@ public interface ISkillFunction {
      * @param entity which uses the skill
      */
     void execute(Entity entity);
-
 }

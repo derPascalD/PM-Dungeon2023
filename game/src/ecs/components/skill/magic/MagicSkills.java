@@ -9,7 +9,6 @@ public abstract class MagicSkills implements ISkillFunction {
     protected float skillDuration;
 
     /**
-     *
      * @param skillHealthCosts Capability cost
      * @param skillDuration Ability duration
      */
@@ -19,10 +18,8 @@ public abstract class MagicSkills implements ISkillFunction {
     }
 
     /**
-     *
      * @param entity which uses the skill
      */
     @Override
     public abstract void execute(Entity entity);
-
 }

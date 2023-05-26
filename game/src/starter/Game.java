@@ -12,32 +12,33 @@ import configuration.Configuration;
 import configuration.KeyboardConfig;
 import controller.AbstractController;
 import controller.SystemController;
-import ecs.entities.Monsters.Demon;
-import ecs.entities.Monsters.PumpkinKiller;
-import ecs.entities.Monsters.Skeleton;
-import ecs.entities.Traps.Bananapeel;
-import ecs.entities.Traps.Poisoncloud;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
-import ecs.entities.NPCs.Ghost;
 import ecs.entities.Hero;
-import ecs.entities.Traps.Trap;
+import ecs.entities.Monsters.Demon;
+import ecs.entities.Monsters.PumpkinKiller;
+import ecs.entities.Monsters.Skeleton;
+import ecs.entities.NPCs.Ghost;
+import ecs.entities.Traps.Bananapeel;
+import ecs.entities.Traps.Poisoncloud;
 import ecs.items.ImplementedItems.Bag;
 import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemType;
+import ecs.quest.DemonSlayerQuest;
+import ecs.quest.HealQuest;
+import ecs.quest.LevelUpQuest;
+import ecs.quest.Quest;
 import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
 import graphic.hud.PauseMenu;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
-
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -49,9 +50,7 @@ import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
 
-/**
- * The heart of the framework. From here all strings are pulled.
- */
+/** The heart of the framework. From here all strings are pulled. */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private final LevelSize LEVELSIZE = LevelSize.SMALL;
@@ -63,48 +62,31 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     protected SpriteBatch batch;
 
-    /**
-     * Contains all Controller of the Dungeon
-     */
+    /** Contains all Controller of the Dungeon */
     protected List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
-    /**
-     * Draws objects
-     */
+    /** Draws objects */
     protected Painter painter;
 
     protected LevelAPI levelAPI;
-    /**
-     * Generates the level
-     */
+    /** Generates the level */
     protected IGenerator generator;
 
     private boolean doSetup = true;
     private static boolean paused = false;
 
-    /**
-     * Saves the level
-     */
+    /** Saves the level */
     private static int levelDepth;
 
-
-    /**
-     * All entities that are currently active in the dungeon
-     */
+    /** All entities that are currently active in the dungeon */
     private static final Set<Entity> entities = new HashSet<>();
-    /**
-     * All entities to be removed from the dungeon in the next frame
-     */
+    /** All entities to be removed from the dungeon in the next frame */
     private static final Set<Entity> entitiesToRemove = new HashSet<>();
-    /**
-     * All entities to be added from the dungeon in the next frame
-     */
+    /** All entities to be added from the dungeon in the next frame */
     private static final Set<Entity> entitiesToAdd = new HashSet<>();
 
-    /**
-     * List of all Systems in the ECS
-     */
+    /** List of all Systems in the ECS */
     public static SystemController systems;
 
     public static ILevel currentLevel;
@@ -113,6 +95,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private Logger gameLogger;
     private Random rand = new Random();
     private IngameUI ui;
+    private int questNumber;
 
     public static void main(String[] args) {
         // start the game
@@ -141,9 +124,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         camera.update();
     }
 
-    /**
-     * Called once at the beginning of the game.
-     */
+    /** Called once at the beginning of the game. */
     protected void setup() {
         doSetup = false;
         controller = new ArrayList<>();
@@ -158,9 +139,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
 
-
         hero = new Hero();
-
+        createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
 
@@ -169,16 +149,20 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createSystems();
     }
 
-    /**
-     * Called at the beginning of each frame. Before the controllers call <code>update</code>.
-     */
+    /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
     protected void frame() {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-
-
+        if (Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get()))
+            IngameUI.toggleQuestText();
+        if (levelDepth == 1) {
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.ACCEPT_QUEST.get())) acceptCurrentQuest();
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.NEXT_QUESTS.get())) skipQuest();
+        } else {
+            IngameUI.setQuestAcceptText(false);
+        }
     }
 
     @Override
@@ -194,16 +178,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new Bananapeel();
         new Bananapeel();
 
-
         if (rand.nextBoolean()) {
             new Ghost();
         }
 
         createItems();
-
-
- 
-
     }
 
     private void manageEntitiesSets() {
@@ -222,14 +201,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void setCameraFocus() {
         if (getHero().isPresent()) {
             PositionComponent pc =
-                (PositionComponent)
-                    getHero()
-                        .get()
-                        .getComponent(PositionComponent.class)
-                        .orElseThrow(
-                            () ->
-                                new MissingComponentException(
-                                    "PositionComponent"));
+                    (PositionComponent)
+                            getHero()
+                                    .get()
+                                    .getComponent(PositionComponent.class)
+                                    .orElseThrow(
+                                            () ->
+                                                    new MissingComponentException(
+                                                            "PositionComponent"));
             camera.setFocusPoint(pc.getPosition());
 
         } else camera.setFocusPoint(new Point(0, 0));
@@ -242,10 +221,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean isOnEndTile(Entity entity) {
         PositionComponent pc =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
         Tile currentTile = currentLevel.getTileAt(pc.getPosition().toCoordinate());
         return currentTile.equals(currentLevel.getEndTile());
     }
@@ -253,16 +232,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void placeOnLevelStart(Entity hero) {
         entities.add(hero);
         PositionComponent pc =
-            (PositionComponent)
-                hero.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () -> new MissingComponentException("PositionComponent"));
+                (PositionComponent)
+                        hero.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
 
-    /**
-     * Toggle between pause and run
-     */
+    /** Toggle between pause and run */
     public static void togglePause() {
         paused = !paused;
         if (systems != null) {
@@ -275,16 +252,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     /**
-     * English:
-     * Here different monsters are created and implemented into the level.
-     * From level 8, larger levels are created.
-     * From level 50, even larger levels are created.
+     * English: Here different monsters are created and implemented into the level. From level 8,
+     * larger levels are created. From level 50, even larger levels are created.
      */
     /**
-     * German:
-     * Hier werden verschiedene Monster erzeugt und ins Level implementiert.
-     * Ab Level 8 werden größere Level erzeugt.
-     * Ab Level 50 werden noch größere Level erzeugt.
+     * German: Hier werden verschiedene Monster erzeugt und ins Level implementiert. Ab Level 8
+     * werden größere Level erzeugt. Ab Level 50 werden noch größere Level erzeugt.
      */
     public void createMonster() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
@@ -295,10 +268,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
         if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
         if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
-        System.out.println("Level depth is " + (levelDepth + 1) + ".");
         levelDepth++;
     }
-
 
     public void addXPToEntity() {
         if (Game.hero != null) {
@@ -307,19 +278,71 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /**
-     * Creates Items in the Level depending on the levelDepth
-     */
+    /** Creates Items in the Level depending on the levelDepth */
     public void createItems() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             if (rand.nextBoolean()) new Healthpot();
             else if (rand.nextInt(101) > 30 && levelDepth >= 3) new Bag(ItemType.Healing);
             else if (rand.nextBoolean()) new Chestplate();
             else if (rand.nextBoolean()) new SimpleWand();
-
         }
     }
 
+    // Creates all the Quests in the Dungeon with their respective name and text
+    private void createQuests() {
+        new LevelUpQuest("Deeper Pockets", "Reach Dungeon depth 8 to get more 3 Inventory slots");
+        new HealQuest("More equals better, right?", "Use 10 Healpots for more HP");
+        new DemonSlayerQuest("Bloodrush", "Kill 10 Demons to receive 'Demonslayer'");
+    }
+
+    // Ensures that quests are accepted that you have confirmed
+    private void acceptCurrentQuest() {
+        if (questNumber < Quest.getAllQuests().size()) {
+            Quest.getAllQuests().get(questNumber).setAccepted(true);
+            questNumber++;
+            if (questNumber >= Quest.getAllQuests().size()) {
+                IngameUI.setQuestAcceptText(false);
+            } else {
+                updateQuestAcceptText();
+                gameLogger.info(Quest.getAllQuests().get(questNumber).getName() + " got accepted");
+            }
+        } else {
+            IngameUI.updateQuestAcceptText("");
+        }
+        if (questNumber >= Quest.getAllQuests().size()) {
+            IngameUI.setQuestAcceptText(false);
+        }
+    }
+
+    // Ensures that once you have rejected a quest, you skip the quest and thus do not accept it.
+    private void skipQuest() {
+        questNumber++;
+        if (questNumber < Quest.getAllQuests().size()) {
+            updateQuestAcceptText();
+        } else {
+            IngameUI.updateQuestAcceptText("");
+        }
+    }
+
+    // Ensures the correct output of the quest to be selected
+    private void updateQuestAcceptText() {
+        if (questNumber < Quest.getAllQuests().size()) {
+            StringBuilder text = new StringBuilder();
+            text.append("Accept with 'H' and skip with 'K'");
+            text.append("\nQuest name: " + Quest.getAllQuests().get(questNumber).getName());
+            text.append(
+                    "\nQuest Description: "
+                            + Quest.getAllQuests().get(questNumber).getDescription());
+            IngameUI.updateQuestAcceptText(text.toString());
+        }
+    }
+
+    /**
+     * @return Returns the current levelDepth of the dungeon
+     */
+    public static int getLevelDepth() {
+        return levelDepth;
+    }
 
     /**
      * Given entity will be added to the game in the next frame
@@ -404,5 +427,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new XPSystem();
         new SkillSystem();
         new ProjectileSystem();
+        new QuestSystem();
     }
 }

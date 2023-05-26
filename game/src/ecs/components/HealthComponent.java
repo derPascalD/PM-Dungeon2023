@@ -6,12 +6,11 @@ import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import graphic.Animation;
+import graphic.IngameUI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-
-import graphic.IngameUI;
 import logging.CustomLogLevel;
 import semanticAnalysis.types.DSLContextMember;
 import semanticAnalysis.types.DSLType;
@@ -33,8 +32,7 @@ public class HealthComponent extends Component {
     private final Logger healthLogger = Logger.getLogger(this.getClass().getName());
 
     /**
-     * English:
-     * Creates a new HealthComponent
+     * English: Creates a new HealthComponent
      *
      * @param entity associated entity
      * @param maximalHitPoints maximum amount of hit-points, currentHitPoints can't be bigger than
@@ -44,12 +42,11 @@ public class HealthComponent extends Component {
      * @param dieAnimation Animation to be played as the entity dies
      */
     /**
-     * German:
-     * Erzeugt eine neue HealthComponent
+     * German: Erzeugt eine neue HealthComponent
      *
      * @param entity assoziierte Entität
-     * @param maximalHitPoints maximale Anzahl von Trefferpunkten, currentHitPoints kann nicht größer sein als
-     * das
+     * @param maximalHitPoints maximale Anzahl von Trefferpunkten, currentHitPoints kann nicht
+     *     größer sein als das
      * @param onDeath Funktion, die aufgerufen wird, wenn diese Entität stirbt
      * @param getHitAnimation Animation, die abgespielt wird, wenn die Entität getroffen wurde
      * @param dieAnimation Animation, die abgespielt wird, wenn die Entität stirbt
@@ -70,14 +67,12 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * English:
-     * Creates a HealthComponent with default values
+     * English: Creates a HealthComponent with default values
      *
      * @param entity associated entity
      */
     /**
-     * German:
-     * Erzeugt eine HealthComponent mit Standardwerten
+     * German: Erzeugt eine HealthComponent mit Standardwerten
      *
      * @param entity assoziierte Entität
      */
@@ -91,14 +86,12 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * English:
-     * Adds damage, which is accounted for by the system
+     * English: Adds damage, which is accounted for by the system
      *
      * @param damage Damage that should be inflicted
      */
     /**
-     * German:
-     * Fügt Schaden hinzu, der vom System berücksichtigt wird
+     * German: Fügt Schaden hinzu, der vom System berücksichtigt wird
      *
      * @param damage Schaden, der zugefügt werden soll
      */
@@ -113,15 +106,13 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * English:
-     * Calculate the amount of damage of a certain type
+     * English: Calculate the amount of damage of a certain type
      *
      * @param dt Type of damage object that still need to be accounted for
      * @return Sum of all damage objects of type dt (default: 0)
      */
     /**
-     * German:
-     * Berechne die Höhe des Schadens einer bestimmten Art
+     * German: Berechne die Höhe des Schadens einer bestimmten Art
      *
      * @param dt Typ des Schadensobjekts, das noch berücksichtigt werden muss
      * @return Summe aller Schadensobjekte vom Typ dt (Standard: 0)
@@ -150,35 +141,35 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * English:
-     * Sets the current life points, capped at the value of the maximum hit-points
-     * Updates the displayed healthpoints of the Hero, if the Hero is the Entity
+     * English: Sets the current life points, capped at the value of the maximum hit-points Updates
+     * the displayed healthpoints of the Hero, if the Hero is the Entity
+     *
      * @param amount new amount of current health-points
      */
     /**
-     * German:
-     * Setzt die aktuellen Lebenspunkte, die auf den Wert der maximalen Trefferpunkte begrenzt sind.
+     * German: Setzt die aktuellen Lebenspunkte, die auf den Wert der maximalen Trefferpunkte
+     * begrenzt sind.
      *
      * @param amount neue Anzahl der aktuellen Lebenspunkte
      */
     public void setCurrentHealthpoints(int amount) {
         this.currentHealthpoints = Math.min(maximalHealthpoints, amount);
-        if(entity instanceof Hero) {
+        if (entity instanceof Hero) {
             IngameUI.updateHPBar(currentHealthpoints);
         }
     }
 
     /**
-     * English:
-     * Sets the value of the Maximum health-points. If the new maximum health-points are less than
-     * the current health-points, the current points are set to the new maximum health-points.
+     * English: Sets the value of the Maximum health-points. If the new maximum health-points are
+     * less than the current health-points, the current points are set to the new maximum
+     * health-points.
      *
      * @param amount new amount of maximal health-points
      */
     /**
-     * German:
-     * Setzt den Wert für die maximalen Lebenspunkte. Wenn die neuen maximalen Lebenspunkte kleiner sind als
-     * die aktuellen Gesundheitspunkte, werden die aktuellen Punkte auf die neuen maximalen Gesundheitspunkte gesetzt.
+     * German: Setzt den Wert für die maximalen Lebenspunkte. Wenn die neuen maximalen Lebenspunkte
+     * kleiner sind als die aktuellen Gesundheitspunkte, werden die aktuellen Punkte auf die neuen
+     * maximalen Gesundheitspunkte gesetzt.
      *
      * @param amount neue Anzahl der maximalen Lebenspunkte
      */
@@ -188,14 +179,12 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * English:
-     * Set the animation to be played when the entity dies
+     * English: Set the animation to be played when the entity dies
      *
      * @param dieAnimation new dieAnimation
      */
     /**
-     * German:
-     * Legt die Animation fest, die abgespielt wird, wenn die Entität stirbt
+     * German: Legt die Animation fest, die abgespielt wird, wenn die Entität stirbt
      *
      * @param dieAnimation new dieAnimation
      */
@@ -204,14 +193,12 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * German:
-     * Set the animation to be played when the entity is hit
+     * German: Set the animation to be played when the entity is hit
      *
      * @param isHitAnimation new isHitAnimation
      */
     /**
-     * English:
-     * Legt die Animation fest, die abgespielt wird, wenn das Objekt getroffen wird.
+     * English: Legt die Animation fest, die abgespielt wird, wenn das Objekt getroffen wird.
      *
      * @param isHitAnimation new isHitAnimation
      */
@@ -220,14 +207,12 @@ public class HealthComponent extends Component {
     }
 
     /**
-     * English:
-     * Set a new function to be called when dying.
+     * English: Set a new function to be called when dying.
      *
      * @param onDeath new onDeath function
      */
     /**
-     * German:
-     * Legt eine neue Funktion fest, die beim Sterben aufgerufen wird.
+     * German: Legt eine neue Funktion fest, die beim Sterben aufgerufen wird.
      *
      * @param onDeath neue onDeath-Funktion
      */

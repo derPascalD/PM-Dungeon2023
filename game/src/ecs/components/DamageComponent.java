@@ -2,44 +2,70 @@ package ecs.components;
 
 import ecs.entities.Entity;
 
+/** Represents the damage an entity can deal */
 public class DamageComponent extends Component {
 
-    private int attackDamage;
+    private int meleeDamage;
+    private int rangeDamage;
 
     /**
-     * Create a DamageComponent and add it to the associated entity
-     * Sets the attackDamage to 1 as default
+     * Create a DamageComponent and add it to the associated entity Sets the melee and range damage
+     * to 1 as default
+     *
      * @param entity associated entity
      */
     public DamageComponent(Entity entity) {
         super(entity);
-        attackDamage = 1;
+        meleeDamage = 1;
+        rangeDamage = 1;
     }
 
     /**
      * Create a DamageComponent and add it to the associated entity
      *
      * @param entity associated entity
-     * @param attackDamage damage for the entity
+     * @param meleeDamage meleeDamage for the entity
+     * @param rangeDamage rangeDamage for the entity
      */
-    public DamageComponent(Entity entity, int attackDamage) {
+    public DamageComponent(Entity entity, int meleeDamage, int rangeDamage) {
         super(entity);
-        this.attackDamage = attackDamage;
+        this.meleeDamage = meleeDamage;
+        this.rangeDamage = rangeDamage;
     }
 
     /**
-     * Sets the attackDamage of the Entity
-     * @param attackDamage new attackDamage of the Entity
+     * Gets the meleeDamage of the entity
+     *
+     * @return The meleeDamage of the entity
      */
-    public void setAttackDamage(int attackDamage) {
-        this.attackDamage = attackDamage;
+    public int getMeleeDamage() {
+        return meleeDamage;
     }
 
     /**
-     * Returns the attackDamage of the Entity
-     * @return the attackDamage of the Entity
+     * Sets the meleeDamage of the entity
+     *
+     * @param meleeDamage The meleeDamage of the entity
      */
-    public int getAttackDamage() {
-        return attackDamage;
+    public void setMeleeDamage(int meleeDamage) {
+        this.meleeDamage = meleeDamage;
+    }
+
+    /**
+     * Sets the rangeDamage of the entity
+     *
+     * @return The rangeDamage of the entity
+     */
+    public int getRangeDamage() {
+        return rangeDamage;
+    }
+
+    /**
+     * Sets the rangeDamage of the entity
+     *
+     * @param rangeDamage The rangeDamage of the entity
+     */
+    public void setRangeDamage(int rangeDamage) {
+        this.rangeDamage = rangeDamage;
     }
 }

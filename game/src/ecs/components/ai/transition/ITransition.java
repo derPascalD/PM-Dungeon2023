@@ -7,15 +7,13 @@ import ecs.entities.Entity;
 public interface ITransition {
 
     /**
-     * English:
-     * Function that determines whether an entity should be in combat mode
+     * English: Function that determines whether an entity should be in combat mode
      *
      * @param entity associated entity
      * @return if the entity should fight
      */
     /**
-     * German:
-     * Funktion, die feststellt, ob eine Entität im Kampfmodus sein sollte.
+     * German: Funktion, die feststellt, ob eine Entität im Kampfmodus sein sollte.
      *
      * @param entity assoziierte Entität
      * @return ob die Entität kämpfen soll
