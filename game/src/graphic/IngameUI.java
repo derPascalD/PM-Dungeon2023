@@ -143,6 +143,7 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         add((T) equipMelee);
     }
 
+    /* Fetches the first quest that exists and displays it in the window*/
     private void setupQuestAcceptText() {
         StringBuilder text = new StringBuilder();
         if (Quest.getAllQuests().size() > 0) {

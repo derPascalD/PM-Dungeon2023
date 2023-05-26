@@ -295,6 +295,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new DemonSlayerQuest("Bloodrush", "Kill 10 Demons to receive 'Demonslayer'");
     }
 
+    // Ensures that quests are accepted that you have confirmed
     private void acceptCurrentQuest() {
         if (questNumber < Quest.getAllQuests().size()) {
             Quest.getAllQuests().get(questNumber).setAccepted(true);
@@ -313,6 +314,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    // Ensures that once you have rejected a quest, you skip the quest and thus do not accept it.
     private void skipQuest() {
         questNumber++;
         if (questNumber < Quest.getAllQuests().size()) {
@@ -322,6 +324,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
+    // Ensures the correct output of the quest to be selected
     private void updateQuestAcceptText() {
         if (questNumber < Quest.getAllQuests().size()) {
             StringBuilder text = new StringBuilder();
@@ -333,6 +336,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             IngameUI.updateQuestAcceptText(text.toString());
         }
     }
+
     /**
      * @return Returns the current levelDepth of the dungeon
      */
