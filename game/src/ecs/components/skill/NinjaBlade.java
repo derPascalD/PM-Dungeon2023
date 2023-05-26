@@ -78,12 +78,9 @@ public class NinjaBlade extends RangedAbilities {
             // setting the new AimPoint
             to -= 0.1f;
             this.setAimedOn(probabilityToHit());
-        }
-        else
-        {   // case: if the NinjaBlade Skill is completely learned
+        } else { // case: if the NinjaBlade Skill is completely learned
             this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
         }
         super.execute(entity);
-
     }
 }
