@@ -37,9 +37,11 @@ import graphic.IngameUI;
 import graphic.Painter;
 import graphic.hud.GameOver;
 import graphic.hud.PauseMenu;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+
 import level.IOnLevelLoader;
 import level.LevelAPI;
 import level.elements.ILevel;
@@ -51,7 +53,9 @@ import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
 
-/** The heart of the framework. From here all strings are pulled. */
+/**
+ * The heart of the framework. From here all strings are pulled.
+ */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private final LevelSize LEVELSIZE = LevelSize.SMALL;
@@ -63,31 +67,47 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     protected SpriteBatch batch;
 
-    /** Contains all Controller of the Dungeon */
+    /**
+     * Contains all Controller of the Dungeon
+     */
     protected List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
-    /** Draws objects */
+    /**
+     * Draws objects
+     */
     protected Painter painter;
 
     protected LevelAPI levelAPI;
-    /** Generates the level */
+    /**
+     * Generates the level
+     */
     protected IGenerator generator;
 
     private boolean doSetup = true;
     private static boolean paused = false;
 
-    /** Saves the level */
+    /**
+     * Saves the level
+     */
     private static int levelDepth;
 
-    /** All entities that are currently active in the dungeon */
+    /**
+     * All entities that are currently active in the dungeon
+     */
     private static final Set<Entity> entities = new HashSet<>();
-    /** All entities to be removed from the dungeon in the next frame */
+    /**
+     * All entities to be removed from the dungeon in the next frame
+     */
     private static final Set<Entity> entitiesToRemove = new HashSet<>();
-    /** All entities to be added from the dungeon in the next frame */
+    /**
+     * All entities to be added from the dungeon in the next frame
+     */
     private static final Set<Entity> entitiesToAdd = new HashSet<>();
 
-    /** List of all Systems in the ECS */
+    /**
+     * List of all Systems in the ECS
+     */
     public static SystemController systems;
 
     public static ILevel currentLevel;
@@ -127,7 +147,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         camera.update();
     }
 
-    /** Called once at the beginning of the game. */
+    /**
+     * Called once at the beginning of the game.
+     */
     protected void setup() {
         doSetup = false;
         controller = new ArrayList<>();
@@ -139,21 +161,22 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
         controller.add(systems);
+        hero = new Hero();
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-        gameOverMenu = new GameOver<>();
-        controller.add(gameOverMenu);
-        hero = new Hero();
-        createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
-
+        gameOverMenu = new GameOver<>();
+        controller.add(gameOverMenu);
+        createQuests();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
     }
 
-    /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
+    /**
+     * Called at the beginning of each frame. Before the controllers call <code>update</code>.
+     */
     protected void frame() {
         setCameraFocus();
         manageEntitiesSets();
@@ -187,7 +210,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
 
         createItems();
-        gameOverMenu.showMenu();
     }
 
     private void manageEntitiesSets() {
@@ -206,14 +228,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void setCameraFocus() {
         if (getHero().isPresent()) {
             PositionComponent pc =
-                    (PositionComponent)
-                            getHero()
-                                    .get()
-                                    .getComponent(PositionComponent.class)
-                                    .orElseThrow(
-                                            () ->
-                                                    new MissingComponentException(
-                                                            "PositionComponent"));
+                (PositionComponent)
+                    getHero()
+                        .get()
+                        .getComponent(PositionComponent.class)
+                        .orElseThrow(
+                            () ->
+                                new MissingComponentException(
+                                    "PositionComponent"));
             camera.setFocusPoint(pc.getPosition());
 
         } else camera.setFocusPoint(new Point(0, 0));
@@ -226,10 +248,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     private boolean isOnEndTile(Entity entity) {
         PositionComponent pc =
-                (PositionComponent)
-                        entity.getComponent(PositionComponent.class)
-                                .orElseThrow(
-                                        () -> new MissingComponentException("PositionComponent"));
+            (PositionComponent)
+                entity.getComponent(PositionComponent.class)
+                    .orElseThrow(
+                        () -> new MissingComponentException("PositionComponent"));
         Tile currentTile = currentLevel.getTileAt(pc.getPosition().toCoordinate());
         return currentTile.equals(currentLevel.getEndTile());
     }
@@ -237,14 +259,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void placeOnLevelStart(Entity hero) {
         entities.add(hero);
         PositionComponent pc =
-                (PositionComponent)
-                        hero.getComponent(PositionComponent.class)
-                                .orElseThrow(
-                                        () -> new MissingComponentException("PositionComponent"));
+            (PositionComponent)
+                hero.getComponent(PositionComponent.class)
+                    .orElseThrow(
+                        () -> new MissingComponentException("PositionComponent"));
         pc.setPosition(currentLevel.getStartTile().getCoordinate().toPoint());
     }
 
-    /** Toggle between pause and run */
+    /**
+     * Toggle between pause and run
+     */
     public static void togglePause() {
         paused = !paused;
         if (systems != null) {
@@ -283,7 +307,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
     }
 
-    /** Creates Items in the Level depending on the levelDepth */
+    /**
+     * Creates Items in the Level depending on the levelDepth
+     */
     public void createItems() {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             if (rand.nextBoolean()) new Healthpot();
@@ -336,8 +362,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             text.append("Accept with 'H' and skip with 'K'");
             text.append("\nQuest name: " + Quest.getAllQuests().get(questNumber).getName());
             text.append(
-                    "\nQuest Description: "
-                            + Quest.getAllQuests().get(questNumber).getDescription());
+                "\nQuest Description: "
+                    + Quest.getAllQuests().get(questNumber).getDescription());
             IngameUI.updateQuestAcceptText(text.toString());
         }
     }
@@ -424,7 +450,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static void restartGame() {
         levelDepth = 0;
-        game.doSetup = true;
+        game.setup();
     }
 
     public static GameOver getGameOverMenu() {
