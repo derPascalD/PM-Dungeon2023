@@ -35,6 +35,7 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
+import graphic.hud.GameOver;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
@@ -91,6 +92,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
+    private static GameOver<Actor> gameOverMenu;
+    public static Game game;
     private static Entity hero;
     private Logger gameLogger;
     private Random rand = new Random();
@@ -104,7 +107,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        DesktopLauncher.run(new Game());
+        DesktopLauncher.run(game = new Game());
     }
 
     /**
@@ -138,7 +141,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-
+        gameOverMenu = new GameOver<>();
+        controller.add(gameOverMenu);
         hero = new Hero();
         createQuests();
         ui = new IngameUI<>();
@@ -183,6 +187,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
 
         createItems();
+        gameOverMenu.showMenu();
     }
 
     private void manageEntitiesSets() {
@@ -415,6 +420,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         // See also:
         // https://stackoverflow.com/questions/52011592/libgdx-set-ortho-camera
+    }
+
+    public static void restartGame() {
+        levelDepth = 0;
+        game.doSetup = true;
+    }
+
+    public static GameOver getGameOverMenu() {
+        return gameOverMenu;
     }
 
     private void createSystems() {

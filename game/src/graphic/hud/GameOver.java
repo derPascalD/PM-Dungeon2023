@@ -4,14 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
-import tools.Constants;
-import tools.Point;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import starter.Game;
+import tools.Constants;
+import tools.Point;
 
 public class GameOver<T extends Actor> extends ScreenController<T> {
 
@@ -28,31 +27,31 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
     public GameOver(SpriteBatch batch) {
         super(batch);
         createGameOverMenue();
+        hideMenu();
     }
 
-    public void createGameOverMenue() {
+    private void createGameOverMenue() {
         createGameOverScreen();
         restartGame();
         quitGameButton();
     }
 
     private void createGameOverScreen() {
-        gameOverLogger.log(Level.INFO,"GameOver Menue is open");
+        gameOverLogger.log(Level.INFO, "GameOver Menue is open");
         ScreenText screenText =
                 new ScreenText(
                         "Game Over",
                         new Point(0, 0),
-                        4,
+                        3,
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
                                 .setFontcolor(Color.RED)
                                 .build());
         screenText.setFontScale(3);
         screenText.setPosition(
-                (Constants.WINDOW_WIDTH) / 2f,
-                (Constants.WINDOW_HEIGHT) / 2F,
+                (Constants.WINDOW_WIDTH) / 2f - 70,
+                (Constants.WINDOW_HEIGHT) / 2F + 80,
                 Align.center | Align.bottom);
         add((T) screenText);
-        hideMenu();
     }
 
     private void restartGame() {
@@ -63,14 +62,17 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                         new TextButtonListener() {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
-                                gameOverLogger.log(Level.INFO,"Game Restart");
-                                // TODO Restart game
+                                gameOverLogger.log(Level.INFO, "Restart Game");
+                                Game.restartGame();
                             }
                         },
-                        new TextButton.TextButtonStyle());
+                        new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontColor(Color.WHITE)
+                                .setOverFontColor(Color.GOLDENROD)
+                                .build());
         restartButton.setColor(Color.WHITE);
         restartButton.setPosition(
-                (Constants.WINDOW_WIDTH) / 2f - 10,
+                (Constants.WINDOW_WIDTH) / 2f - 30,
                 (Constants.WINDOW_HEIGHT) / 2F - 30,
                 Align.center | Align.bottom);
         add((T) restartButton);
@@ -84,16 +86,20 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                         new TextButtonListener() {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
-                                gameOverLogger.log(Level.SEVERE,"Game quit");
-                                // TODO Quit game
+                                gameOverLogger.log(Level.SEVERE, "Game quit");
+                                System.exit(0);
                             }
                         },
-                        new TextButton.TextButtonStyle());
+                        new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontColor(Color.WHITE)
+                                .setOverFontColor(Color.GOLDENROD)
+                                .build());
         quitButton.setColor(Color.WHITE);
         quitButton.setPosition(
-                (Constants.WINDOW_WIDTH) / 2f + 10,
+                (Constants.WINDOW_WIDTH) / 2f + 30,
                 (Constants.WINDOW_HEIGHT) / 2F - 30,
                 Align.center | Align.bottom);
+        quitButton.setColor(Color.WHITE);
         add((T) quitButton);
     }
 
