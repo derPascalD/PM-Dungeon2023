@@ -13,7 +13,9 @@ public class NinjaBlade extends RangedAbilities {
      */
     long currentLevel;
     private float from = 0.1f;
-    private float to = 3.0f;
+    private float to = 1.5f;
+
+    private final float max = 0.1f;
     /**
      * @param skilllearnedLevel is the level sine the skill is learned
      * @param bouncesOffWalls define if the star can bounce of walls or not
@@ -72,16 +74,16 @@ public class NinjaBlade extends RangedAbilities {
         long preLevel = currentLevel;
         currentLevel = xpComponent.getCurrentLevel();
 
-        // setting the new AimPoint
-        if (currentLevel < skilllearnedLevel && preLevel != currentLevel) {
+        if (currentLevel >= preLevel && currentLevel < skilllearnedLevel && to > max) {
+            // setting the new AimPoint
             to -= 0.1f;
-            // case: if the NinjaBlade Skill is completely learned
-        } else if (currentLevel >= skilllearnedLevel) {
-            this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
-        }
-        if (currentLevel < skilllearnedLevel) {
             this.setAimedOn(probabilityToHit());
         }
+        else
+        {   // case: if the NinjaBlade Skill is completely learned
+            this.setAimedOn(this.getSelectionFunction().selectTargetPoint());
+        }
         super.execute(entity);
+
     }
 }
