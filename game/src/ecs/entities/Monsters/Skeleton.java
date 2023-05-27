@@ -45,7 +45,7 @@ public class Skeleton extends Monster {
         new HitboxComponent(this, this, this::onCollisionLeave);
         skillComponent = new SkillComponent(this);
         setupCombatSkill();
-        new HealingComponent(this, 6);
+        new HealingComponent(this, 6,1,2);
         new AIComponent(
                 this, new CombatAI(1, combatFight), new GoToHero(2), new RangeTransition(1f));
 
