@@ -155,6 +155,9 @@ public class HealthComponent extends Component {
     public void setCurrentHealthpoints(int amount) {
         this.currentHealthpoints = Math.min(maximalHealthpoints, amount);
         if (entity instanceof Hero) {
+            if (currentHealthpoints < 1) {
+                currentHealthpoints = 0;
+            }
             IngameUI.updateHPBar(currentHealthpoints);
         }
     }
