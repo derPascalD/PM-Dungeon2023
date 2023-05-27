@@ -13,7 +13,6 @@ import ecs.components.xp.ILevelUp;
 import ecs.components.xp.XPComponent;
 import ecs.damage.Damage;
 import ecs.damage.DamageType;
-import ecs.systems.ECS_System;
 import graphic.Animation;
 import graphic.IngameUI;
 import java.util.ArrayList;
@@ -231,8 +230,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     /** As soon as the entity dies, the content of the function is executed. */
     @Override
     public void onDeath(Entity entity) {
-        Game.systems.forEach(ECS_System::toggleRun);
-        Game.getGameOverMenu().showMenu();
+        Game.game.openGameOverMenu();
     }
 
     /**
