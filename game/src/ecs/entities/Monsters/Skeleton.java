@@ -1,6 +1,7 @@
 package ecs.entities.Monsters;
 
 import dslToGame.AnimationBuilder;
+import ecs.components.HealingComponent;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
@@ -44,7 +45,7 @@ public class Skeleton extends Monster {
         new HitboxComponent(this, this, this::onCollisionLeave);
         skillComponent = new SkillComponent(this);
         setupCombatSkill();
-
+        new HealingComponent(this, 6);
         new AIComponent(
                 this, new CombatAI(1, combatFight), new GoToHero(2), new RangeTransition(1f));
 

@@ -50,6 +50,7 @@ public class Demon extends Monster {
 
         new PositionComponent(this);
         new HitboxComponent(this, this, this::onCollisionLeave);
+        new HealingComponent(this, 5);
         new AIComponent(
                 this,
                 new CombatAI(1.5F, combatFight),
