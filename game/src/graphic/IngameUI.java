@@ -37,8 +37,6 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
         super(new SpriteBatch());
         hero = (Hero) Game.getHero().get();
         setupHPBar();
-        // NEW
-        setupHPScreenOver();
         setupSkill();
         attackButtonHero();
         setupQuestText();
@@ -99,18 +97,6 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
      */
     public static void updateHPBar(int newHealthPoints) {
         hpScreen.setText("Healthpoints: " + newHealthPoints);
-        updateHPOverHero(newHealthPoints);
-    }
-
-    /**
-     * //TODO NEW
-     *
-     * @param newHealthPoints
-     */
-    public static void updateHPOverHero(int newHealthPoints) {
-        hpScreenOver.setPosition(
-                ((Constants.WINDOW_WIDTH) / 2 - 20), ((Constants.WINDOW_HEIGHT) / 2) + 30);
-        hpScreenOver.setText(newHealthPoints);
     }
 
     public static void updateSkillsBar(String skill1, String skill2, String skill3) {
@@ -187,21 +173,5 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
 
     public static void setQuestAcceptText(boolean b) {
         questAcceptText.setVisible(b);
-    }
-
-    private void setupHPScreenOver() {
-        p = (PositionComponent) hero.getComponent(PositionComponent.class).get();
-        hp = (HealthComponent) hero.getComponent(HealthComponent.class).get();
-
-        hpScreenOver =
-                new ScreenText(
-                        "Healthpoints: " + hp.getCurrentHealthpoints(),
-                        new Point(0, 00),
-                        1F,
-                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.RED)
-                                .build());
-
-        add((T) hpScreenOver);
     }
 }
