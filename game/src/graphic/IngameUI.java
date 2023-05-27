@@ -201,6 +201,5 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
                     .build());
 
         add((T) hpScreenOver);
-
     }
 }
