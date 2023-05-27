@@ -4,9 +4,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public final class Constants {
-    public static final int WINDOW_WIDTH = 640;
+    public static final int WINDOW_WIDTH = 1080;
 
-    public static final int WINDOW_HEIGHT = 480;
+    public static final int WINDOW_HEIGHT = 720;
 
     /** Frames per seconds. */
     public static final int FRAME_RATE = 30;
@@ -18,7 +18,7 @@ public final class Constants {
     public static final float VIEWPORT_HEIGHT = WINDOW_HEIGHT / FIELD_WIDTH_AND_HEIGHT_IN_PIXEL;
 
     /** 200% zoom. */
-    public static final float DEFAULT_ZOOM_FACTOR = 0.5f;
+    public static final float DEFAULT_ZOOM_FACTOR = 0.4f;
 
     /** Value for LevelElements that are accessible */
     public static final boolean LEVELELEMENT_IS_ACCESSIBLE = true;
