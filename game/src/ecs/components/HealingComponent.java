@@ -13,18 +13,21 @@ import java.util.logging.Logger;
  */
 public class HealingComponent extends Component {
     private final Logger healingLogger = Logger.getLogger(this.getClass().getName());
-    int frames = 5 * Constants.FRAME_RATE;
-    boolean start = false;
-
-    int actualHP;
+    private int frames = 5 * Constants.FRAME_RATE;
+    private boolean start = false;
+    private int actualHP;
+    private int hpPerSeconds;
+    private int timeToStartHealing;
 
     /**
      * Create a new component and add it to the associated entity
      *
      * @param entity associated entity
      */
-    public HealingComponent(Entity entity) {
+    public HealingComponent(Entity entity, int hpPerSeconds, int timeToStartHealing) {
         super(entity);
+        this.hpPerSeconds = hpPerSeconds;
+        this.timeToStartHealing = timeToStartHealing;
     }
 
 
