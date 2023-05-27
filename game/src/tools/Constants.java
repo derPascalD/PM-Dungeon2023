@@ -18,7 +18,7 @@ public final class Constants {
     public static final float VIEWPORT_HEIGHT = WINDOW_HEIGHT / FIELD_WIDTH_AND_HEIGHT_IN_PIXEL;
 
     /** 200% zoom. */
-    public static final float DEFAULT_ZOOM_FACTOR = 0.4f;
+    public static final float DEFAULT_ZOOM_FACTOR = 0.5f;
 
     /** Value for LevelElements that are accessible */
     public static final boolean LEVELELEMENT_IS_ACCESSIBLE = true;
