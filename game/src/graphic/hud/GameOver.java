@@ -1,11 +1,11 @@
 package graphic.hud;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
-import controller.ControllerLayer;
 import controller.ScreenController;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,15 +25,12 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
     /** Creates a new GameOver with a given Spritebatch */
     public GameOver(SpriteBatch batch) {
         super(batch);
-        createGameOverMenue();
-    }
-
-    private void createGameOverMenue() {
         createGameOverScreen();
         restartGame();
         quitGameButton();
     }
 
+    // Makes Game Over appear on the screen
     private void createGameOverScreen() {
         gameOverLogger.log(Level.INFO, "GameOver Menue is open");
         ScreenText screenText =
@@ -44,56 +41,54 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
                         new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
                                 .setFontcolor(Color.RED)
                                 .build());
-        screenText.setFontScale(3);
+        screenText.setFontScale(3.5F);
         screenText.setPosition(
-                (Constants.WINDOW_WIDTH) / 2f - 70,
-                (Constants.WINDOW_HEIGHT) / 2F + 80,
+                (Constants.WINDOW_WIDTH) / 2f - 94,
+                (Constants.WINDOW_HEIGHT) - 60,
                 Align.center | Align.bottom);
         add((T) screenText);
     }
 
+    // Creates a Restart button that can be used to restart the game
     private void restartGame() {
-        ScreenButton restartButton = new ScreenButton(
-            "Restart Game",
-            new Point(0, 0),
-            new TextButtonListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    gameOverLogger.log(Level.INFO, "Restart Game");
-                    Game.restartGame();
-                }
-            },
-            new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
-                .setFontColor(Color.WHITE)
-                .setOverFontColor(Color.GOLDENROD)
-                .build());
+        ScreenButton restartButton =
+                new ScreenButton(
+                        "Restart Game",
+                        new Point(0, 0),
+                        new TextButtonListener() {
+                            @Override
+                            public void clicked(InputEvent event, float x, float y) {
+                                gameOverLogger.log(Level.INFO, "Restart Game");
+                                Game.restartGame();
+                            }
+                        },
+                        new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontColor(Color.WHITE)
+                                .setOverFontColor(Color.GOLDENROD)
+                                .build());
         restartButton.setPosition(
-            (Constants.WINDOW_WIDTH) / 2f - restartButton.getWidth(),
-            (Constants.WINDOW_HEIGHT) / 2f + restartButton.getHeight(),
-                Align.center | Align.bottom);
+                (Constants.WINDOW_WIDTH) / 2f - 50, (Constants.WINDOW_HEIGHT) - 120);
         add((T) restartButton);
     }
 
+    // Creates an Exit button that you can use to exit the game.
     private void quitGameButton() {
-        ScreenButton quitButton = new ScreenButton(
-            "Quit game",
-            new Point(0, 0),
-            new TextButtonListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    gameOverLogger.log(Level.SEVERE, "Game quit");
-                    System.exit(0);
-                }
-            },
-            new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
-                .setFontColor(Color.WHITE)
-                .setOverFontColor(Color.GOLDENROD)
-                .build()
-        );
-        quitButton.setPosition(
-            (Constants.WINDOW_WIDTH) / 2f + quitButton.getWidth(),
-            (Constants.WINDOW_HEIGHT) / 2f + quitButton.getHeight(),
-                Align.center | Align.bottom);
+        ScreenButton quitButton =
+                new ScreenButton(
+                        "Quit game",
+                        new Point(0, 0),
+                        new TextButtonListener() {
+                            @Override
+                            public void clicked(InputEvent event, float x, float y) {
+                                gameOverLogger.log(Level.SEVERE, "Game quit");
+                                Gdx.app.exit();
+                            }
+                        },
+                        new TextButtonStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontColor(Color.WHITE)
+                                .setOverFontColor(Color.GOLDENROD)
+                                .build());
+        quitButton.setPosition((Constants.WINDOW_WIDTH) / 2f - 43, (Constants.WINDOW_HEIGHT) - 170);
         add((T) quitButton);
         hideMenu();
     }
