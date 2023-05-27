@@ -83,7 +83,7 @@ public class HealingComponent extends Component {
                     CustomLogLevel.INFO,
                     "Healing Active: '"
                             + entity.getClass().getSimpleName()
-                            + "' Lifepoints: "
+                            + "' Actual Lifepoints: "
                             + healthC.getCurrentHealthpoints());
 
             frames = durationNextHp * Constants.FRAME_RATE;
@@ -106,12 +106,19 @@ public class HealingComponent extends Component {
     the time until the Entity can heal again starts from the beginning.
     */
     private void reset() {
-        if (healthC.getCurrentHealthpoints() == healthC.getMaximalHealthpoints()) {
+        if (healthC.getCurrentHealthpoints() == healthC.getMaximalHealthpoints() && start) {
             frames = healingStart * Constants.FRAME_RATE;
             start = false;
+            healingLogger.log(
+                CustomLogLevel.INFO,
+                "Healing completed: '"
+                    + entity.getClass().getSimpleName()
+                    + "' New Lifepoints: "
+                    + healthC.getCurrentHealthpoints());
         } else if (actualHP > healthC.getCurrentHealthpoints()) {
             frames = healingStart * Constants.FRAME_RATE;
             start = false;
         }
+
     }
 }
