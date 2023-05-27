@@ -25,13 +25,13 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
     /** Creates a new GameOver with a given Spritebatch */
     public GameOver(SpriteBatch batch) {
         super(batch);
-        createGameOverScreen();
+        createGameOverText();
         restartGame();
         quitGameButton();
     }
 
     // Makes Game Over appear on the screen
-    private void createGameOverScreen() {
+    private void createGameOverText() {
         gameOverLogger.log(Level.INFO, "GameOver Menue is open");
         ScreenText screenText =
                 new ScreenText(
