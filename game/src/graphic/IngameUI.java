@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import controller.ScreenController;
 import ecs.components.HealthComponent;
+import ecs.components.PositionComponent;
 import ecs.entities.Hero;
 import ecs.quest.Quest;
 import graphic.hud.FontBuilder;
@@ -19,11 +20,15 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
     private static ScreenText attackButton;
     private static ScreenText equipMelee;
     private static ScreenText hpScreen;
+    // NEW
+    private static ScreenText hpScreenOver;
     private static ScreenText skillsScreen;
     private static ScreenText questText;
     private static ScreenText questAcceptText;
     private Hero hero;
     private HealthComponent hp;
+    // NEW
+    private static PositionComponent p;
 
     // Mana
     private int mana;

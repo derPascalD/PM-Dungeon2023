@@ -1,6 +1,7 @@
 package ecs.entities.Monsters;
 
 import dslToGame.AnimationBuilder;
+import ecs.components.HealingComponent;
 import ecs.components.HealthComponent;
 import ecs.components.HitboxComponent;
 import ecs.components.PositionComponent;
@@ -45,7 +46,7 @@ public class PumpkinKiller extends Monster {
 
         skillComponent = new SkillComponent(this);
         setupCombatSkill();
-
+        new HealingComponent(this, 3,1,2);
         new AIComponent(
                 this,
                 new CombatAI(2, combatFight),
