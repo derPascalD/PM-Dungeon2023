@@ -35,6 +35,7 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
+import graphic.hud.HealthBar;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
@@ -143,7 +144,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
-
+        controller.add(new HealthBar<>());
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();

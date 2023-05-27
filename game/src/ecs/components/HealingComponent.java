@@ -1,6 +1,7 @@
 package ecs.components;
 
 import ecs.entities.Entity;
+import graphic.hud.HealthBar;
 import java.util.logging.Logger;
 import logging.CustomLogLevel;
 import tools.Constants;
@@ -93,6 +94,7 @@ public class HealingComponent extends Component {
 
     /* Here the entity gets life points added after a certain time. The time depends on the varibale durationNextHp. */
     private void healing() {
+        HealthBar.updateHealingBar(entity, true, healthC.getCurrentHealthpoints());
         frames = Math.max(0, --frames);
         if (frames == 0) {
             healthC.setCurrentHealthpoints(healthC.getCurrentHealthpoints() + hpPerSecond);
@@ -107,18 +109,19 @@ public class HealingComponent extends Component {
     */
     private void reset() {
         if (healthC.getCurrentHealthpoints() == healthC.getMaximalHealthpoints() && start) {
+            HealthBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
             frames = healingStart * Constants.FRAME_RATE;
             start = false;
             healingLogger.log(
-                CustomLogLevel.INFO,
-                "Healing completed: '"
-                    + entity.getClass().getSimpleName()
-                    + "' New Lifepoints: "
-                    + healthC.getCurrentHealthpoints());
+                    CustomLogLevel.INFO,
+                    "Healing completed: '"
+                            + entity.getClass().getSimpleName()
+                            + "' New Lifepoints: "
+                            + healthC.getCurrentHealthpoints());
         } else if (actualHP > healthC.getCurrentHealthpoints()) {
+            HealthBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
             frames = healingStart * Constants.FRAME_RATE;
             start = false;
         }
-
     }
 }
