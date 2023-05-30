@@ -15,7 +15,7 @@ public class HealthBar<T extends Actor> extends ScreenController<T> {
         this(new SpriteBatch());
     }
 
-    public static ScreenText healingBar;
+    private static ScreenText healingBar;
 
     /** Creates a new HealthBar with a given Spritebatch */
     public HealthBar(SpriteBatch batch) {
@@ -26,33 +26,30 @@ public class HealthBar<T extends Actor> extends ScreenController<T> {
     // Create me a healing bar for the window
     private void setupHealingBar() {
         healingBar =
-                new ScreenText(
-                        "",
-                        new Point((Constants.WINDOW_WIDTH / 2 - 60), Constants.WINDOW_HEIGHT - 60),
-                        1F,
-                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                                .setFontcolor(Color.PURPLE)
-                                .build());
+            new ScreenText(
+                "",
+                new Point((Constants.WINDOW_WIDTH / 2 - 60), Constants.WINDOW_HEIGHT - 60),
+                1F,
+                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                    .setFontcolor(Color.PURPLE)
+                    .build());
         healingBar.setFontScale(1F);
         add((T) healingBar);
     }
 
     /**
-     * Aktualisiere Die Healingbar und setze wär grad geheilt wird und zeige die Hp an.
+     * Refresh the healingBar and reset the text of the one being healed and show the HP.
      *
      * @param e actual Entity
      * @param b healing active or not
-     * @param currentHealthpoints HP from the Hero
+     * @param currentHP HP from the Hero
      */
-    public static void updateHealingBar(Entity e, boolean b, int currentHealthpoints) {
+    public static void updateHealingBar(Entity e, boolean b, int currentHP) {
 
         if (b) {
             healingBar.setPosition(Constants.WINDOW_WIDTH / 2 - 80, Constants.WINDOW_HEIGHT - 60);
             healingBar.setText(
-                    "Healing Active : "
-                            + e.getClass().getSimpleName()
-                            + " : "
-                            + currentHealthpoints);
+                "Healing Active : " + e.getClass().getSimpleName() + " : " + currentHP);
         } else {
             healingBar.setText("");
         }

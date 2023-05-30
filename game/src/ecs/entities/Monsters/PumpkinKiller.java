@@ -46,7 +46,7 @@ public class PumpkinKiller extends Monster {
 
         skillComponent = new SkillComponent(this);
         setupCombatSkill();
-        new HealingComponent(this, 3,1,2);
+        new HealingComponent(this, 4,1,2);
         new AIComponent(
                 this,
                 new CombatAI(2, combatFight),
