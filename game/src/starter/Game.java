@@ -35,7 +35,7 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
-import graphic.hud.HealthBar;
+import graphic.hud.HealingBar;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
@@ -144,7 +144,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
-        controller.add(new HealthBar<>());
+        controller.add(new HealingBar<>());
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -168,7 +168,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
-        HealthBar.updateHealingBar(null, false, 0);
+        HealingBar.updateHealingBar(null, false, 0);
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);

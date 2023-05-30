@@ -1,7 +1,7 @@
 package ecs.components;
 
 import ecs.entities.Entity;
-import graphic.hud.HealthBar;
+import graphic.hud.HealingBar;
 import java.util.logging.Logger;
 import logging.CustomLogLevel;
 import tools.Constants;
@@ -11,10 +11,10 @@ import tools.Constants;
  * aufgefüllt bekomen
  */
 public class HealingComponent extends Component {
-    private final Logger healingLogger = Logger.getLogger(this.getClass().getName());
-    private final int healingStart;
-    private final int hpPerSecond;
-    private final int durationNextHp;
+    private final Logger HEALINGLOGGER = Logger.getLogger(this.getClass().getName());
+    private final int TIMETOSTARTHEALING;
+    private final int HPPROHEAL;
+    private final int DURATIONNEXTHP;
     private float frames;
     private boolean start = false;
     private int actualHP;
@@ -31,26 +31,26 @@ public class HealingComponent extends Component {
     public HealingComponent(
             Entity entity, int timeToStartHealing, int hpProHeal, int durationToNextHp) {
         super(entity);
-        this.healingStart = timeToStartHealing;
-        this.durationNextHp = durationToNextHp * 2;
-        this.frames = this.healingStart * Constants.FRAME_RATE;
-        this.hpPerSecond = hpProHeal;
+        this.TIMETOSTARTHEALING = timeToStartHealing;
+        this.DURATIONNEXTHP = durationToNextHp * 2;
+        this.frames = this.TIMETOSTARTHEALING * Constants.FRAME_RATE;
+        this.HPPROHEAL = hpProHeal;
     }
 
     public HealingComponent(Entity entity) {
         super(entity);
-        this.healingStart = 1;
-        this.durationNextHp = 1;
+        this.TIMETOSTARTHEALING = 1;
+        this.DURATIONNEXTHP = 1;
         this.frames = Constants.FRAME_RATE;
-        this.hpPerSecond = 1;
+        this.HPPROHEAL = 1;
     }
 
     public HealingComponent(Entity entity, int timeTOStartHealing) {
         super(entity);
-        this.healingStart = timeTOStartHealing;
-        this.durationNextHp = 1;
+        this.TIMETOSTARTHEALING = timeTOStartHealing;
+        this.DURATIONNEXTHP = 1;
         this.frames = Constants.FRAME_RATE;
-        this.hpPerSecond = 1;
+        this.HPPROHEAL = 1;
     }
 
     /**
@@ -80,25 +80,25 @@ public class HealingComponent extends Component {
         frames = Math.max(0, --frames);
         if (frames == 0 && !start) {
 
-            healingLogger.log(
+            HEALINGLOGGER.log(
                     CustomLogLevel.INFO,
                     "Healing Active: '"
                             + entity.getClass().getSimpleName()
                             + "' Actual Lifepoints: "
                             + healthC.getCurrentHealthpoints());
 
-            frames = durationNextHp * Constants.FRAME_RATE;
+            frames = DURATIONNEXTHP * Constants.FRAME_RATE;
             start = true;
         } else if (start) healing();
     }
 
     /* Here the entity gets life points added after a certain time. The time depends on the varibale durationNextHp. */
     private void healing() {
-        HealthBar.updateHealingBar(entity, true, healthC.getCurrentHealthpoints());
+        HealingBar.updateHealingBar(entity, true, healthC.getCurrentHealthpoints());
         frames = Math.max(0, --frames);
         if (frames == 0) {
-            healthC.setCurrentHealthpoints(healthC.getCurrentHealthpoints() + hpPerSecond);
-            frames = durationNextHp * Constants.FRAME_RATE;
+            healthC.setCurrentHealthpoints(healthC.getCurrentHealthpoints() + HPPROHEAL);
+            frames = DURATIONNEXTHP * Constants.FRAME_RATE;
         }
     }
 
@@ -109,18 +109,18 @@ public class HealingComponent extends Component {
     */
     private void reset() {
         if (healthC.getCurrentHealthpoints() == healthC.getMaximalHealthpoints() && start) {
-            HealthBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
-            frames = healingStart * Constants.FRAME_RATE;
+            HealingBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
+            frames = TIMETOSTARTHEALING * Constants.FRAME_RATE;
             start = false;
-            healingLogger.log(
+            HEALINGLOGGER.log(
                     CustomLogLevel.INFO,
                     "Healing completed: '"
                             + entity.getClass().getSimpleName()
                             + "' New Lifepoints: "
                             + healthC.getCurrentHealthpoints());
         } else if (actualHP > healthC.getCurrentHealthpoints()) {
-            HealthBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
-            frames = healingStart * Constants.FRAME_RATE;
+            HealingBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
+            frames = TIMETOSTARTHEALING * Constants.FRAME_RATE;
             start = false;
         }
     }
