@@ -8,17 +8,17 @@ import ecs.entities.Entity;
 import tools.Constants;
 import tools.Point;
 
-public class HealthBar<T extends Actor> extends ScreenController<T> {
+public class HealingBar<T extends Actor> extends ScreenController<T> {
 
     /** Creates a new HealthBar with a new Spritebatch */
-    public HealthBar() {
+    public HealingBar() {
         this(new SpriteBatch());
     }
 
     private static ScreenText healingBar;
 
     /** Creates a new HealthBar with a given Spritebatch */
-    public HealthBar(SpriteBatch batch) {
+    public HealingBar(SpriteBatch batch) {
         super(batch);
         setupHealingBar();
     }
@@ -26,13 +26,13 @@ public class HealthBar<T extends Actor> extends ScreenController<T> {
     // Create me a healing bar for the window
     private void setupHealingBar() {
         healingBar =
-            new ScreenText(
-                "",
-                new Point((Constants.WINDOW_WIDTH / 2 - 60), Constants.WINDOW_HEIGHT - 60),
-                1F,
-                new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
-                    .setFontcolor(Color.PURPLE)
-                    .build());
+                new ScreenText(
+                        "",
+                        new Point((Constants.WINDOW_WIDTH / 2 - 60), Constants.WINDOW_HEIGHT - 60),
+                        1F,
+                        new LabelStyleBuilder(FontBuilder.DEFAULT_FONT)
+                                .setFontcolor(Color.ROYAL)
+                                .build());
         healingBar.setFontScale(1F);
         add((T) healingBar);
     }
@@ -49,12 +49,9 @@ public class HealthBar<T extends Actor> extends ScreenController<T> {
         if (b) {
             healingBar.setPosition(Constants.WINDOW_WIDTH / 2 - 80, Constants.WINDOW_HEIGHT - 60);
             healingBar.setText(
-                "Healing Active : " + e.getClass().getSimpleName() + " : " + currentHP);
+                    "Healing Active : " + e.getClass().getSimpleName() + " : " + currentHP);
             return;
         }
-            healingBar.setText("");
-
-
-
+        healingBar.setText("");
     }
 }
