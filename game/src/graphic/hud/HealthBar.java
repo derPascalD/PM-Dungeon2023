@@ -50,8 +50,11 @@ public class HealthBar<T extends Actor> extends ScreenController<T> {
             healingBar.setPosition(Constants.WINDOW_WIDTH / 2 - 80, Constants.WINDOW_HEIGHT - 60);
             healingBar.setText(
                 "Healing Active : " + e.getClass().getSimpleName() + " : " + currentHP);
-        } else {
-            healingBar.setText("");
+            return;
         }
+            healingBar.setText("");
+
+
+
     }
 }
