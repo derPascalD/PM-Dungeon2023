@@ -18,7 +18,7 @@ public class WorldItemBuilder {
      */
     public static Entity buildWorldItem(ItemData itemData) {
         Entity droppedItem = new Entity();
-        new PositionComponent(droppedItem, new Point(0, 0));
+        new PositionComponent(droppedItem);
         new AnimationComponent(droppedItem, itemData.getWorldTexture());
         new ItemComponent(droppedItem, itemData);
         HitboxComponent component = new HitboxComponent(droppedItem);

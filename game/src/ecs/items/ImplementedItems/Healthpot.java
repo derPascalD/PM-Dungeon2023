@@ -7,6 +7,8 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.items.*;
 import java.util.logging.Logger;
+
+import graphic.Animation;
 import tools.Point;
 
 /** Can be used after collecting to gain 10 Healthpoints back */
@@ -18,17 +20,28 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
     /** Creates a Healthpot item and spawns in the Level at a random spot */
     public Healthpot() {
         super(
-                ItemType.Healing,
-                AnimationBuilder.buildAnimation("items.healthpot"),
-                AnimationBuilder.buildAnimation("items.healthpot"),
-                "Healthpot",
-                "Heals the Player on Use");
+            ItemType.Healing,
+            AnimationBuilder.buildAnimation("items.healthpot"),
+            AnimationBuilder.buildAnimation("items.healthpot"),
+            "Healthpot",
+            "Heals the Player on Use");
         this.setOnCollect(this);
         this.setOnDrop(this);
         this.setOnUse(this);
         healAmount = 10;
         Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
         new PositionComponent(worldItemEntity);
+    }
+
+    public Healthpot(ItemType itemType,
+                     Animation inventoryTexture,
+                     Animation worldTexture,
+                     String itemName,
+                     String description) {
+        super(itemType, inventoryTexture, worldTexture, itemName, description);
+        this.setOnCollect(this);
+        this.setOnUse(this);
+        healAmount = 10;
     }
 
     /**
@@ -38,11 +51,11 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
      */
     private void healHero(Entity e) {
         HealthComponent healthComponent =
-                (HealthComponent) e.getComponent(HealthComponent.class).get();
+            (HealthComponent) e.getComponent(HealthComponent.class).get();
         healthComponent.setCurrentHealthpoints(
-                healthComponent.getCurrentHealthpoints() + healAmount);
+            healthComponent.getCurrentHealthpoints() + healAmount);
         Logger.getLogger(this.getClass().getName())
-                .info("Player got healed for " + healAmount + " HP");
+            .info("Player got healed for " + healAmount + " HP");
         useCount++;
     }
 
@@ -71,7 +84,7 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
     @Override
     public void onUse(Entity e, ItemData item) {
         InventoryComponent inventoryCompnent =
-                (InventoryComponent) e.getComponent(InventoryComponent.class).get();
+            (InventoryComponent) e.getComponent(InventoryComponent.class).get();
 
         for (ItemData itemFromInventory : inventoryCompnent.getItems()) {
             if (itemFromInventory instanceof Bag) {
