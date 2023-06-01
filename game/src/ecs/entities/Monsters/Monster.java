@@ -66,4 +66,8 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
     public void setAttackDamage(int attackDamage) {
         this.attackDamage = attackDamage;
     }
+
+    public HealthComponent getHealth() {
+        return health;
+    }
 }
