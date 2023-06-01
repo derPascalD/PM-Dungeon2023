@@ -14,8 +14,10 @@ import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
+import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.MonsterChest;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -26,7 +28,10 @@ import ecs.items.ImplementedItems.Bag;
 import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
+import ecs.items.ItemData;
+import ecs.items.ItemDataGenerator;
 import ecs.items.ItemType;
+import ecs.items.WorldItemBuilder;
 import ecs.quest.DemonSlayerQuest;
 import ecs.quest.HealQuest;
 import ecs.quest.LevelUpQuest;
@@ -47,6 +52,7 @@ import level.elements.tile.Tile;
 import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
+import level.tools.LevelElement;
 import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
@@ -175,6 +181,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         createMonster();
         addXPToEntity();
+        setupChest();
+
 
         new Poisoncloud();
         new Bananapeel();
@@ -185,6 +193,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
 
         createItems();
+    }
+
+    private void setupChest()
+    {
+        List<ItemData> items = new ArrayList<>();
+        new MonsterChest(items, Game.currentLevel.getRandomTile(LevelElement.FLOOR).getCoordinate().toPoint());
     }
 
     private void manageEntitiesSets() {
@@ -271,6 +285,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
         if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
         levelDepth++;
+
+
     }
 
     public void addXPToEntity() {
@@ -282,11 +298,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Creates Items in the Level depending on the levelDepth */
     public void createItems() {
+        ItemDataGenerator itemdata = new ItemDataGenerator();
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
-            if (rand.nextBoolean()) new Healthpot();
+            if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
             else if (rand.nextInt(101) > 30 && levelDepth >= 3) new Bag(ItemType.Healing);
-            else if (rand.nextBoolean()) new Chestplate();
-            else if (rand.nextBoolean()) new SimpleWand();
+            else if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
+            else if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
         }
     }
 

@@ -22,11 +22,11 @@ public class Bag extends ItemData implements IOnCollect, IOnUse, IOnDrop {
      */
     public Bag(ItemType bagType) {
         super(
-                ItemType.Bag,
-                AnimationBuilder.buildAnimation("items.bag"),
-                AnimationBuilder.buildAnimation("items.bag"),
-                "Bag",
-                "Holds up to 5 Items of an specific Item");
+            ItemType.Bag,
+            AnimationBuilder.buildAnimation("items.bag"),
+            AnimationBuilder.buildAnimation("items.bag"),
+            "Bag",
+            "Holds up to 5 Items of an specific Item");
         this.setOnCollect(this);
         this.setOnDrop(this);
         this.setOnUse(this);

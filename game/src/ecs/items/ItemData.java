@@ -168,6 +168,7 @@ public class ItemData {
     private static void defaultDrop(Entity who, ItemData which, Point position) {
         Entity droppedItem = new Entity();
         new PositionComponent(droppedItem, position);
+        new ItemComponent(droppedItem, which);
         new AnimationComponent(droppedItem, which.getWorldTexture());
         HitboxComponent component = new HitboxComponent(droppedItem);
         component.setiCollideEnter((a, b, direction) -> which.triggerCollect(a, b));
