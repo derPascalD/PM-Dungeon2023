@@ -96,6 +96,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private Logger gameLogger;
     private Random rand = new Random();
     private IngameUI ui;
+    public static HealingBar healingBar;
     private int questNumber;
 
     public static void main(String[] args) {
@@ -139,12 +140,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-
         hero = new Hero();
         createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
-        controller.add(new HealingBar<>());
+        healingBar = new HealingBar<>();
+        controller.add(healingBar);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -172,10 +173,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
-
         createMonster();
         addXPToEntity();
-
         new Poisoncloud();
         new Bananapeel();
         new Bananapeel();
