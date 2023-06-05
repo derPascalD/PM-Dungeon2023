@@ -41,10 +41,10 @@ public class ChestMonster extends Monster {
         this.xSpeed = 0.05f;
         this.ySpeed = 0.05f;
         this.diagonal = false;
-        this.pathToIdleLeft = "objects/treasurechest/chest_full_open_anim_f0.png";
-        this.pathToIdleRight = "objects/treasurechest/chest_full_open_anim_f0.png";
-        this.pathToRunLeft = "objects/treasurechest/chest_full_open_anim_f0.png";
-        this.pathToRunRight = "objects/treasurechest/chest_full_open_anim_f0.png";
+        this.pathToIdleLeft = "chestMonster";
+        this.pathToIdleRight = "chestMonster";
+        this.pathToRunLeft = "chestMonster";
+        this.pathToRunRight = "chestMonster";
 
         this.hit = AnimationBuilder.buildAnimation("monster/demon/hit");
         this.die = AnimationBuilder.buildAnimation("monster/demon/hit");
