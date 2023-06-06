@@ -4,6 +4,8 @@ import dslToGame.AnimationBuilder;
 import ecs.items.ImplementedItems.Chestplate;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ImplementedItems.SimpleWand;
+import graphic.Animation;
+
 import java.util.List;
 import java.util.Random;
 
@@ -11,24 +13,34 @@ import java.util.Random;
 public class ItemDataGenerator {
     private static final List<String> missingTexture = List.of("animation/missingTexture.png");
 
+    private static final List<String> healtpot = List.of("items/healthpot/Healthpots.png");
+    private static final List<String> chestplate = List.of("items/chestplate/chestplate.png");
+    private static final List<String> simplWand = List.of("items/simplewand/simplewand.png");
+
+
     private List<ItemData> templates =
             List.of(
                     new Healthpot(
                             ItemType.Healing,
-                            AnimationBuilder.buildAnimation("items.healthpot"),
-                            AnimationBuilder.buildAnimation("items.healthpot"),
+                            new Animation(healtpot,1),
+                            new Animation(healtpot,1),
+                           // AnimationBuilder.buildAnimation(healtpot),
+                            //AnimationBuilder.buildAnimation(healtpot),
                             "Healthpot",
                             "Heals the Player on Use"),
                     new SimpleWand(
                             ItemType.Weapon,
-                            AnimationBuilder.buildAnimation("items.simplewand"),
-                            AnimationBuilder.buildAnimation("items.simplewand"),
+                            new Animation(simplWand,1),
+                            new Animation(simplWand,1),
+                           // AnimationBuilder.buildAnimation(simplWand),
+                           //AnimationBuilder.buildAnimation(simplWand),
                             "SimpleWand",
                             "Gives the Player more Attack Damage"),
                     new Chestplate(
                             ItemType.Armor,
-                            AnimationBuilder.buildAnimation("items.chestplate"),
-                            AnimationBuilder.buildAnimation("items.chestplate"),
+                            new Animation(chestplate,1),
+                            new Animation(chestplate,1),
+                            //// AnimationBuilder.buildAnimation(armor),
                             "Chestplate",
                             "Protects the Player"));
     private Random rand = new Random();
