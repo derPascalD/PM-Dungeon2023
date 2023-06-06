@@ -15,9 +15,8 @@ public class HealingComponentTest {
     public void setup() {
         entity = new Entity();
         hc = new HealthComponent(entity, 50, null, null, null);
-        healingComponent = new HealingComponent(entity,5,1, 1);
+        healingComponent = new HealingComponent(entity, 5, 1, 1);
     }
-
 
     @Test
     public void testStartHealing_MoreThenOrEqualMax() {
@@ -43,7 +42,7 @@ public class HealingComponentTest {
 
     @Test
     public void testHealing_CurrentHealthIsMaxHealth() {
-        int frames1 = 30*10;
+        int frames1 = 30 * 10;
         hc.setCurrentHealthpoints(45);
 
         for (int i = 0; i < frames1; i++) {
@@ -62,11 +61,4 @@ public class HealingComponentTest {
         }
         Assert.assertNotEquals(hc.getCurrentHealthpoints(), hc.getMaximalHealthpoints());
     }
-
-
-
-
-
-
-
 }

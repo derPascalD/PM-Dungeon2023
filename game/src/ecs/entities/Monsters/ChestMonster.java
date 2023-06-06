@@ -11,22 +11,14 @@ import ecs.components.skill.Skill;
 import ecs.components.skill.SkillComponent;
 import ecs.entities.Chest;
 import ecs.entities.Entity;
-import ecs.items.ImplementedItems.Chestplate;
-import ecs.items.ImplementedItems.Healthpot;
-import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
+import java.util.ArrayList;
+import java.util.List;
 import level.elements.tile.Tile;
 import starter.Game;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-/**
- * new Monster which spawn only if the hero interacts before with the MonsterChest.
- */
-
+/** new Monster which spawn only if the hero interacts before with the MonsterChest. */
 public class ChestMonster extends Monster {
 
     private Skill combatSkill;
@@ -59,13 +51,12 @@ public class ChestMonster extends Monster {
         new HitboxComponent(this, this, this::onCollisionLeave);
         new HealingComponent(this, 5);
 
-
         // adding the AIComponent
         new AIComponent(
-            this,
-            new CombatAI(1.5F, combatSkill),
-            new PatrouilleWalk(2f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
-            new RangeTransition(2));
+                this,
+                new CombatAI(1.5F, combatSkill),
+                new PatrouilleWalk(2f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
+                new RangeTransition(2));
 
         this.lifePoints += levelDepth * 0.5;
         this.attackDamage += levelDepth * 0.3;
@@ -77,23 +68,23 @@ public class ChestMonster extends Monster {
 
     private void setupCombatSkill() {
         skillComponent.addSkill(
-            combatSkill =
-                new Skill(
-                    new MonsterCombat(
-                        1,
-                        "animation/standardCombat.png",
-                        "animation/standardCombat.png"),
-                    2F));
+                combatSkill =
+                        new Skill(
+                                new MonsterCombat(
+                                        1,
+                                        "animation/standardCombat.png",
+                                        "animation/standardCombat.png"),
+                                2F));
     }
 
-    private void setupPositionComponent(Chest chest){
+    private void setupPositionComponent(Chest chest) {
         PositionComponent positionComponent =
-            (PositionComponent)
-                chest.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () ->
-                            new IllegalStateException(
-                                "Entity does not have a PositionComponent"));
+                (PositionComponent)
+                        chest.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () ->
+                                                new IllegalStateException(
+                                                        "Entity does not have a PositionComponent"));
         new PositionComponent(this).setPosition(positionComponent.getPosition());
     }
 
@@ -105,17 +96,18 @@ public class ChestMonster extends Monster {
 
     /**
      * Generates a new chest with Items on the last position of the monster before it died.
+     *
      * @param entity ChestMonster
      */
     private static void spawnOriginalChestwitItems(Entity entity) {
-        //getting the last position of the entity
+        // getting the last position of the entity
         PositionComponent positionComponent =
-            (PositionComponent)
-                entity.getComponent(PositionComponent.class)
-                    .orElseThrow(
-                        () ->
-                            new IllegalStateException(
-                                "Entity does not have a PositionComponent"));
+                (PositionComponent)
+                        entity.getComponent(PositionComponent.class)
+                                .orElseThrow(
+                                        () ->
+                                                new IllegalStateException(
+                                                        "Entity does not have a PositionComponent"));
 
         // generating at least three random Items.
         List<ItemData> items = new ArrayList<>();
@@ -125,12 +117,14 @@ public class ChestMonster extends Monster {
         }
 
         // creating a new chest with the obove generated items.
-        new Chest(items,positionComponent.getPosition());
-
+        new Chest(items, positionComponent.getPosition());
     }
 
     @Override
-    public boolean isInFightMode(Entity entity) {return false;}
+    public boolean isInFightMode(Entity entity) {
+        return false;
+    }
+
     @Override
     public void onCollision(Entity a, Entity b, Tile.Direction from) {}
 }

@@ -14,11 +14,11 @@ public class DemonSword extends ItemData implements IOnCollect, IOnDrop, IOnUse 
     /** Creates a DemonSword Item which can be collected to get more melee damage */
     public DemonSword() {
         super(
-            ItemType.Weapon,
-            AnimationBuilder.buildAnimation("items.demonsword"),
-            AnimationBuilder.buildAnimation("items.demonsword"),
-            "DemonSword",
-            "Gives the Hero 5 more melee damage");
+                ItemType.Weapon,
+                AnimationBuilder.buildAnimation("items.demonsword"),
+                AnimationBuilder.buildAnimation("items.demonsword"),
+                "DemonSword",
+                "Gives the Hero 5 more melee damage");
         this.setOnCollect(this);
         this.setOnUse(this);
     }
@@ -35,7 +35,7 @@ public class DemonSword extends ItemData implements IOnCollect, IOnDrop, IOnUse 
         defaultOnCollect(WorldItemEntity, whoCollides);
         Hero hero = (Hero) Game.getHero().get();
         DamageComponent heroDamage =
-            (DamageComponent) hero.getComponent(DamageComponent.class).get();
+                (DamageComponent) hero.getComponent(DamageComponent.class).get();
         heroDamage.setMeleeDamage(heroDamage.getMeleeDamage() + 5);
     }
 

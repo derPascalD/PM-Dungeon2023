@@ -1,11 +1,8 @@
 package ecs.components;
 
-import controller.AbstractController;
 import ecs.entities.Entity;
 import graphic.hud.HealingBar;
-
 import java.util.logging.Logger;
-
 import logging.CustomLogLevel;
 import starter.Game;
 import tools.Constants;
@@ -27,13 +24,13 @@ public class HealingComponent extends Component {
     /**
      * Create a new component and add it to the associated entity
      *
-     * @param entity             which uses this component
+     * @param entity which uses this component
      * @param timeToStartHealing Time when the healing starts
-     * @param hpProHeal          How many life points you get per healing process
-     * @param durationToNextHp   The time whenever a healing process begins.
+     * @param hpProHeal How many life points you get per healing process
+     * @param durationToNextHp The time whenever a healing process begins.
      */
     public HealingComponent(
-        Entity entity, int timeToStartHealing, int hpProHeal, int durationToNextHp) {
+            Entity entity, int timeToStartHealing, int hpProHeal, int durationToNextHp) {
         super(entity);
         this.TIMETOSTARTHEALING = timeToStartHealing;
         this.DURATIONNEXTHP = durationToNextHp * 2;
@@ -63,12 +60,12 @@ public class HealingComponent extends Component {
      */
     public void execute() {
         healthC =
-            (HealthComponent)
-                entity.getComponent(HealthComponent.class)
-                    .orElseThrow(
-                        () ->
-                            new IllegalStateException(
-                                "Entity does not have a HealthComponent"));
+                (HealthComponent)
+                        entity.getComponent(HealthComponent.class)
+                                .orElseThrow(
+                                        () ->
+                                                new IllegalStateException(
+                                                        "Entity does not have a HealthComponent"));
         reset();
         if (healthC.getMaximalHealthpoints() > healthC.getCurrentHealthpoints()) {
             startHealing();
@@ -85,11 +82,11 @@ public class HealingComponent extends Component {
         if (frames == 0 && !start) {
 
             HEALINGLOGGER.log(
-                CustomLogLevel.INFO,
-                "Healing Active: '"
-                    + entity.getClass().getSimpleName()
-                    + "' Actual Lifepoints: "
-                    + healthC.getCurrentHealthpoints());
+                    CustomLogLevel.INFO,
+                    "Healing Active: '"
+                            + entity.getClass().getSimpleName()
+                            + "' Actual Lifepoints: "
+                            + healthC.getCurrentHealthpoints());
 
             frames = DURATIONNEXTHP * Constants.FRAME_RATE;
             start = true;
@@ -121,11 +118,11 @@ public class HealingComponent extends Component {
             frames = TIMETOSTARTHEALING * Constants.FRAME_RATE;
             start = false;
             HEALINGLOGGER.log(
-                CustomLogLevel.INFO,
-                "Healing completed: '"
-                    + entity.getClass().getSimpleName()
-                    + "' New Lifepoints: "
-                    + healthC.getCurrentHealthpoints());
+                    CustomLogLevel.INFO,
+                    "Healing completed: '"
+                            + entity.getClass().getSimpleName()
+                            + "' New Lifepoints: "
+                            + healthC.getCurrentHealthpoints());
         } else if (actualHP > healthC.getCurrentHealthpoints()) {
             if (Game.healingBar != null) {
                 HealingBar.updateHealingBar(entity, false, healthC.getCurrentHealthpoints());
@@ -162,6 +159,4 @@ public class HealingComponent extends Component {
     public int getHPPROHEAL() {
         return HPPROHEAL;
     }
-
-
 }

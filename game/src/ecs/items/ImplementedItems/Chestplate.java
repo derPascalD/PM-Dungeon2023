@@ -14,11 +14,11 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop, IOnUse 
     /** Creates a Chestplate item and spawns it in the Level at a random spot */
     public Chestplate() {
         super(
-            ItemType.Armor,
-            AnimationBuilder.buildAnimation("items.chestplate"),
-            AnimationBuilder.buildAnimation("items.chestplate"),
-            "Chestplate",
-            "Protects the Player");
+                ItemType.Armor,
+                AnimationBuilder.buildAnimation("items.chestplate"),
+                AnimationBuilder.buildAnimation("items.chestplate"),
+                "Chestplate",
+                "Protects the Player");
         this.setOnCollect(this);
         this.setOnDrop(this);
         this.setOnUse(this);
@@ -27,17 +27,16 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop, IOnUse 
         new PositionComponent(worldItemEntity);
     }
 
-    public Chestplate(ItemType itemType,
-                     Animation inventoryTexture,
-                     Animation worldTexture,
-                     String itemName,
-                     String description) {
+    public Chestplate(
+            ItemType itemType,
+            Animation inventoryTexture,
+            Animation worldTexture,
+            String itemName,
+            String description) {
         super(itemType, inventoryTexture, worldTexture, itemName, description);
         this.setOnCollect(this);
         this.setOnUse(this);
     }
-
-
 
     /**
      * The item gets collected if the Hero has any space left in the Inventory. The item gives the
@@ -50,7 +49,7 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop, IOnUse 
     public void onCollect(Entity WorldItemEntity, Entity whoCollides) {
         if (defaultOnCollect(WorldItemEntity, whoCollides)) {
             HealthComponent healthComponent =
-                (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
+                    (HealthComponent) whoCollides.getComponent(HealthComponent.class).get();
             healthComponent.setMaximalHealthpoints(healthComponent.getMaximalHealthpoints() + 10);
             healthComponent.setCurrentHealthpoints(healthComponent.getCurrentHealthpoints() + 10);
         }

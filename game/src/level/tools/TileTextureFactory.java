@@ -1,6 +1,5 @@
 package level.tools;
 
-import com.badlogic.gdx.ai.fma.patterns.OffensiveCircleFormationPattern;
 import level.elements.tile.Tile;
 
 public class TileTextureFactory {
@@ -92,11 +91,6 @@ public class TileTextureFactory {
     }
 
     private static String findTexturePathFloor(LevelPart levelPart) {
-
-
-
-
-
 
         if (levelPart.element() == LevelElement.SKIP) {
             return "floor/empty";

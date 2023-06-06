@@ -14,7 +14,6 @@ import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
-import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.MonsterChest;
@@ -25,9 +24,6 @@ import ecs.entities.NPCs.Ghost;
 import ecs.entities.Traps.Bananapeel;
 import ecs.entities.Traps.Poisoncloud;
 import ecs.items.ImplementedItems.Bag;
-import ecs.items.ImplementedItems.Chestplate;
-import ecs.items.ImplementedItems.Healthpot;
-import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
 import ecs.items.ItemType;
@@ -193,10 +189,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createItems();
     }
 
-    private void setupChest()
-    {
+    private void setupChest() {
         List<ItemData> items = new ArrayList<>();
-        new MonsterChest(items, Game.currentLevel.getRandomTile(LevelElement.FLOOR).getCoordinate().toPoint());
+        new MonsterChest(
+                items,
+                Game.currentLevel.getRandomTile(LevelElement.FLOOR).getCoordinate().toPoint());
     }
 
     private void manageEntitiesSets() {
@@ -283,8 +280,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
         if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
         levelDepth++;
-
-
     }
 
     public void addXPToEntity() {
@@ -300,8 +295,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
             if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
             else if (rand.nextInt(101) > 30 && levelDepth >= 3) new Bag(ItemType.Healing);
-            else if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
-            else if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
+            else if (rand.nextBoolean())
+                WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
+            else if (rand.nextBoolean())
+                WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
         }
     }
 
