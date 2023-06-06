@@ -11,6 +11,6 @@ public class HealingSystem extends ECS_System {
         Game.getEntities().stream()
                 .filter(hc -> hc.getComponent(HealthComponent.class).isPresent())
                 .flatMap(hs -> hs.getComponent(HealingComponent.class).stream())
-                .forEach(hC -> ((HealingComponent) hC).healingUpdate());
+                .forEach(hC -> ((HealingComponent) hC).execute());
     }
 }
