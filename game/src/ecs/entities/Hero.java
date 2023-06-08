@@ -34,13 +34,16 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     // Original Speed from Hero
 
-    private final float xSpeed = 0.3f;
-    private final float ySpeed = 0.3f;
+    protected float xSpeed = 0.3f;
+    protected float ySpeed = 0.3f;
     private String pathToIdleLeft = "knight/idleCombatLeft";
     private String pathToIdleRight = "knight/idleCombatRight";
     private String pathToRunLeft = "knight/runCombatLeft";
     private String pathToRunRight = "knight/runCombatRight";
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
+
+    protected Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
+    protected Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
 
     // Skills from Hero
     private Skill firstSkill;
@@ -55,14 +58,13 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     protected InventoryComponent inventory;
     private SkillComponent skillComponent;
-    private final PlayableComponent playableComponent;
+    protected final PlayableComponent playableComponent= new PlayableComponent(this);
     private XPComponent xpComponent;
     private HealthComponent healthComponent;
 
     /** Entity with Components */
     public Hero() {
         super();
-        playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
         new HealingComponent(this, 5, 1, 1);
         killedMonsters = new ArrayList<>();
@@ -73,97 +75,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupHitboxComponent();
         setupSkillComponent();
         setupXPComponent();
-        setupMeleeSkill();
         setupInventoryComponent();
-        setupNinjaBlade();
         setupDamageComponent();
     }
 
-    /*
-    Adds the new Speed skill to allow the Hero to run faster for a short time.
-    */
-    private void setupSpeedSkill() {
-        skillComponent.addSkill(
-                secondSkill =
-                        new Skill(
-                                new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
-        playableComponent.setSkillSlot2(secondSkill);
-    }
-
-    /*
-    Adds the new StunningStrike skill to allow the Hero to run faster for a short time.
-    */
-    private void setupStunningStrikeSkill() {
-        skillComponent.addSkill(
-                thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
-        playableComponent.setSkillSlot3(thirdSkill);
-    }
-
-    /*
-    Adds the new Fireball skill to allow the Hero to run faster for a short time.
-    */
-    private void setupFireballSkill() {
-        skillComponent.addSkill(
-                firstSkill =
-                        new Skill(
-                                new FireballSkill(SkillTools::getCursorPositionAsPoint),
-                                fireballCoolDown));
-        playableComponent.setSkillSlot1(firstSkill);
-    }
-
-    /*
-    Adds the new Melee skill to allow the Hero to run faster for a short time.
-    */
-    private void setupMeleeSkill() {
-        skillComponent.addSkill(
-                combatSkill =
-                        new Skill(
-                                new Sword(
-                                        1,
-                                        "character/knight/attackLeft/",
-                                        "character/knight/attackRight/"),
-                                1F));
-        playableComponent.setCombatSkill(combatSkill);
-    }
-
-    /**
-     * Here abilities are unlocked, depending on the level of the hero
-     *
-     * @param nextLevel is the new level of the entity
-     */
-    @Override
-    public void onLevelUp(long nextLevel) {
-        if (nextLevel == 1) {
-            setupFireballSkill();
-            setupGrenadeLauncherSkill();
-            IngameUI.updateSkillsBar("Fireball", "-", "-");
-        }
-        if (nextLevel == 2) {
-            setupSpeedSkill();
-            IngameUI.updateSkillsBar("Fireball", "More Speed", "-");
-        }
-        if (nextLevel == 3) {
-            setupStunningStrikeSkill();
-            IngameUI.updateSkillsBar("Fireball", "More Speed", "StunningStrike");
-        }
-    }
-
-    private void setupGrenadeLauncherSkill() {
-        skillComponent.addSkill(
-                fourthSkill =
-                        new Skill(
-                                new GrenadeLauncher(
-                                        5,
-                                        true,
-                                        "items/grenade/grenade.png",
-                                        0.6f,
-                                        new Damage(2, DamageType.FIRE, null),
-                                        new Point(1f, 1f),
-                                        SkillTools::getCursorPositionAsPoint,
-                                        3f),
-                                grenadeLauncherCoolDown));
-        playableComponent.setSkillSlot4(fourthSkill);
-    }
 
     private void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
@@ -174,13 +89,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     }
 
     private void setupHealthComponent() {
-        Animation hit = AnimationBuilder.buildAnimation(hitAnimation);
-        healthComponent = new HealthComponent(this, 11, this, hitAnimation(), hit);
+        healthComponent = new HealthComponent(this, 11, this, hitAnimation(), hitAnimation());
     }
 
     private void setupVelocityComponent() {
-        Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
-        Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
         new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
     }
 
@@ -194,29 +106,114 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         new HitboxComponent(this, this, this::onCollisionLeave);
     }
 
-    private void setupNinjaBlade() {
-        skillComponent.addSkill(
-                fifthSkill =
-                        new Skill(
-                                new NinjaBlade(
-                                        10,
-                                        false,
-                                        "skills/ninjablade/ninja_blade_left",
-                                        0.25f,
-                                        new Damage(2, DamageType.PHYSICAL, null),
-                                        new Point(0.5f, 0.5f),
-                                        SkillTools::getCursorPositionAsPoint,
-                                        5f),
-                                NinjabladeCoolDown));
-        playableComponent.setSkillSlot5(fifthSkill);
-    }
-
     private void setupInventoryComponent() {
         inventory = new InventoryComponent(this, 5);
     }
 
     private void setupDamageComponent() {
         new DamageComponent(this);
+    }
+
+    /*
+    * Adds the new Melee skill to allow the Hero to run faster for a short time.
+    */
+    protected void setupMeleeSkill(SkillComponent sc, PlayableComponent pc) {
+        sc.addSkill(
+            combatSkill =
+                new Skill(
+                    new Sword(
+                        1,
+                        "character/knight/attackLeft/",
+                        "character/knight/attackRight/"),
+                    1F));
+        pc.setCombatSkill(combatSkill);
+    }
+
+    protected void setupNinjaBlade(SkillComponent sc, PlayableComponent pc) {
+        sc.addSkill(
+            fifthSkill =
+                new Skill(
+                    new NinjaBlade(
+                        10,
+                        false,
+                        "skills/ninjablade/ninja_blade_left",
+                        0.25f,
+                        new Damage(2, DamageType.PHYSICAL, null),
+                        new Point(0.5f, 0.5f),
+                        SkillTools::getCursorPositionAsPoint,
+                        5f),
+                    NinjabladeCoolDown));
+        pc.setSkillSlot5(fifthSkill);
+    }
+
+    protected void setupGrenadeLauncherSkill(SkillComponent sc, PlayableComponent pc) {
+        sc.addSkill(
+            fourthSkill =
+                new Skill(
+                    new GrenadeLauncher(
+                        5,
+                        true,
+                        "items/grenade/grenade.png",
+                        0.6f,
+                        new Damage(2, DamageType.FIRE, null),
+                        new Point(1f, 1f),
+                        SkillTools::getCursorPositionAsPoint,
+                        3f),
+                    grenadeLauncherCoolDown));
+        pc.setSkillSlot4(fourthSkill);
+    }
+
+    /*
+   Adds the new Speed skill to allow the Hero to run faster for a short time.
+   */
+    private void setupSpeedSkill() {
+        skillComponent.addSkill(
+            secondSkill =
+                new Skill(
+                    new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
+        playableComponent.setSkillSlot2(secondSkill);
+    }
+
+    /*
+    Adds the new StunningStrike skill to allow the Hero to run faster for a short time.
+    */
+    private void setupStunningStrikeSkill() {
+        skillComponent.addSkill(
+            thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
+        playableComponent.setSkillSlot3(thirdSkill);
+    }
+
+    /*
+    Adds the new Fireball skill to allow the Hero to run faster for a short time.
+    */
+    private void setupFireballSkill() {
+        skillComponent.addSkill(
+            firstSkill =
+                new Skill(
+                    new FireballSkill(SkillTools::getCursorPositionAsPoint),
+                    fireballCoolDown));
+        playableComponent.setSkillSlot1(firstSkill);
+    }
+
+    /**
+     * Here abilities are unlocked, depending on the level of the hero
+     *
+     * @param nextLevel is the new level of the entity
+     */
+    @Override
+    public void onLevelUp(long nextLevel) {
+        if (nextLevel == 1) {
+            setupFireballSkill();
+            IngameUI.updateSkillsBar("Fireball", "-", "-");
+        }
+        if (nextLevel == 2) {
+            setupSpeedSkill();
+            IngameUI.updateSkillsBar("Fireball", "More Speed", "-");
+        }
+        if (nextLevel == 3) {
+            setupStunningStrikeSkill();
+            IngameUI.updateSkillsBar("Fireball", "More Speed", "StunningStrike");
+        }
     }
 
     /**
