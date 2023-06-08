@@ -23,6 +23,7 @@ import ecs.entities.Monsters.Skeleton;
 import ecs.entities.NPCs.Ghost;
 import ecs.entities.Traps.Bananapeel;
 import ecs.entities.Traps.Poisoncloud;
+import ecs.entities.characterclasses.Tank;
 import ecs.items.ImplementedItems.Bag;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
@@ -33,6 +34,7 @@ import ecs.quest.HealQuest;
 import ecs.quest.LevelUpQuest;
 import ecs.quest.Quest;
 import ecs.systems.*;
+import graphic.CharacterSelect;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
@@ -100,7 +102,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private IngameUI ui;
     public static HealingBar healingBar;
     private int questNumber;
-
+    private CharacterSelect characterSelect;
     public static void main(String[] args) {
         // start the game
         try {
@@ -143,11 +145,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
         hero = new Hero();
+
         createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
         healingBar = new HealingBar<>();
         controller.add(healingBar);
+        characterSelect = new CharacterSelect();
+        controller.add(characterSelect);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
