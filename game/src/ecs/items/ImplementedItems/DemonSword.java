@@ -20,7 +20,6 @@ public class DemonSword extends ItemData implements IOnCollect, IOnDrop, IOnUse 
                 "DemonSword",
                 "Gives the Hero 5 more melee damage");
         this.setOnCollect(this);
-        this.setOnDrop(this);
         this.setOnUse(this);
     }
 

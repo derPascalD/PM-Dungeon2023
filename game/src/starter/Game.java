@@ -16,6 +16,7 @@ import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.MonsterChest;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -23,10 +24,10 @@ import ecs.entities.NPCs.Ghost;
 import ecs.entities.Traps.Bananapeel;
 import ecs.entities.Traps.Poisoncloud;
 import ecs.items.ImplementedItems.Bag;
-import ecs.items.ImplementedItems.Chestplate;
-import ecs.items.ImplementedItems.Healthpot;
-import ecs.items.ImplementedItems.SimpleWand;
+import ecs.items.ItemData;
+import ecs.items.ItemDataGenerator;
 import ecs.items.ItemType;
+import ecs.items.WorldItemBuilder;
 import ecs.quest.DemonSlayerQuest;
 import ecs.quest.HealQuest;
 import ecs.quest.LevelUpQuest;
@@ -35,6 +36,7 @@ import ecs.systems.*;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
+import graphic.hud.HealingBar;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
@@ -46,6 +48,7 @@ import level.elements.tile.Tile;
 import level.generator.IGenerator;
 import level.generator.postGeneration.WallGenerator;
 import level.generator.randomwalk.RandomWalkGenerator;
+import level.tools.LevelElement;
 import level.tools.LevelSize;
 import tools.Constants;
 import tools.Point;
@@ -95,6 +98,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private Logger gameLogger;
     private Random rand = new Random();
     private IngameUI ui;
+    public static HealingBar healingBar;
     private int questNumber;
 
     public static void main(String[] args) {
@@ -138,12 +142,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-
         hero = new Hero();
         createQuests();
         ui = new IngameUI<>();
         controller.add(ui);
-
+        healingBar = new HealingBar<>();
+        controller.add(healingBar);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
@@ -167,13 +171,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     @Override
     public void onLevelLoad() {
+        HealingBar.updateHealingBar(null, false, 0);
         currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
         getHero().ifPresent(this::placeOnLevelStart);
-
         createMonster();
         addXPToEntity();
-
+        setupChest();
         new Poisoncloud();
         new Bananapeel();
         new Bananapeel();
@@ -183,6 +187,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
 
         createItems();
+    }
+
+    private void setupChest() {
+        List<ItemData> items = new ArrayList<>();
+        new MonsterChest(
+                items,
+                Game.currentLevel.getRandomTile(LevelElement.FLOOR).getCoordinate().toPoint());
     }
 
     private void manageEntitiesSets() {
@@ -280,11 +291,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Creates Items in the Level depending on the levelDepth */
     public void createItems() {
+        ItemDataGenerator itemdata = new ItemDataGenerator();
         for (int i = 0; i < 1 + (levelDepth * 0.3); i++) {
-            if (rand.nextBoolean()) new Healthpot();
+            if (rand.nextBoolean()) WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
             else if (rand.nextInt(101) > 30 && levelDepth >= 3) new Bag(ItemType.Healing);
-            else if (rand.nextBoolean()) new Chestplate();
-            else if (rand.nextBoolean()) new SimpleWand();
+            else if (rand.nextBoolean())
+                WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
+            else if (rand.nextBoolean())
+                WorldItemBuilder.buildWorldItem(itemdata.generateItemData());
         }
     }
 
@@ -428,5 +442,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         new SkillSystem();
         new ProjectileSystem();
         new QuestSystem();
+        new HealingSystem();
     }
 }

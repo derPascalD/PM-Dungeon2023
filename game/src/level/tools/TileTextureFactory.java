@@ -71,7 +71,7 @@ public class TileTextureFactory {
      *
      * @param element Tile to check for
      * @param layout The level
-     * @param elementType The type ot the tile if different than the attribute
+     * @param elementType The type ot the tile if different from the attribute
      * @return Path to texture
      */
     public static String findTexturePath(Tile element, Tile[][] layout, LevelElement elementType) {
@@ -91,6 +91,7 @@ public class TileTextureFactory {
     }
 
     private static String findTexturePathFloor(LevelPart levelPart) {
+
         if (levelPart.element() == LevelElement.SKIP) {
             return "floor/empty";
         } else if (levelPart.element() == LevelElement.FLOOR) {

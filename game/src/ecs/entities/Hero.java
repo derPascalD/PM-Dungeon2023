@@ -64,6 +64,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         super();
         playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
+        new HealingComponent(this, 5, 1, 1);
         killedMonsters = new ArrayList<>();
         setupVelocityComponent();
         setupAnimationComponent();
@@ -75,7 +76,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupMeleeSkill();
         setupInventoryComponent();
         setupNinjaBlade();
-
         setupDamageComponent();
     }
 
@@ -175,7 +175,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     private void setupHealthComponent() {
         Animation hit = AnimationBuilder.buildAnimation(hitAnimation);
-        healthComponent = new HealthComponent(this, 50, this, hitAnimation(), hit);
+        healthComponent = new HealthComponent(this, 11, this, hitAnimation(), hit);
     }
 
     private void setupVelocityComponent() {

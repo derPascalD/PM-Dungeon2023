@@ -6,6 +6,7 @@ import ecs.components.InventoryComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.items.*;
+import graphic.Animation;
 import java.util.logging.Logger;
 import tools.Point;
 
@@ -29,6 +30,18 @@ public class Healthpot extends ItemData implements IOnCollect, IOnDrop, IOnUse {
         healAmount = 10;
         Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
         new PositionComponent(worldItemEntity);
+    }
+
+    public Healthpot(
+            ItemType itemType,
+            Animation inventoryTexture,
+            Animation worldTexture,
+            String itemName,
+            String description) {
+        super(itemType, inventoryTexture, worldTexture, itemName, description);
+        this.setOnCollect(this);
+        this.setOnUse(this);
+        healAmount = 10;
     }
 
     /**

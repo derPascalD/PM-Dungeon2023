@@ -5,6 +5,7 @@ import ecs.components.HealthComponent;
 import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.items.*;
+import graphic.Animation;
 import tools.Point;
 
 /** Gives the Hero more Health upon collecting */
@@ -24,6 +25,17 @@ public class Chestplate extends ItemData implements IOnCollect, IOnDrop, IOnUse 
 
         Entity worldItemEntity = WorldItemBuilder.buildWorldItem(this);
         new PositionComponent(worldItemEntity);
+    }
+
+    public Chestplate(
+            ItemType itemType,
+            Animation inventoryTexture,
+            Animation worldTexture,
+            String itemName,
+            String description) {
+        super(itemType, inventoryTexture, worldTexture, itemName, description);
+        this.setOnCollect(this);
+        this.setOnUse(this);
     }
 
     /**

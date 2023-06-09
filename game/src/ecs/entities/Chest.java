@@ -41,6 +41,10 @@ public class Chest extends Entity {
                 Game.currentLevel.getRandomTile(LevelElement.FLOOR).getCoordinate().toPoint());
     }
 
+    /** standard Constructor */
+    public Chest() {}
+    ;
+
     /**
      * Creates a new Chest which drops the given items on interaction
      *
@@ -55,8 +59,8 @@ public class Chest extends Entity {
         AnimationComponent ac =
                 new AnimationComponent(
                         this,
-                        new Animation(DEFAULT_CLOSED_ANIMATION_FRAMES, 100, false),
-                        new Animation(DEFAULT_OPENING_ANIMATION_FRAMES, 100, false));
+                        new Animation(DEFAULT_CLOSED_ANIMATION_FRAMES, 5, false),
+                        new Animation(DEFAULT_OPENING_ANIMATION_FRAMES, 5, false));
     }
 
     private void dropItems(Entity entity) {
