@@ -4,9 +4,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public final class Constants {
-    public static final int WINDOW_WIDTH = 1080;
+    public static final int WINDOW_WIDTH = 640;
 
-    public static final int WINDOW_HEIGHT = 720;
+    public static final int WINDOW_HEIGHT = 480;
 
     /** Frames per seconds. */
     public static final int FRAME_RATE = 30;
