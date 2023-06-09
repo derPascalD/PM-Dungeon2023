@@ -8,8 +8,8 @@ import starter.Game;
 import tools.Constants;
 
 /**
- * Die Das HealingComponent sorgt dafür, das Entities nach eienr bestimmten Zeit wieder ihc leben
- * aufgefüllt bekomen
+ * The HealingComponent ensures that entities return to life after a certain period of time
+ * get refilled.
  */
 public class HealingComponent extends Component {
     private final Logger HEALINGLOGGER = Logger.getLogger(this.getClass().getName());
@@ -132,31 +132,30 @@ public class HealingComponent extends Component {
         }
     }
 
+    /**
+     * Return start boolean
+     *
+     * @return start
+     */
     public boolean isStart() {
         return start;
     }
 
+    /**
+     * Set the Start boolean
+     *
+     * @param start
+     */
     public void setStart(boolean start) {
         this.start = start;
     }
 
-    public float getFrames() {
-        return frames;
-    }
-
+    /**
+     * Set the Frames
+     *
+     * @param frames
+     */
     public void setFrames(float frames) {
         this.frames = frames;
-    }
-
-    public void setActualHP(int actualHP) {
-        this.actualHP = actualHP;
-    }
-
-    public void setHealthC(HealthComponent healthC) {
-        this.healthC = healthC;
-    }
-
-    public int getHPPROHEAL() {
-        return HPPROHEAL;
     }
 }
