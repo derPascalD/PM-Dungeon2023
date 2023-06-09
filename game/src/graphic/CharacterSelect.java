@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import controller.ScreenController;
+import ecs.entities.characterclasses.Archer;
+import ecs.entities.characterclasses.Rouge;
 import ecs.entities.characterclasses.Tank;
 import graphic.hud.*;
 import starter.Game;
@@ -78,7 +80,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     Game.removeEntity(Game.getHero().get());
-                    Game.setHero(new Tank());
+                    Game.setHero(new Archer());
                     Game.togglePause();
                     hideMenu();
                     selected = true;
@@ -105,7 +107,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     Game.removeEntity(Game.getHero().get());
-                    Game.setHero(new Tank());
+                    Game.setHero(new Rouge());
                     Game.togglePause();
                     hideMenu();
                     selected = true;

@@ -4,7 +4,6 @@ import dslToGame.AnimationBuilder;
 import ecs.components.DamageComponent;
 import ecs.components.HealthComponent;
 import ecs.components.VelocityComponent;
-import ecs.components.skill.SkillComponent;
 import ecs.entities.Hero;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ItemType;
@@ -41,7 +40,6 @@ public class Tank extends Hero {
     }
 
     private void setupSkills() {
-        SkillComponent skillComponent = new SkillComponent(this);
-        setupMeleeSkill(skillComponent,playableComponent);
+        setupMeleeSkill();
     }
 }
