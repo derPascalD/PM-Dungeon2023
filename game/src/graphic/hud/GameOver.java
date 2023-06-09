@@ -22,7 +22,11 @@ public class GameOver<T extends Actor> extends ScreenController<T> {
         this(new SpriteBatch());
     }
 
-    /** Creates a new GameOver with a given Spritebatch */
+    /**
+     * Creates a new GameOver with a given Spritebatch
+     *
+     * @param batch
+     */
     public GameOver(SpriteBatch batch) {
         super(batch);
         createGameOverText();
