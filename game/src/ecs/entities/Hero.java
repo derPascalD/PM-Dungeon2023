@@ -117,8 +117,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     /*
     * Adds the new Melee skill to allow the Hero to run faster for a short time.
     */
-    protected void setupMeleeSkill(SkillComponent sc, PlayableComponent pc) {
-        sc.addSkill(
+    protected void setupMeleeSkill() {
+        skillComponent.addSkill(
             combatSkill =
                 new Skill(
                     new Sword(
@@ -126,11 +126,11 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
                         "character/knight/attackLeft/",
                         "character/knight/attackRight/"),
                     1F));
-        pc.setCombatSkill(combatSkill);
+        playableComponent.setCombatSkill(combatSkill);
     }
 
-    protected void setupNinjaBlade(SkillComponent sc, PlayableComponent pc) {
-        sc.addSkill(
+    protected void setupNinjaBlade() {
+        skillComponent.addSkill(
             fifthSkill =
                 new Skill(
                     new NinjaBlade(
@@ -143,11 +143,11 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
                         SkillTools::getCursorPositionAsPoint,
                         5f),
                     NinjabladeCoolDown));
-        pc.setSkillSlot5(fifthSkill);
+        playableComponent.setSkillSlot5(fifthSkill);
     }
 
-    protected void setupGrenadeLauncherSkill(SkillComponent sc, PlayableComponent pc) {
-        sc.addSkill(
+    protected void setupGrenadeLauncherSkill() {
+        skillComponent.addSkill(
             fourthSkill =
                 new Skill(
                     new GrenadeLauncher(
@@ -160,7 +160,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
                         SkillTools::getCursorPositionAsPoint,
                         3f),
                     grenadeLauncherCoolDown));
-        pc.setSkillSlot4(fourthSkill);
+        playableComponent.setSkillSlot4(fourthSkill);
     }
 
     /*
