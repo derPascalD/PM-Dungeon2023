@@ -37,9 +37,11 @@ import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
 import graphic.hud.HealingBar;
+import graphic.hud.GameOver;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import level.IOnLevelLoader;
 import level.LevelAPI;
@@ -94,6 +96,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
+    private static GameOver<Actor> gameOverMenu;
+    public static Game game;
     private static Entity hero;
     private Logger gameLogger;
     private Random rand = new Random();
@@ -108,7 +112,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        DesktopLauncher.run(new Game());
+        DesktopLauncher.run(game = new Game());
     }
 
     /**
@@ -140,17 +144,19 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger = Logger.getLogger(this.getClass().getName());
         systems = new SystemController();
         controller.add(systems);
+        hero = new Hero();
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-        hero = new Hero();
-        createQuests();
-        ui = new IngameUI<>();
-        controller.add(ui);
         healingBar = new HealingBar<>();
         controller.add(healingBar);
+        createQuests();
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+        ui = new IngameUI<>();
+        controller.add(ui);
+        gameOverMenu = new GameOver<>();
+        controller.add(gameOverMenu);
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -178,10 +184,10 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createMonster();
         addXPToEntity();
         setupChest();
+
         new Poisoncloud();
         new Bananapeel();
         new Bananapeel();
-
         if (rand.nextBoolean()) {
             new Ghost();
         }
@@ -429,6 +435,19 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         // See also:
         // https://stackoverflow.com/questions/52011592/libgdx-set-ortho-camera
+    }
+
+    /** Restarts the game */
+    public static void restartGame() {
+        levelDepth = 0;
+        game.setup();
+    }
+
+    /** Opens the Game Over menu and stops the systems */
+    public void openGameOverMenu() {
+        gameLogger.log(Level.INFO, "GameOver Menue activ");
+        systems.forEach(ECS_System::toggleRun);
+        gameOverMenu.showMenu();
     }
 
     private void createSystems() {

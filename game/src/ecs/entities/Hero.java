@@ -17,6 +17,7 @@ import graphic.Animation;
 import graphic.IngameUI;
 import java.util.ArrayList;
 import level.elements.tile.Tile;
+import starter.Game;
 import tools.Point;
 
 /**
@@ -176,6 +177,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private void setupHealthComponent() {
         Animation hit = AnimationBuilder.buildAnimation(hitAnimation);
         healthComponent = new HealthComponent(this, 11, this, hitAnimation(), hit);
+
     }
 
     private void setupVelocityComponent() {
@@ -228,7 +230,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /** As soon as the entity dies, the content of the function is executed. */
     @Override
-    public void onDeath(Entity entity) {}
+    public void onDeath(Entity entity) {
+        Game.game.openGameOverMenu();
+    }
 
     /**
      * @return Return the current data path of the Hero Animation left
