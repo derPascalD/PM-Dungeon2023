@@ -156,6 +156,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+        togglePause();
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -163,14 +164,16 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if (Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get()))
-            IngameUI.toggleQuestText();
-        if (levelDepth == 1) {
-            if (Gdx.input.isKeyJustPressed(KeyboardConfig.ACCEPT_QUEST.get())) acceptCurrentQuest();
-            if (Gdx.input.isKeyJustPressed(KeyboardConfig.NEXT_QUESTS.get())) skipQuest();
-        } else {
-            IngameUI.setQuestAcceptText(false);
+        if( CharacterSelect.hasSelected()) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get()))
+                IngameUI.toggleQuestText();
+            if (levelDepth == 1) {
+                if (Gdx.input.isKeyJustPressed(KeyboardConfig.ACCEPT_QUEST.get())) acceptCurrentQuest();
+                if (Gdx.input.isKeyJustPressed(KeyboardConfig.NEXT_QUESTS.get())) skipQuest();
+            } else {
+                IngameUI.setQuestAcceptText(false);
+            }
         }
     }
 
