@@ -17,8 +17,8 @@ import level.elements.tile.Tile;
 
 public class Skeleton extends Monster {
 
-    private Skill combatFight;
-    private final SkillComponent skillComponent;
+    private transient Skill combatFight;
+    private transient SkillComponent skillComponent;
 
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
@@ -31,6 +31,11 @@ public class Skeleton extends Monster {
      * Geschwindigkeiten.
      */
     public Skeleton(int levelDepth) {
+        setup(levelDepth);
+    }
+
+    @Override
+    public void setup(int levelDepth) {
         this.attackDamage = 1;
         this.xSpeed = 0.04f;
         this.ySpeed = 0.04f;
@@ -47,7 +52,7 @@ public class Skeleton extends Monster {
         setupCombatSkill();
         new HealingComponent(this, 3, 1, 6);
         new AIComponent(
-                this, new CombatAI(1, combatFight), new GoToHero(2), new RangeTransition(1f));
+            this, new CombatAI(1, combatFight), new GoToHero(2), new RangeTransition(1f));
 
         this.hit = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/skeleton/idleLeft");

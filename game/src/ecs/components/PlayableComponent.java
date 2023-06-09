@@ -14,7 +14,7 @@ import logging.CustomLogLevel;
 public class PlayableComponent extends Component {
 
     private boolean playable;
-    private final Logger playableCompLogger = Logger.getLogger(this.getClass().getName());
+    private final transient Logger playableCompLogger = Logger.getLogger(this.getClass().getName());
 
     private Skill skillSlot1;
     private Skill skillSlot2;

@@ -8,30 +8,40 @@ import ecs.components.ai.ghost.RandomWalk;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import graphic.Animation;
+
 import java.util.Random;
+
 import starter.Game;
 
 public class Ghost extends Entity {
     // random number generator variable
     private Random rand = new Random();
-    Animation idle;
+    transient Animation idle;
 
     public Ghost() {
         super();
+        setup();
+    }
+
+    public void setup() {
         setupAnimation();
         setupPosition();
         setupBehaviour();
     }
 
-    /** Setting up the Position of the Ghost, always spawns where the Hero is */
+    /**
+     * Setting up the Position of the Ghost, always spawns where the Hero is
+     */
     public void setupPosition() {
         Hero hero = (Hero) Game.getHero().get();
         PositionComponent heroPos =
-                (PositionComponent) hero.getComponent(PositionComponent.class).get();
+            (PositionComponent) hero.getComponent(PositionComponent.class).get();
         new PositionComponent(this, heroPos.getPosition());
     }
 
-    /** Getting the corresponding Picture and setting up the Animation of the Ghost */
+    /**
+     * Getting the corresponding Picture and setting up the Animation of the Ghost
+     */
     public void setupAnimation() {
         idle = AnimationBuilder.buildAnimation("ghost/npc");
         AnimationComponent animationComponent = new AnimationComponent(this, idle);
@@ -57,7 +67,9 @@ public class Ghost extends Entity {
         new Tombstone();
     }
 
-    /** Setting up the Velocity and Ghost will move randomly in the Level */
+    /**
+     * Setting up the Velocity and Ghost will move randomly in the Level
+     */
     public void moveRandom() {
         RandomWalk randomWalk = new RandomWalk();
         new VelocityComponent(this, 0.04f, 0.04F, idle, idle);

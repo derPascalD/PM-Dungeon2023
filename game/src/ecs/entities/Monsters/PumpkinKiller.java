@@ -17,8 +17,8 @@ import level.elements.tile.Tile;
 
 public class PumpkinKiller extends Monster {
 
-    private Skill combatFight;
-    private final SkillComponent skillComponent;
+    private transient Skill combatFight;
+    private transient SkillComponent skillComponent;
 
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
@@ -31,6 +31,10 @@ public class PumpkinKiller extends Monster {
      * Geschwindigkeiten.
      */
     public PumpkinKiller(int levelDepth) {
+        setup(levelDepth);
+    }
+    @Override
+    public void setup(int levelDepth) {
         this.attackDamage = 2;
         this.lifePoints = 10;
         this.xSpeed = 0.1f;
@@ -48,10 +52,10 @@ public class PumpkinKiller extends Monster {
         setupCombatSkill();
         new HealingComponent(this, 4, 1, 2);
         new AIComponent(
-                this,
-                new CombatAI(2, combatFight),
-                new PatrouilleWalk(4f, 4, 2000, PatrouilleWalk.MODE.RANDOM),
-                new RangeTransition(2f));
+            this,
+            new CombatAI(2, combatFight),
+            new PatrouilleWalk(4f, 4, 2000, PatrouilleWalk.MODE.RANDOM),
+            new RangeTransition(2f));
 
         this.hit = AnimationBuilder.buildAnimation("monster/pumpkinKiller/idleLeft");
         this.die = AnimationBuilder.buildAnimation("monster/pumpkinKiller/idleLeft");

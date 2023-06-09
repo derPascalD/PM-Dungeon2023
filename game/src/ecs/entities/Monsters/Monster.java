@@ -14,7 +14,7 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
     protected String pathToRunRight;
     protected Animation hit;
     protected Animation die;
-    protected HealthComponent health;
+    protected transient HealthComponent health;
     protected int lifePoints;
     protected float xSpeed;
     protected float ySpeed;
@@ -34,6 +34,8 @@ public abstract class Monster extends Entity implements IOnDeathFunction, IColli
         Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
         new AnimationComponent(this, idleLeft, idleRight);
     }
+
+    public abstract void setup(int levelDepth);
 
     public void setLifePoints(int lifePoints) {
         this.lifePoints = lifePoints;

@@ -11,7 +11,7 @@ import tools.Constants;
  * aufgefüllt bekomen
  */
 public class HealingComponent extends Component {
-    private final Logger HEALINGLOGGER = Logger.getLogger(this.getClass().getName());
+    private final transient Logger HEALINGLOGGER = Logger.getLogger(this.getClass().getName());
     private final int TIMETOSTARTHEALING;
     private final int HPPROHEAL;
     private final int DURATIONNEXTHP;

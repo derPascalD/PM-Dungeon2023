@@ -14,7 +14,6 @@ import controller.AbstractController;
 import controller.SystemController;
 import ecs.components.MissingComponentException;
 import ecs.components.PositionComponent;
-import ecs.entities.Chest;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.MonsterChest;
@@ -25,9 +24,6 @@ import ecs.entities.NPCs.Ghost;
 import ecs.entities.Traps.Bananapeel;
 import ecs.entities.Traps.Poisoncloud;
 import ecs.items.ImplementedItems.Bag;
-import ecs.items.ImplementedItems.Chestplate;
-import ecs.items.ImplementedItems.Healthpot;
-import ecs.items.ImplementedItems.SimpleWand;
 import ecs.items.ItemData;
 import ecs.items.ItemDataGenerator;
 import ecs.items.ItemType;
@@ -42,6 +38,8 @@ import graphic.IngameUI;
 import graphic.Painter;
 import graphic.hud.HealingBar;
 import graphic.hud.PauseMenu;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -60,8 +58,8 @@ import tools.Point;
 /** The heart of the framework. From here all strings are pulled. */
 public class Game extends ScreenAdapter implements IOnLevelLoader {
 
-    private final LevelSize LEVELSIZE = LevelSize.SMALL;
-    private LevelSize LevelDepthSize = LevelSize.SMALL;
+    //private final LevelSize LEVELSIZE = LevelSize.SMALL;
+    private static LevelSize levelDepthSize = LevelSize.SMALL;
 
     /**
      * The batch is necessary to draw ALL the stuff. Every object that uses draw need to know the
@@ -87,11 +85,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private static int levelDepth;
 
     /** All entities that are currently active in the dungeon */
-    private static final Set<Entity> entities = new HashSet<>();
+    private static  Set<Entity> entities = new HashSet<>();
     /** All entities to be removed from the dungeon in the next frame */
     private static final Set<Entity> entitiesToRemove = new HashSet<>();
     /** All entities to be added from the dungeon in the next frame */
-    private static final Set<Entity> entitiesToAdd = new HashSet<>();
+    private static  Set<Entity> entitiesToAdd = new HashSet<>();
+
+    private final SaveGame saveGame = new SaveGame();
 
     /** List of all Systems in the ECS */
     public static SystemController systems;
@@ -133,6 +133,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     /** Called once at the beginning of the game. */
     protected void setup() {
+        if (levelDepth == 0 &new File("SaveGame.ser").exists()){
+            saveGame.readSave();
+        }
         doSetup = false;
         controller = new ArrayList<>();
         setupCameras();
@@ -152,7 +155,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(ui);
         controller.add(new HealingBar<>());
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
-        levelAPI.loadLevel(LEVELSIZE);
+        levelAPI.loadLevel(levelDepthSize);
         createSystems();
     }
 
@@ -175,24 +178,31 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     @Override
     public void onLevelLoad() {
         HealingBar.updateHealingBar(null, false, 0);
-        currentLevel = levelAPI.getCurrentLevel();
         entities.clear();
+        currentLevel = levelAPI.getCurrentLevel();
         getHero().ifPresent(this::placeOnLevelStart);
+        if (levelDepth == 0 &&new File("SaveGame.ser").exists()){
+            saveGame.returnEntities();
+            saveGame.returnXPLevel((Hero) hero);
+            saveGame.loadInventory((Hero) hero);
+        }else{
 
-        createMonster();
-        addXPToEntity();
-        setupChest();
-
-
-        new Poisoncloud();
-        new Bananapeel();
-        new Bananapeel();
+            createMonster();
+            addXPToEntity();
+            new Poisoncloud();
+            new Bananapeel();
+            new Bananapeel();
+        }
 
         if (rand.nextBoolean()) {
             new Ghost();
         }
-
         createItems();
+        setupChest();
+
+        if (levelDepth >= 1){
+            saveGame.writeSave();
+        }
     }
 
     private void setupChest()
@@ -232,7 +242,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     // Collect with the
     private void loadNextLevelIfEntityIsOnEndTile(Entity hero) {
-        if (isOnEndTile(hero)) levelAPI.loadLevel(LevelDepthSize);
+        if (isOnEndTile(hero)) levelAPI.loadLevel(levelDepthSize);
     }
 
     private boolean isOnEndTile(Entity entity) {
@@ -282,8 +292,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
             else if (monster == 1) new Skeleton(levelDepth);
             else if (monster == 2) new PumpkinKiller(levelDepth);
         }
-        if (levelDepth >= 6) LevelDepthSize = LevelSize.MEDIUM;
-        if (levelDepth >= 48) LevelDepthSize = LevelSize.LARGE;
+        if (levelDepth >= 6) levelDepthSize = LevelSize.MEDIUM;
+        if (levelDepth >= 48) levelDepthSize = LevelSize.LARGE;
         levelDepth++;
 
 
@@ -363,6 +373,14 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         return levelDepth;
     }
 
+    public static LevelSize getLevelSize() {
+        return levelDepthSize;
+    }
+
+    public static void setLevelSize(LevelSize levelDepthSize) {
+        Game.levelDepthSize = levelDepthSize;
+    }
+
     /**
      * Given entity will be added to the game in the next frame
      *
@@ -407,6 +425,11 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
      */
     public static Optional<Entity> getHero() {
         return Optional.ofNullable(hero);
+    }
+
+
+    public static void setLevelDepth(int levelDepth) {
+        Game.levelDepth = levelDepth;
     }
 
     /**

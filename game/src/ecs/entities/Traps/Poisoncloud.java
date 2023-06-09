@@ -5,27 +5,42 @@ import ecs.components.*;
 import ecs.components.collision.ICollide;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import level.elements.tile.Tile;
 
 public class Poisoncloud extends Trap implements ICollide {
-
+    protected transient Logger poisonlogger = Logger.getLogger(getClass().getName());
     public Poisoncloud() {
         super();
-        visible = active = this.createRandomBooleanValue();
+        new PositionComponent(this);
         if (visible && active) {
             this.idle = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
             new AnimationComponent(this, idle);
             new HitboxComponent(this, this, this);
         }
+
+    }
+
+    @Override
+    public void setup() {
+        new PositionComponent(this);
+        visible = active = this.createRandomBooleanValue();
+
+        this.idle = AnimationBuilder.buildAnimation("traps/Wolke/clouds");
+        new AnimationComponent(this, idle);
+        new HitboxComponent(this, this, this);
+
     }
 
     /**
-     * @param a is the current Entity
-     * @param b is the Entity with whom the Collision happened
+     * @param a    is the current Entity
+     * @param b    is the Entity with whom the Collision happened
      * @param from the direction from a to b
      */
     @Override
@@ -62,17 +77,17 @@ public class Poisoncloud extends Trap implements ICollide {
         float finalXSpeed = xSpeed;
         float finalYSpeed = ySpeed;
         timer.schedule(
-                new TimerTask() {
-                    public void run() {
-                        assert finalHero != null;
-                        velocityComponent.setYVelocity(finalXSpeed);
-                        velocityComponent.setXVelocity(finalYSpeed);
-                    }
-                },
-                10 * 1000);
+            new TimerTask() {
+                public void run() {
+                    assert finalHero != null;
+                    velocityComponent.setYVelocity(finalXSpeed);
+                    velocityComponent.setXVelocity(finalYSpeed);
+                }
+            },
+            10 * 1000);
 
         // defines that the trap can be triggered just once.
         active = false;
-        traplogger.log(Level.INFO, getClass().getSimpleName() + " activated");
+        //poisonlogger.log(Level.INFO, getClass().getSimpleName() + " activated");
     }
 }

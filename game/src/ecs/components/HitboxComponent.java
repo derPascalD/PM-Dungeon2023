@@ -18,7 +18,7 @@ public class HitboxComponent extends Component {
     private /*@DSLTypeMember(name="size")*/ Point size;
     private ICollide iCollideEnter;
     private ICollide iCollideLeave;
-    private final Logger hitboxLogger = Logger.getLogger(this.getClass().getName());
+    private final transient Logger hitboxLogger = Logger.getLogger(this.getClass().getName());
 
     /**
      * English: Creates A Hitbox

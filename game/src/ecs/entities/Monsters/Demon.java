@@ -14,8 +14,8 @@ import level.elements.tile.Tile;
 
 public class Demon extends Monster {
 
-    private Skill combatFight;
-    private final SkillComponent skillComponent;
+    private transient Skill combatFight;
+    private transient SkillComponent skillComponent;
 
     /**
      * English: Entity with Components. Depending on the level depth, more monsters are implemented.
@@ -29,6 +29,11 @@ public class Demon extends Monster {
      */
     public Demon(int levelDepth) {
         super();
+        setup(levelDepth);
+    }
+
+    @Override
+    public void setup(int levelDepth) {
         this.attackDamage = 1;
         this.lifePoints = 10;
         this.xSpeed = 0.05f;
@@ -52,16 +57,17 @@ public class Demon extends Monster {
         new HitboxComponent(this, this, this::onCollisionLeave);
         new HealingComponent(this, 3, 1, 3);
         new AIComponent(
-                this,
-                new CombatAI(1.5F, combatFight),
-                new PatrouilleWalk(2f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
-                new RangeTransition(2));
+            this,
+            new CombatAI(1.5F, combatFight),
+            new PatrouilleWalk(2f, 4, 1000, PatrouilleWalk.MODE.BACK_AND_FORTH),
+            new RangeTransition(2));
 
         this.lifePoints += levelDepth * 0.5;
         this.attackDamage += levelDepth * 0.3;
         this.xSpeed += levelDepth * 0.02;
         this.ySpeed += levelDepth * 0.02;
     }
+
 
     /*
     English:
@@ -101,6 +107,7 @@ public class Demon extends Monster {
     */
     @Override
     public void onDeath(Entity entity) {}
+
 
     @Override
     public void setLifePoints(int lifePoints) {

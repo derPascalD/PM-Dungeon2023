@@ -29,8 +29,8 @@ import java.util.Random;
 
 public class ChestMonster extends Monster {
 
-    private Skill combatSkill;
-    private SkillComponent skillComponent;
+    private transient Skill combatSkill;
+    private transient SkillComponent skillComponent;
     private Chest chest;
 
     public ChestMonster(int levelDepth, Chest chest) {
@@ -72,6 +72,9 @@ public class ChestMonster extends Monster {
         this.xSpeed += levelDepth * 0.02;
         this.ySpeed += levelDepth * 0.02;
     }
+
+    @Override
+    public void setup(int levelDepth) {}
 
     private void onCollisionLeave(Entity entity, Entity entity1, Tile.Direction direction) {}
 

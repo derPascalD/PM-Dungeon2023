@@ -1,12 +1,15 @@
 package ecs.components;
 
+import com.badlogic.gdx.utils.Json;
 import ecs.entities.Entity;
+
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 /*+
  *Component is a piece of data associated with an entity
  */
-public abstract class Component {
+public abstract class Component{
     protected Entity entity;
 
     /**

@@ -16,6 +16,10 @@ public class Tombstone extends Entity implements IInteraction {
 
     public Tombstone() {
         super();
+        setup();
+    }
+
+    public void setup(){
         Animation idle = AnimationBuilder.buildAnimation("ghost/tombstone");
         AnimationComponent animationComponent = new AnimationComponent(this, idle);
         new InteractionComponent(this, 0.4F, false, this);

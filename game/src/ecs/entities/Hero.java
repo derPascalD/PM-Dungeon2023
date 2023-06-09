@@ -43,25 +43,29 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
 
     // Skills from Hero
-    private Skill firstSkill;
-    private Skill secondSkill;
-    private Skill thirdSkill;
-    private Skill combatSkill;
+    private transient Skill firstSkill;
+    private transient Skill secondSkill;
+    private transient Skill thirdSkill;
+    private transient Skill combatSkill;
     private boolean equipWeapon = false;
-    private final ArrayList<Entity> killedMonsters;
+    private ArrayList<Entity> killedMonsters;
 
-    private Skill fourthSkill;
-    private Skill fifthSkill;
+    private transient Skill fourthSkill;
+    private transient Skill fifthSkill;
 
-    protected InventoryComponent inventory;
-    private SkillComponent skillComponent;
-    private final PlayableComponent playableComponent;
-    private XPComponent xpComponent;
-    private HealthComponent healthComponent;
+    protected transient InventoryComponent inventory;
+    private transient SkillComponent skillComponent;
+    private transient PlayableComponent playableComponent;
+    private transient XPComponent xpComponent;
+    private transient HealthComponent healthComponent;
 
     /** Entity with Components */
     public Hero() {
         super();
+        setup();
+    }
+
+    public void setup(){
         playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
         new HealingComponent(this, 10, 2, 3);
@@ -77,6 +81,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupInventoryComponent();
         setupNinjaBlade();
         setupDamageComponent();
+
     }
 
     /*
