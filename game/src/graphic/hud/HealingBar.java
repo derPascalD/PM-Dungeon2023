@@ -16,8 +16,11 @@ public class HealingBar<T extends Actor> extends ScreenController<T> {
     }
 
     private static ScreenText healingBar;
-
-    /** Creates a new HealthBar with a given Spritebatch */
+    /**
+     * Creates a new HealthBar with a given Spritebatch
+     *
+     * @param batch
+     */
     public HealingBar(SpriteBatch batch) {
         super(batch);
         setupHealingBar();
