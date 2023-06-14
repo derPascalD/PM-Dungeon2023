@@ -5,8 +5,9 @@ import ecs.components.HealthComponent;
 import ecs.components.VelocityComponent;
 import ecs.entities.Hero;
 
+/** Represents the Rouge Class */
 public class Rouge extends Hero {
-
+    /** Creates Components and the skills for the Rouge */
     public Rouge() {
         setupComponents();
         setupSkills();
@@ -19,9 +20,8 @@ public class Rouge extends Hero {
     }
 
     private void setupVelocity() {
-        new VelocityComponent(this, 0.4f, 0.4f ,moveLeft, moveRight);
+        new VelocityComponent(this, 0.4f, 0.4f, moveLeft, moveRight);
     }
-
 
     private void setupSkills() {
         setupMeleeSkill();

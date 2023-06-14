@@ -59,7 +59,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     protected InventoryComponent inventory;
     private SkillComponent skillComponent;
-    protected final PlayableComponent playableComponent= new PlayableComponent(this);
+    protected final PlayableComponent playableComponent = new PlayableComponent(this);
     private XPComponent xpComponent;
     private HealthComponent healthComponent;
 
@@ -79,7 +79,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupInventoryComponent();
         setupDamageComponent();
     }
-
 
     private void setupSkillComponent() {
         skillComponent = new SkillComponent(this);
@@ -115,63 +114,62 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         new DamageComponent(this);
     }
 
-    /*
-    * Adds the new Melee skill to allow the Hero to run faster for a short time.
-    */
+    /** Adds the new Melee skill to allow the Hero to use melee attacks */
     protected void setupMeleeSkill() {
         skillComponent.addSkill(
-            combatSkill =
-                new Skill(
-                    new Sword(
-                        1,
-                        "character/knight/attackLeft/",
-                        "character/knight/attackRight/"),
-                    1F));
+                combatSkill =
+                        new Skill(
+                                new Sword(
+                                        1,
+                                        "character/knight/attackLeft/",
+                                        "character/knight/attackRight/"),
+                                1F));
         playableComponent.setCombatSkill(combatSkill);
     }
 
+    /** Adds the NinjaBlade skill to allow the Hero to use a range attack */
     protected void setupNinjaBlade() {
         skillComponent.addSkill(
-            fifthSkill =
-                new Skill(
-                    new NinjaBlade(
-                        10,
-                        false,
-                        "skills/ninjablade/ninja_blade_left",
-                        0.25f,
-                        new Damage(2, DamageType.PHYSICAL, null),
-                        new Point(0.5f, 0.5f),
-                        SkillTools::getCursorPositionAsPoint,
-                        5f),
-                    NinjabladeCoolDown));
+                fifthSkill =
+                        new Skill(
+                                new NinjaBlade(
+                                        10,
+                                        false,
+                                        "skills/ninjablade/ninja_blade_left",
+                                        0.25f,
+                                        new Damage(2, DamageType.PHYSICAL, null),
+                                        new Point(0.5f, 0.5f),
+                                        SkillTools::getCursorPositionAsPoint,
+                                        5f),
+                                NinjabladeCoolDown));
         playableComponent.setSkillSlot5(fifthSkill);
     }
-
+    /** Adds the GrenadeLauncher skill to allow the Hero to use a range attack */
     protected void setupGrenadeLauncherSkill() {
         skillComponent.addSkill(
-            fourthSkill =
-                new Skill(
-                    new GrenadeLauncher(
-                        5,
-                        true,
-                        "items/grenade/grenade.png",
-                        0.6f,
-                        new Damage(2, DamageType.FIRE, null),
-                        new Point(1f, 1f),
-                        SkillTools::getCursorPositionAsPoint,
-                        3f),
-                    grenadeLauncherCoolDown));
+                fourthSkill =
+                        new Skill(
+                                new GrenadeLauncher(
+                                        5,
+                                        true,
+                                        "items/grenade/grenade.png",
+                                        0.6f,
+                                        new Damage(2, DamageType.FIRE, null),
+                                        new Point(1f, 1f),
+                                        SkillTools::getCursorPositionAsPoint,
+                                        3f),
+                                grenadeLauncherCoolDown));
         playableComponent.setSkillSlot4(fourthSkill);
     }
 
     /*
-   Adds the new Speed skill to allow the Hero to run faster for a short time.
-   */
+    Adds the new Speed skill to allow the Hero to run faster for a short time.
+    */
     private void setupSpeedSkill() {
         skillComponent.addSkill(
-            secondSkill =
-                new Skill(
-                    new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
+                secondSkill =
+                        new Skill(
+                                new SpeedSkill(xSpeed, ySpeed, 0.3F, 0.3F, 4), SpeedSkillCoolDown));
         playableComponent.setSkillSlot2(secondSkill);
     }
 
@@ -180,7 +178,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     */
     private void setupStunningStrikeSkill() {
         skillComponent.addSkill(
-            thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
+                thirdSkill = new Skill(new StunningStrikeSkill(4), StunningStrikeCoolDown));
         playableComponent.setSkillSlot3(thirdSkill);
     }
 
@@ -189,10 +187,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     */
     private void setupFireballSkill() {
         skillComponent.addSkill(
-            firstSkill =
-                new Skill(
-                    new FireballSkill(SkillTools::getCursorPositionAsPoint),
-                    fireballCoolDown));
+                firstSkill =
+                        new Skill(
+                                new FireballSkill(SkillTools::getCursorPositionAsPoint),
+                                fireballCoolDown));
         playableComponent.setSkillSlot1(firstSkill);
     }
 

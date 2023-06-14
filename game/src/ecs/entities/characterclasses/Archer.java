@@ -8,8 +8,10 @@ import ecs.entities.Hero;
 import ecs.items.ImplementedItems.Healthpot;
 import ecs.items.ItemType;
 
+/** Represents the Archer Class */
 public class Archer extends Hero {
 
+    /** Creates Components, starting Items and the skills for the Archer */
     public Archer() {
         setupComponents();
         setupStartItems();
@@ -23,15 +25,17 @@ public class Archer extends Hero {
     }
 
     private void setupVelocity() {
-        new VelocityComponent(this, 0.25f, 0.25f ,moveLeft, moveRight);
+        new VelocityComponent(this, 0.25f, 0.25f, moveLeft, moveRight);
     }
 
     private void setupStartItems() {
-        this.inventory.addItem(new Healthpot(ItemType.Healing,
-            AnimationBuilder.buildAnimation("items.healthpot"),
-            AnimationBuilder.buildAnimation("items.healthpot"),
-            "Healthpot",
-            "Heals the Player on Use"));
+        this.inventory.addItem(
+                new Healthpot(
+                        ItemType.Healing,
+                        AnimationBuilder.buildAnimation("items.healthpot"),
+                        AnimationBuilder.buildAnimation("items.healthpot"),
+                        "Healthpot",
+                        "Heals the Player on Use"));
     }
 
     private void setupSkills() {

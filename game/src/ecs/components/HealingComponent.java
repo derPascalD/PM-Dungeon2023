@@ -8,8 +8,8 @@ import starter.Game;
 import tools.Constants;
 
 /**
- * The HealingComponent ensures that entities return to life after a certain period of time
- * get refilled.
+ * The HealingComponent ensures that entities return to life after a certain period of time get
+ * refilled.
  */
 public class HealingComponent extends Component {
     private final Logger HEALINGLOGGER = Logger.getLogger(this.getClass().getName());
