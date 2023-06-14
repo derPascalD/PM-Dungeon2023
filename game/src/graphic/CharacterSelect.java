@@ -57,6 +57,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
                     Game.togglePause();
                     hideMenu();
                     selected = true;
+                    addGameOverMenu();
                 }
             },
             classStyle);
@@ -84,6 +85,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
                     Game.togglePause();
                     hideMenu();
                     selected = true;
+                    addGameOverMenu();
                 }
             },
             classStyle);
@@ -111,6 +113,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
                     Game.togglePause();
                     hideMenu();
                     selected = true;
+                    addGameOverMenu();
                 }
             },
             classStyle);
@@ -144,6 +147,12 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
         for(ScreenImage sc: screenImages) {
             sc.setVisible(false);
         }
+    }
+
+    // Add game Over Menu to the Controller
+    private void addGameOverMenu(){
+        Game.setGameOverMenu(new GameOver<>());
+        Game.controller.add(Game.getGameOverMenu());
     }
 
     public static boolean hasSelected() {
