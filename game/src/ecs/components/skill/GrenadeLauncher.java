@@ -9,6 +9,7 @@ import ecs.components.collision.ICollide;
 import ecs.damage.Damage;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.characterclasses.Archer;
 import graphic.Animation;
 import starter.Game;
 import tools.Point;
@@ -166,7 +167,7 @@ public class GrenadeLauncher extends RangedAbilities {
      * @param entity is the entity which uses the skill
      */
     private void changeToLauncherAnimation(Entity entity) {
-        if (entity.getClass() != Hero.class) {
+        if (entity.getClass() != Archer.class) {
             return;
         }
         AnimationComponent ac =
@@ -174,9 +175,9 @@ public class GrenadeLauncher extends RangedAbilities {
         VelocityComponent vc =
                 (VelocityComponent) entity.getComponent(VelocityComponent.class).get();
 
-        ac.setIdleLeft(AnimationBuilder.buildAnimation("knight/launcher_idleLeft"));
-        ac.setIdleRight(AnimationBuilder.buildAnimation("knight/launcher_idleRight"));
-        vc.setMoveRightAnimation(AnimationBuilder.buildAnimation("knight/launcher_runRight"));
-        vc.setMoveLeftAnimation(AnimationBuilder.buildAnimation("knight/launcher_runLeft"));
+        ac.setIdleLeft(AnimationBuilder.buildAnimation("archer/launcher_idleLeft"));
+        ac.setIdleRight(AnimationBuilder.buildAnimation("archer/launcher_idleRight"));
+        vc.setMoveRightAnimation(AnimationBuilder.buildAnimation("archer/launcher_runRight"));
+        vc.setMoveLeftAnimation(AnimationBuilder.buildAnimation("archer/launcher_runLeft"));
     }
 }

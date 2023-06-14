@@ -11,6 +11,10 @@ import ecs.entities.Monsters.Monster;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
+
+import ecs.entities.characterclasses.Archer;
+import ecs.entities.characterclasses.Rouge;
+import ecs.entities.characterclasses.Tank;
 import level.elements.tile.Tile;
 
 public class Bananapeel extends Trap implements ICollide {
@@ -103,14 +107,34 @@ public class Bananapeel extends Trap implements ICollide {
                 hero = (Hero) b;
                 xSpeed = hero.getxSpeed();
                 ySpeed = hero.getySpeed();
-                animationComponent.setIdleLeft(
-                        AnimationBuilder.buildAnimation("knight/blood_idleLeft"));
-                animationComponent.setIdleRight(
-                        AnimationBuilder.buildAnimation("knight/blood_idleRight"));
-                velocityComponent.setMoveRightAnimation(
-                        AnimationBuilder.buildAnimation("knight/blood_runRight"));
-                velocityComponent.setMoveLeftAnimation(
-                        AnimationBuilder.buildAnimation("knight/blood_runLeft"));
+                if(hero instanceof Archer) {
+                    animationComponent.setIdleLeft(
+                        AnimationBuilder.buildAnimation("archer/blood_idleLeft"));
+                    animationComponent.setIdleRight(
+                        AnimationBuilder.buildAnimation("archer/blood_idleRight"));
+                    velocityComponent.setMoveRightAnimation(
+                        AnimationBuilder.buildAnimation("archer/blood_runRight"));
+                    velocityComponent.setMoveLeftAnimation(
+                        AnimationBuilder.buildAnimation("archer/blood_runLeft"));
+                } else if (hero instanceof Tank) {
+                    animationComponent.setIdleLeft(
+                            AnimationBuilder.buildAnimation("tank/blood_idleLeft"));
+                    animationComponent.setIdleRight(
+                            AnimationBuilder.buildAnimation("tank/blood_idleRight"));
+                    velocityComponent.setMoveRightAnimation(
+                            AnimationBuilder.buildAnimation("tank/blood_runRight"));
+                    velocityComponent.setMoveLeftAnimation(
+                            AnimationBuilder.buildAnimation("tank/blood_runLeft"));
+                } else if(hero instanceof Rouge) {
+                    animationComponent.setIdleLeft(
+                        AnimationBuilder.buildAnimation("rouge/blood_idleLeft"));
+                    animationComponent.setIdleRight(
+                        AnimationBuilder.buildAnimation("rouge/blood_idleRight"));
+                    velocityComponent.setMoveRightAnimation(
+                        AnimationBuilder.buildAnimation("rouge/blood_runRight"));
+                    velocityComponent.setMoveLeftAnimation(
+                        AnimationBuilder.buildAnimation("rouge/blood_runLeft"));
+                }
             }
             // set the new crushed animations for the banana peel.
             idle = AnimationBuilder.buildAnimation("traps/Bananenschale/bananapeelcrushed.png");
@@ -161,14 +185,34 @@ public class Bananapeel extends Trap implements ICollide {
         velocityComponent.setYVelocity(originalYVelocity);
         velocityComponent.setXVelocity(originalXVelocity);
         if (finalHero != null) {
-            animationComponent.setIdleLeft(
-                    AnimationBuilder.buildAnimation(finalHero.getPathToIdleLeft()));
-            animationComponent.setIdleRight(
-                    AnimationBuilder.buildAnimation(finalHero.getPathToIdleRight()));
-            velocityComponent.setMoveRightAnimation(
-                    AnimationBuilder.buildAnimation(finalHero.getPathToRunRight()));
-            velocityComponent.setMoveLeftAnimation(
-                    AnimationBuilder.buildAnimation(finalHero.getPathToRunLeft()));
+            if(finalHero instanceof Archer) {
+                animationComponent.setIdleLeft(
+                    AnimationBuilder.buildAnimation("archer/idleLeft"));
+                animationComponent.setIdleRight(
+                    AnimationBuilder.buildAnimation("archer/idleRight"));
+                velocityComponent.setMoveRightAnimation(
+                    AnimationBuilder.buildAnimation("archer/runRight"));
+                velocityComponent.setMoveLeftAnimation(
+                    AnimationBuilder.buildAnimation("archer/runLeft"));
+            } else if (finalHero instanceof Tank) {
+                animationComponent.setIdleLeft(
+                    AnimationBuilder.buildAnimation("tank/idleLeft"));
+                animationComponent.setIdleRight(
+                    AnimationBuilder.buildAnimation("tank/idleRight"));
+                velocityComponent.setMoveRightAnimation(
+                    AnimationBuilder.buildAnimation("tank/runRight"));
+                velocityComponent.setMoveLeftAnimation(
+                    AnimationBuilder.buildAnimation("tank/runLeft"));
+            } else if(finalHero instanceof Rouge) {
+                animationComponent.setIdleLeft(
+                    AnimationBuilder.buildAnimation("rouge/idleLeft"));
+                animationComponent.setIdleRight(
+                    AnimationBuilder.buildAnimation("rouge/idleRight"));
+                velocityComponent.setMoveRightAnimation(
+                    AnimationBuilder.buildAnimation("rouge/runRight"));
+                velocityComponent.setMoveLeftAnimation(
+                    AnimationBuilder.buildAnimation("rouge/runLeft"));
+            }
         }
         timer.cancel();
     }
