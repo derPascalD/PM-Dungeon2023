@@ -74,7 +74,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
 
     private void setupArcherButton() {
         ScreenButton archerButton = new ScreenButton(
-            "Archer:\nHP: 30\nMelee Damage: 1\nRange Damage: 3\n Fast and High Damage",
+            "Archer:\nHP: 30\nMelee Damage: 1\nRange Damage: 3\nMelee and Range Damage",
             new Point(0,0),
             new TextButtonListener() {
                 @Override
@@ -101,7 +101,7 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
 
     private void setupRougeButton() {
         ScreenButton rougeButton = new ScreenButton(
-            "Rouge:\nHP: 20\nMelee Damage: 3\n Fast and High Damage",
+            "Rouge:\nHP: 15\nMelee Damage: 4\n Fast and High Damage",
             new Point(0,0),
             new TextButtonListener() {
                 @Override

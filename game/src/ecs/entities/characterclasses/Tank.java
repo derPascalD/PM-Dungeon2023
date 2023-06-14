@@ -23,9 +23,7 @@ public class Tank extends Hero {
     }
 
     private void setupVelocity() {
-        xSpeed = ( xSpeed / 100 ) * 70;
-        ySpeed = ( ySpeed / 100 ) * 70;
-        new VelocityComponent(this, xSpeed, ySpeed,moveLeft, moveRight);
+        new VelocityComponent(this, 0.15f, 0.15f ,moveLeft, moveRight);
     }
 
     private void setupStartItems() {

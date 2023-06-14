@@ -23,7 +23,7 @@ public class Archer extends Hero {
     }
 
     private void setupVelocity() {
-        new VelocityComponent(this, xSpeed, ySpeed,moveLeft, moveRight);
+        new VelocityComponent(this, 0.25f, 0.25f ,moveLeft, moveRight);
     }
 
     private void setupStartItems() {

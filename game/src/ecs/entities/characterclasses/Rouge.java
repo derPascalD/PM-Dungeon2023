@@ -14,14 +14,12 @@ public class Rouge extends Hero {
 
     private void setupComponents() {
         new HealthComponent(this, 15, this, hitAnimation(), hitAnimation());
-        new DamageComponent(this, 3, 0);
+        new DamageComponent(this, 4, 0);
         setupVelocity();
     }
 
     private void setupVelocity() {
-        xSpeed = ( xSpeed / 100 ) * 120;
-        ySpeed = ( ySpeed / 100 ) * 120;
-        new VelocityComponent(this, xSpeed, ySpeed,moveLeft, moveRight);
+        new VelocityComponent(this, 0.4f, 0.4f ,moveLeft, moveRight);
     }
 
 

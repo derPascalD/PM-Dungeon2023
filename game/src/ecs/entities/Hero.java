@@ -34,8 +34,8 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     // Original Speed from Hero
 
-    protected float xSpeed = 0.3f;
-    protected float ySpeed = 0.3f;
+    private final float xSpeed = 0.3f;
+    private final float ySpeed = 0.3f;
     private String pathToIdleLeft = "knight/idleCombatLeft";
     private String pathToIdleRight = "knight/idleCombatRight";
     private String pathToRunLeft = "knight/runCombatLeft";
