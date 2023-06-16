@@ -149,7 +149,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(systems);
         pauseMenu = new PauseMenu<>();
         controller.add(pauseMenu);
-
         hero = new Hero();
         createQuests();
         ui = new IngameUI<>();
@@ -183,18 +182,18 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         currentLevel = levelAPI.getCurrentLevel();
         getHero().ifPresent(this::placeOnLevelStart);
         if (levelDepth == 0 &&new File("SaveGame.ser").exists()){
+            System.out.println("TEst");
             saveGame.returnEntities();
             saveGame.returnXPLevel((Hero) hero);
             saveGame.loadInventory((Hero) hero);
         }else{
 
             createMonster();
-
+            spawnBoss();
             addXPToEntity();
             new Poisoncloud();
             new Bananapeel();
             new Bananapeel();
-            spawnBoss();
         }
 
         if (rand.nextBoolean()) {
@@ -209,11 +208,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     }
 
     private void spawnBoss() {
-        if (levelDepth == 3) {
-           new Boss(levelDepth);
+        if (levelDepth == 2) {
+           new Boss(levelDepth, (Hero) hero);
             gameLogger.info("Boss Monster spawnt");
-        } else {
-            createMonster();
         }
     }
 

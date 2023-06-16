@@ -12,24 +12,21 @@ import ecs.damage.DamageType;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import level.elements.tile.Tile;
-import starter.Game;
 import tools.Point;
 
 public class Boss extends Monster{
     private transient Skill combatSkill;
     private transient Skill distanceSkill;
-    private transient PositionComponent hc;
-    private transient VelocityComponent vc;
-    private Hero hero = (Hero) Game.getHero().get();
+    private Hero hero;
     private transient SkillComponent skillComponent;
 
     /**
      *
      * @param levelDepth is the current Level
      */
-    public Boss(int levelDepth) {
+    public Boss(int levelDepth, Hero hero) {
+        this.hero = hero;
         setup(levelDepth);
-
     }
 
     private void setupCombatSkill() {
@@ -37,7 +34,7 @@ public class Boss extends Monster{
         skillComponent.addSkill(
             combatSkill =
                 new Skill(
-                    new FireballSkill(() -> hc.getPosition()), 0));
+                    new FireballSkill(() -> hero.getpC().getPosition()), 0));
     }
 
     private void setupDistanceSkill()
@@ -50,7 +47,7 @@ public class Boss extends Monster{
             0.25f,
             new Damage(2, DamageType.PHYSICAL, null),
             new Point(0.5f, 0.5f),
-            () -> hc.getPosition(),
+            () -> hero.getpC().getPosition(),
             5f),
             1));
     }
@@ -92,9 +89,8 @@ public class Boss extends Monster{
         this.die = AnimationBuilder.buildAnimation("monster/demon/hit");
         skillComponent =  new SkillComponent(this);
         health = new HealthComponent(this, lifePoints, this, hit, die);
-        hc =  (PositionComponent) hero.getComponent(PositionComponent.class).get();
-        vc =  (VelocityComponent) hero.getComponent(VelocityComponent.class).get();
 
+        new PositionComponent(this);
         setupVelocityComponent();
         setupAnimationComponent();
         setupCombatSkill();
@@ -106,7 +102,7 @@ public class Boss extends Monster{
         // adding the AIComponent
         new AIComponent(
             this,
-            new BossAI(5f,combatSkill,distanceSkill, health,vc),
+            new BossAI(5f,combatSkill,distanceSkill, health, hero.getvC()),
             new BossIdleWalk(10f, 2f, health),
             new RangeTransition(2));
 
@@ -114,6 +110,5 @@ public class Boss extends Monster{
         this.attackDamage += levelDepth * 0.3;
         this.xSpeed += levelDepth * 0.02;
         this.ySpeed += levelDepth * 0.02;
-
     }
 }

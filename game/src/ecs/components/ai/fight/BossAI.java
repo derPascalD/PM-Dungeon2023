@@ -7,6 +7,7 @@ import ecs.components.ai.AITools;
 import ecs.components.skill.Skill;
 import ecs.entities.Entity;
 import ecs.entities.Monsters.Boss;
+import ecs.entities.Monsters.Skeleton;
 import level.elements.tile.Tile;
 import starter.Game;
 import tools.Constants;
@@ -32,7 +33,7 @@ public record BossAI(
         if (AITools.playerInRange(entity, attackRange)) {
             frames = Math.max(0, --frames);
             if (frames == 0) {
-                Game.addEntity(new Boss(Game.getLevelDepth()));
+                Game.addEntity(new Skeleton(Game.getLevelDepth()));
                 frames = Constants.FRAME_RATE * 2;
             }
 

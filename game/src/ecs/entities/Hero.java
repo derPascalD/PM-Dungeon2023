@@ -58,6 +58,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private transient PlayableComponent playableComponent;
     private transient XPComponent xpComponent;
     private transient HealthComponent healthComponent;
+    private transient PositionComponent pC;
+
+    private transient VelocityComponent vC;
 
     /** Entity with Components */
     public Hero() {
@@ -67,7 +70,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     public void setup(){
         playableComponent = new PlayableComponent(this);
-        new PositionComponent(this);
+        PositionComponent pC = new PositionComponent(this);
         new HealingComponent(this, 10, 2, 3);
         killedMonsters = new ArrayList<>();
         setupVelocityComponent();
@@ -359,5 +362,14 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     public void setPathToRunRight(String pathToRunRight) {
         this.pathToRunRight = pathToRunRight;
+    }
+
+
+    public PositionComponent getpC() {
+        return pC;
+    }
+
+    public VelocityComponent getvC() {
+        return vC;
     }
 }
