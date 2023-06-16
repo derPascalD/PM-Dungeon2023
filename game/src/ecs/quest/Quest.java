@@ -94,6 +94,8 @@ public abstract class Quest {
         return allQuests;
     }
 
+
+
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
     }

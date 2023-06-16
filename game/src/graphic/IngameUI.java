@@ -97,6 +97,12 @@ public class IngameUI<T extends Actor> extends ScreenController<T> {
      */
     public static void updateHPBar(int newHealthPoints) {
         hpScreen.setText("Healthpoints: " + newHealthPoints);
+        if(newHealthPoints == 0){
+            System.out.println("Test");
+            questText.remove();
+            questAcceptText.remove();
+            Quest.getAllQuests().clear();
+        }
     }
 
     public static void updateSkillsBar(String skill1, String skill2, String skill3) {

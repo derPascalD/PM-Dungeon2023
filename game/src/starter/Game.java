@@ -475,6 +475,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger.log(Level.INFO, "GameOver Menue active");
         systems.forEach(ECS_System::toggleRun);
         gameOverMenu.showMenu();
+
     }
 
     private void createSystems() {
