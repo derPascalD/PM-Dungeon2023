@@ -17,6 +17,7 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.MonsterChest;
+import ecs.entities.Monsters.Boss;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -188,10 +189,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }else{
 
             createMonster();
+
             addXPToEntity();
             new Poisoncloud();
             new Bananapeel();
             new Bananapeel();
+            spawnBoss();
         }
 
         if (rand.nextBoolean()) {
@@ -202,6 +205,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         if (levelDepth >= 1){
             saveGame.writeSave();
+        }
+    }
+
+    private void spawnBoss() {
+        if (levelDepth == 3) {
+           new Boss(levelDepth);
+            gameLogger.info("Boss Monster spawnt");
+        } else {
+            createMonster();
         }
     }
 
