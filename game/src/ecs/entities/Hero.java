@@ -56,7 +56,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private Skill thirdSkill;
     private Skill combatSkill;
     private boolean equipWeapon = false;
-    private final ArrayList<Entity> killedMonsters;
+    private ArrayList<Entity> killedMonsters;
 
     private Skill fourthSkill;
     private Skill fifthSkill;
@@ -327,6 +327,12 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         return killedMonsters;
     }
 
+    /**
+     * Clears the killed monsters list
+     */
+    public void clearKilledMonsters() {
+        killedMonsters = new ArrayList<>();
+    }
     /**
      * @param killedMonster add killed Monsters to the List
      */

@@ -105,7 +105,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private Random rand = new Random();
     private IngameUI ui;
     public static HealingBar healingBar;
-    private int questNumber;
+    private static int questNumber;
     private CharacterSelect characterSelect;
 
     public static void main(String[] args) {
@@ -477,7 +477,9 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /** Restarts the game */
     public static void restartGame() {
         levelDepth = 0;
+        ((Hero)hero).clearKilledMonsters();
         game.setup();
+        questNumber = 0;
     }
 
     /** Opens the Game Over menu and stops the systems */
