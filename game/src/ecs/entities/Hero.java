@@ -327,9 +327,7 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         return killedMonsters;
     }
 
-    /**
-     * Clears the killed monsters list
-     */
+    /** Clears the killed monsters list */
     public void clearKilledMonsters() {
         killedMonsters = new ArrayList<>();
     }

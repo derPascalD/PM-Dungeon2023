@@ -477,7 +477,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     /** Restarts the game */
     public static void restartGame() {
         levelDepth = 0;
-        ((Hero)hero).clearKilledMonsters();
+        ((Hero) hero).clearKilledMonsters();
         game.setup();
         questNumber = 0;
     }
