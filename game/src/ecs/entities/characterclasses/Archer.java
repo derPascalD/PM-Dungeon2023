@@ -36,7 +36,7 @@ public class Archer extends Hero {
     private void setupAnimation() {
         Animation idleLeft = AnimationBuilder.buildAnimation("archer/idleCombatLeft");
         Animation idleRight = AnimationBuilder.buildAnimation("archer/idleCombatRight");
-        new AnimationComponent(this,idleLeft,idleRight);
+        new AnimationComponent(this, idleLeft, idleRight);
     }
 
     private void setupStartItems() {

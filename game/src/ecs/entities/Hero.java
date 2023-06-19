@@ -33,6 +33,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private final int grenadeLauncherCoolDown = 1;
     private final int NinjabladeCoolDown = 0;
 
+    private PositionComponent pc;
+
+    private VelocityComponent vc;
+
     // Original Speed from Hero
 
     private final float xSpeed = 0.3f;

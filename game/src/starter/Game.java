@@ -17,6 +17,7 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.MonsterChest;
+import ecs.entities.Monsters.Boss;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -193,6 +194,8 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         addXPToEntity();
         setupChest();
 
+        spawnBoss();
+
         new Poisoncloud();
         new Bananapeel();
         new Bananapeel();
@@ -221,6 +224,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
         entitiesToRemove.clear();
         entitiesToAdd.clear();
+    }
+
+    private void spawnBoss() {
+        if (levelDepth == 3) {
+            new Boss(levelDepth, hero);
+        }
     }
 
     private void setCameraFocus() {
@@ -475,7 +484,6 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         gameLogger.log(Level.INFO, "GameOver Menue active");
         systems.forEach(ECS_System::toggleRun);
         gameOverMenu.showMenu();
-
     }
 
     private void createSystems() {

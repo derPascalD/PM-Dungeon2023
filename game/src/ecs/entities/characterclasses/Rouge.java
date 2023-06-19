@@ -32,9 +32,8 @@ public class Rouge extends Hero {
     private void setupAnimation() {
         Animation idleLeft = AnimationBuilder.buildAnimation("rouge/idleCombatLeft");
         Animation idleRight = AnimationBuilder.buildAnimation("rouge/idleCombatRight");
-        new AnimationComponent(this,idleLeft,idleRight);
+        new AnimationComponent(this, idleLeft, idleRight);
     }
-
 
     private void setupSkills() {
         setupMeleeSkill();

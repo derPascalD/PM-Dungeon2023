@@ -112,17 +112,17 @@ public class PlayerSystem extends ECS_System {
 
     // Set the Path Hero with Weapon
     private void setHeroWithWeapon(Hero hero) {
-        if(hero instanceof Archer) {
+        if (hero instanceof Archer) {
             hero.setPathToIdleLeft("archer/idleCombatLeft");
             hero.setPathToIdleRight("archer/idleCombatRight");
             hero.setPathToRunLeft("archer/runCombatLeft");
             hero.setPathToRunRight("archer/runCombatRight");
-        } else if(hero instanceof Tank) {
+        } else if (hero instanceof Tank) {
             hero.setPathToIdleLeft("tank/idleCombatLeft");
             hero.setPathToIdleRight("tank/idleCombatRight");
             hero.setPathToRunLeft("tank/runCombatLeft");
             hero.setPathToRunRight("tank/runCombatRight");
-        } else if(hero instanceof Rouge) {
+        } else if (hero instanceof Rouge) {
             hero.setPathToIdleLeft("rouge/idleCombatLeft");
             hero.setPathToIdleRight("rouge/idleCombatRight");
             hero.setPathToRunLeft("rouge/runCombatLeft");
@@ -144,17 +144,17 @@ public class PlayerSystem extends ECS_System {
 
     // Set the Path Hero without Weapon
     private void setHeroWithoutWeapon(Hero hero) {
-        if(hero instanceof Archer) {
+        if (hero instanceof Archer) {
             hero.setPathToIdleLeft("archer/idleLeft");
             hero.setPathToIdleRight("archer/idleRight");
             hero.setPathToRunLeft("archer/runLeft");
             hero.setPathToRunRight("archer/runRight");
-        } else if(hero instanceof Tank) {
+        } else if (hero instanceof Tank) {
             hero.setPathToIdleLeft("tank/idleLeft");
             hero.setPathToIdleRight("tank/idleRight");
             hero.setPathToRunLeft("tank/runLeft");
             hero.setPathToRunRight("tank/runRight");
-        } else if(hero instanceof Rouge) {
+        } else if (hero instanceof Rouge) {
             hero.setPathToIdleLeft("rouge/idleLeft");
             hero.setPathToIdleRight("rouge/idleRight");
             hero.setPathToRunLeft("rouge/runLeft");
