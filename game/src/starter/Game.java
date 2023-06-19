@@ -229,7 +229,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     private void spawnBoss() {
         if (levelDepth == 3) {
             new Boss(levelDepth, hero);
-            gameLogger.log(Level.INFO,"Boss Monster spawnt");
+            gameLogger.log(Level.INFO, "Boss Monster spawnt");
         }
     }
 

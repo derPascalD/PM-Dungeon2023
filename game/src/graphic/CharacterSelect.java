@@ -12,6 +12,7 @@ import ecs.entities.characterclasses.Rouge;
 import ecs.entities.characterclasses.Tank;
 import graphic.hud.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import starter.Game;
 import tools.Constants;
 import tools.Point;
@@ -149,6 +150,15 @@ public class CharacterSelect<T extends Actor> extends ScreenController<T> {
         hideMenu();
         selected = true;
         addGameOverMenu();
+        String hero = "";
+        if (Game.getHero().get() instanceof Rouge) {
+            hero = "Rouge";
+        } else if (Game.getHero().get() instanceof Archer) {
+            hero = "Archer";
+        } else if (Game.getHero().get() instanceof Tank) {
+            hero = "Tank";
+        }
+        Logger.getLogger(this.getClass().getName()).info(hero + " selected");
     }
 
     /**
