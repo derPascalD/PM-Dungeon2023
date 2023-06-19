@@ -17,6 +17,7 @@ import graphic.Animation;
 import graphic.IngameUI;
 import java.util.ArrayList;
 import level.elements.tile.Tile;
+import starter.Game;
 import tools.Point;
 
 /**
@@ -32,6 +33,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private final int grenadeLauncherCoolDown = 1;
     private final int NinjabladeCoolDown = 0;
 
+    private PositionComponent pc;
+
+    private VelocityComponent vc;
+
     // Original Speed from Hero
 
     private final float xSpeed = 0.3f;
@@ -42,27 +47,29 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     private String pathToRunRight = "knight/runCombatRight";
     private String hitAnimation = "knight/hit/knight_m_hit_anim_f0.png";
 
+    protected Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
+    protected Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
+
     // Skills from Hero
     private Skill firstSkill;
     private Skill secondSkill;
     private Skill thirdSkill;
     private Skill combatSkill;
     private boolean equipWeapon = false;
-    private final ArrayList<Entity> killedMonsters;
+    private ArrayList<Entity> killedMonsters;
 
     private Skill fourthSkill;
     private Skill fifthSkill;
 
     protected InventoryComponent inventory;
     private SkillComponent skillComponent;
-    private final PlayableComponent playableComponent;
+    protected final PlayableComponent playableComponent = new PlayableComponent(this);
     private XPComponent xpComponent;
     private HealthComponent healthComponent;
 
     /** Entity with Components */
     public Hero() {
         super();
-        playableComponent = new PlayableComponent(this);
         new PositionComponent(this);
         new HealingComponent(this, 5, 1, 1);
         killedMonsters = new ArrayList<>();
@@ -73,10 +80,90 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         setupHitboxComponent();
         setupSkillComponent();
         setupXPComponent();
-        setupMeleeSkill();
         setupInventoryComponent();
-        setupNinjaBlade();
         setupDamageComponent();
+    }
+
+    private void setupSkillComponent() {
+        skillComponent = new SkillComponent(this);
+    }
+
+    private void setupXPComponent() {
+        xpComponent = new XPComponent(this, this);
+    }
+
+    private void setupHealthComponent() {
+        healthComponent = new HealthComponent(this, 11, this, hitAnimation(), hitAnimation());
+    }
+
+    private void setupVelocityComponent() {
+        new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
+    }
+
+    private void setupAnimationComponent() {
+        Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
+        Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
+        new AnimationComponent(this, idleLeft, idleRight);
+    }
+
+    private void setupHitboxComponent() {
+        new HitboxComponent(this, this, this::onCollisionLeave);
+    }
+
+    private void setupInventoryComponent() {
+        inventory = new InventoryComponent(this, 5);
+    }
+
+    private void setupDamageComponent() {
+        new DamageComponent(this);
+    }
+
+    /** Adds the new Melee skill to allow the Hero to use melee attacks */
+    protected void setupMeleeSkill() {
+        skillComponent.addSkill(
+                combatSkill =
+                        new Skill(
+                                new Sword(
+                                        1,
+                                        "character/knight/attackLeft/",
+                                        "character/knight/attackRight/"),
+                                1F));
+        playableComponent.setCombatSkill(combatSkill);
+    }
+
+    /** Adds the NinjaBlade skill to allow the Hero to use a range attack */
+    protected void setupNinjaBlade() {
+        skillComponent.addSkill(
+                fifthSkill =
+                        new Skill(
+                                new NinjaBlade(
+                                        10,
+                                        false,
+                                        "skills/ninjablade/ninja_blade_left",
+                                        0.25f,
+                                        new Damage(2, DamageType.PHYSICAL, null),
+                                        new Point(0.5f, 0.5f),
+                                        SkillTools::getCursorPositionAsPoint,
+                                        5f),
+                                NinjabladeCoolDown));
+        playableComponent.setSkillSlot5(fifthSkill);
+    }
+    /** Adds the GrenadeLauncher skill to allow the Hero to use a range attack */
+    protected void setupGrenadeLauncherSkill() {
+        skillComponent.addSkill(
+                fourthSkill =
+                        new Skill(
+                                new GrenadeLauncher(
+                                        5,
+                                        true,
+                                        "items/grenade/grenade.png",
+                                        0.6f,
+                                        new Damage(2, DamageType.FIRE, null),
+                                        new Point(1f, 1f),
+                                        SkillTools::getCursorPositionAsPoint,
+                                        3f),
+                                grenadeLauncherCoolDown));
+        playableComponent.setSkillSlot4(fourthSkill);
     }
 
     /*
@@ -111,21 +198,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         playableComponent.setSkillSlot1(firstSkill);
     }
 
-    /*
-    Adds the new Melee skill to allow the Hero to run faster for a short time.
-    */
-    private void setupMeleeSkill() {
-        skillComponent.addSkill(
-                combatSkill =
-                        new Skill(
-                                new Sword(
-                                        1,
-                                        "character/knight/attackLeft/",
-                                        "character/knight/attackRight/"),
-                                1F));
-        playableComponent.setCombatSkill(combatSkill);
-    }
-
     /**
      * Here abilities are unlocked, depending on the level of the hero
      *
@@ -135,7 +207,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
     public void onLevelUp(long nextLevel) {
         if (nextLevel == 1) {
             setupFireballSkill();
-            setupGrenadeLauncherSkill();
             IngameUI.updateSkillsBar("Fireball", "-", "-");
         }
         if (nextLevel == 2) {
@@ -148,77 +219,6 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         }
     }
 
-    private void setupGrenadeLauncherSkill() {
-        skillComponent.addSkill(
-                fourthSkill =
-                        new Skill(
-                                new GrenadeLauncher(
-                                        5,
-                                        true,
-                                        "items/grenade/grenade.png",
-                                        0.6f,
-                                        new Damage(2, DamageType.FIRE, null),
-                                        new Point(1f, 1f),
-                                        SkillTools::getCursorPositionAsPoint,
-                                        3f),
-                                grenadeLauncherCoolDown));
-        playableComponent.setSkillSlot4(fourthSkill);
-    }
-
-    private void setupSkillComponent() {
-        skillComponent = new SkillComponent(this);
-    }
-
-    private void setupXPComponent() {
-        xpComponent = new XPComponent(this, this);
-    }
-
-    private void setupHealthComponent() {
-        Animation hit = AnimationBuilder.buildAnimation(hitAnimation);
-        healthComponent = new HealthComponent(this, 11, this, hitAnimation(), hit);
-    }
-
-    private void setupVelocityComponent() {
-        Animation moveRight = AnimationBuilder.buildAnimation(pathToRunRight);
-        Animation moveLeft = AnimationBuilder.buildAnimation(pathToRunLeft);
-        new VelocityComponent(this, xSpeed, ySpeed, moveLeft, moveRight);
-    }
-
-    private void setupAnimationComponent() {
-        Animation idleRight = AnimationBuilder.buildAnimation(pathToIdleRight);
-        Animation idleLeft = AnimationBuilder.buildAnimation(pathToIdleLeft);
-        new AnimationComponent(this, idleLeft, idleRight);
-    }
-
-    private void setupHitboxComponent() {
-        new HitboxComponent(this, this, this::onCollisionLeave);
-    }
-
-    private void setupNinjaBlade() {
-        skillComponent.addSkill(
-                fifthSkill =
-                        new Skill(
-                                new NinjaBlade(
-                                        10,
-                                        false,
-                                        "skills/ninjablade/ninja_blade_left",
-                                        0.25f,
-                                        new Damage(2, DamageType.PHYSICAL, null),
-                                        new Point(0.5f, 0.5f),
-                                        SkillTools::getCursorPositionAsPoint,
-                                        5f),
-                                NinjabladeCoolDown));
-        playableComponent.setSkillSlot5(fifthSkill);
-    }
-
-    private void setupInventoryComponent() {
-        inventory = new InventoryComponent(this, 5);
-    }
-
-    private void setupDamageComponent() {
-        new DamageComponent(this);
-    }
-
     /**
      * @return Return the Hit Animation from the Hero
      */
@@ -228,7 +228,9 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
 
     /** As soon as the entity dies, the content of the function is executed. */
     @Override
-    public void onDeath(Entity entity) {}
+    public void onDeath(Entity entity) {
+        Game.game.openGameOverMenu();
+    }
 
     /**
      * @return Return the current data path of the Hero Animation left
@@ -325,6 +327,10 @@ public class Hero extends Entity implements IOnDeathFunction, ILevelUp, ICollide
         return killedMonsters;
     }
 
+    /** Clears the killed monsters list */
+    public void clearKilledMonsters() {
+        killedMonsters = new ArrayList<>();
+    }
     /**
      * @param killedMonster add killed Monsters to the List
      */

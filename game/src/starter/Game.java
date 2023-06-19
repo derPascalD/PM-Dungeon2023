@@ -17,6 +17,7 @@ import ecs.components.PositionComponent;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
 import ecs.entities.MonsterChest;
+import ecs.entities.Monsters.Boss;
 import ecs.entities.Monsters.Demon;
 import ecs.entities.Monsters.PumpkinKiller;
 import ecs.entities.Monsters.Skeleton;
@@ -33,13 +34,16 @@ import ecs.quest.HealQuest;
 import ecs.quest.LevelUpQuest;
 import ecs.quest.Quest;
 import ecs.systems.*;
+import graphic.CharacterSelect;
 import graphic.DungeonCamera;
 import graphic.IngameUI;
 import graphic.Painter;
+import graphic.hud.GameOver;
 import graphic.hud.HealingBar;
 import graphic.hud.PauseMenu;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import level.IOnLevelLoader;
 import level.LevelAPI;
@@ -66,7 +70,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
     protected SpriteBatch batch;
 
     /** Contains all Controller of the Dungeon */
-    protected List<AbstractController<?>> controller;
+    public static List<AbstractController<?>> controller;
 
     public static DungeonCamera camera;
     /** Draws objects */
@@ -94,12 +98,15 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
     public static ILevel currentLevel;
     private static PauseMenu<Actor> pauseMenu;
+    private static GameOver<Actor> gameOverMenu;
+    public static Game game;
     private static Entity hero;
     private Logger gameLogger;
     private Random rand = new Random();
     private IngameUI ui;
     public static HealingBar healingBar;
-    private int questNumber;
+    private static int questNumber;
+    private CharacterSelect characterSelect;
 
     public static void main(String[] args) {
         // start the game
@@ -108,7 +115,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        DesktopLauncher.run(new Game());
+        DesktopLauncher.run(game = new Game());
     }
 
     /**
@@ -148,9 +155,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         controller.add(ui);
         healingBar = new HealingBar<>();
         controller.add(healingBar);
+        characterSelect = new CharacterSelect();
+        controller.add(characterSelect);
         levelAPI = new LevelAPI(batch, painter, new WallGenerator(new RandomWalkGenerator()), this);
         levelAPI.loadLevel(LEVELSIZE);
         createSystems();
+        togglePause();
     }
 
     /** Called at the beginning of each frame. Before the controllers call <code>update</code>. */
@@ -158,14 +168,19 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         setCameraFocus();
         manageEntitiesSets();
         getHero().ifPresent(this::loadNextLevelIfEntityIsOnEndTile);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) togglePause();
-        if (Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get()))
-            IngameUI.toggleQuestText();
-        if (levelDepth == 1) {
-            if (Gdx.input.isKeyJustPressed(KeyboardConfig.ACCEPT_QUEST.get())) acceptCurrentQuest();
-            if (Gdx.input.isKeyJustPressed(KeyboardConfig.NEXT_QUESTS.get())) skipQuest();
-        } else {
-            IngameUI.setQuestAcceptText(false);
+        if (CharacterSelect.hasSelected()) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+                togglePause();
+            }
+            if (Gdx.input.isKeyJustPressed(KeyboardConfig.TOGGLE_QUESTS.get()))
+                IngameUI.toggleQuestText();
+            if (levelDepth == 1) {
+                if (Gdx.input.isKeyJustPressed(KeyboardConfig.ACCEPT_QUEST.get()))
+                    acceptCurrentQuest();
+                if (Gdx.input.isKeyJustPressed(KeyboardConfig.NEXT_QUESTS.get())) skipQuest();
+            } else {
+                IngameUI.setQuestAcceptText(false);
+            }
         }
     }
 
@@ -178,10 +193,12 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         createMonster();
         addXPToEntity();
         setupChest();
+
+        spawnBoss();
+
         new Poisoncloud();
         new Bananapeel();
         new Bananapeel();
-
         if (rand.nextBoolean()) {
             new Ghost();
         }
@@ -207,6 +224,13 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         }
         entitiesToRemove.clear();
         entitiesToAdd.clear();
+    }
+
+    private void spawnBoss() {
+        if (levelDepth == 3) {
+            new Boss(levelDepth, hero);
+            gameLogger.log(Level.INFO, "Boss Monster spawnt");
+        }
     }
 
     private void setCameraFocus() {
@@ -282,6 +306,7 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
         levelDepth++;
     }
 
+    /** Here I add XP to the Hero. */
     public void addXPToEntity() {
         if (Game.hero != null) {
             Hero hero1 = (Hero) Game.hero;
@@ -429,6 +454,39 @@ public class Game extends ScreenAdapter implements IOnLevelLoader {
 
         // See also:
         // https://stackoverflow.com/questions/52011592/libgdx-set-ortho-camera
+    }
+
+    /**
+     * I hereby return the Game Over menu
+     *
+     * @return gameOverMenu
+     */
+    public static GameOver<Actor> getGameOverMenu() {
+        return gameOverMenu;
+    }
+
+    /**
+     * This is where I set my game Over instance variable
+     *
+     * @param gameOverMenu
+     */
+    public static void setGameOverMenu(GameOver<Actor> gameOverMenu) {
+        Game.gameOverMenu = gameOverMenu;
+    }
+
+    /** Restarts the game */
+    public static void restartGame() {
+        levelDepth = 0;
+        ((Hero) hero).clearKilledMonsters();
+        game.setup();
+        questNumber = 0;
+    }
+
+    /** Opens the Game Over menu and stops the systems */
+    public void openGameOverMenu() {
+        gameLogger.log(Level.INFO, "GameOver Menue active");
+        systems.forEach(ECS_System::toggleRun);
+        gameOverMenu.showMenu();
     }
 
     private void createSystems() {

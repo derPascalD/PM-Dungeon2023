@@ -6,6 +6,9 @@ import dslToGame.AnimationBuilder;
 import ecs.components.*;
 import ecs.entities.Entity;
 import ecs.entities.Hero;
+import ecs.entities.characterclasses.Archer;
+import ecs.entities.characterclasses.Rouge;
+import ecs.entities.characterclasses.Tank;
 import ecs.items.ImplementedItems.Bag;
 import ecs.items.ItemData;
 import ecs.items.ItemType;
@@ -109,10 +112,22 @@ public class PlayerSystem extends ECS_System {
 
     // Set the Path Hero with Weapon
     private void setHeroWithWeapon(Hero hero) {
-        hero.setPathToIdleLeft("knight/idleCombatLeft");
-        hero.setPathToIdleRight("knight/idleCombatRight");
-        hero.setPathToRunLeft("knight/runCombatLeft");
-        hero.setPathToRunRight("knight/runCombatRight");
+        if (hero instanceof Archer) {
+            hero.setPathToIdleLeft("archer/idleCombatLeft");
+            hero.setPathToIdleRight("archer/idleCombatRight");
+            hero.setPathToRunLeft("archer/runCombatLeft");
+            hero.setPathToRunRight("archer/runCombatRight");
+        } else if (hero instanceof Tank) {
+            hero.setPathToIdleLeft("tank/idleCombatLeft");
+            hero.setPathToIdleRight("tank/idleCombatRight");
+            hero.setPathToRunLeft("tank/runCombatLeft");
+            hero.setPathToRunRight("tank/runCombatRight");
+        } else if (hero instanceof Rouge) {
+            hero.setPathToIdleLeft("rouge/idleCombatLeft");
+            hero.setPathToIdleRight("rouge/idleCombatRight");
+            hero.setPathToRunLeft("rouge/runCombatLeft");
+            hero.setPathToRunRight("rouge/runCombatRight");
+        }
         heroComponents(hero);
     }
 
@@ -129,10 +144,22 @@ public class PlayerSystem extends ECS_System {
 
     // Set the Path Hero without Weapon
     private void setHeroWithoutWeapon(Hero hero) {
-        hero.setPathToIdleLeft("knight/idleLeft");
-        hero.setPathToIdleRight("knight/idleRight");
-        hero.setPathToRunLeft("knight/runLeft");
-        hero.setPathToRunRight("knight/runRight");
+        if (hero instanceof Archer) {
+            hero.setPathToIdleLeft("archer/idleLeft");
+            hero.setPathToIdleRight("archer/idleRight");
+            hero.setPathToRunLeft("archer/runLeft");
+            hero.setPathToRunRight("archer/runRight");
+        } else if (hero instanceof Tank) {
+            hero.setPathToIdleLeft("tank/idleLeft");
+            hero.setPathToIdleRight("tank/idleRight");
+            hero.setPathToRunLeft("tank/runLeft");
+            hero.setPathToRunRight("tank/runRight");
+        } else if (hero instanceof Rouge) {
+            hero.setPathToIdleLeft("rouge/idleLeft");
+            hero.setPathToIdleRight("rouge/idleRight");
+            hero.setPathToRunLeft("rouge/runLeft");
+            hero.setPathToRunRight("rouge/runRight");
+        }
         heroComponents(hero);
     }
 
