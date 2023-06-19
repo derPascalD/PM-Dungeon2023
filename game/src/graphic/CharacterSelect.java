@@ -16,6 +16,7 @@ import starter.Game;
 import tools.Constants;
 import tools.Point;
 
+/** Class handles character selection of the Hero */
 public class CharacterSelect<T extends Actor> extends ScreenController<T> {
 
     private ArrayList<ScreenButton> screenButtons;

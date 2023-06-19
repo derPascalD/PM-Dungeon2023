@@ -13,6 +13,7 @@ import starter.Game;
 import tools.Constants;
 import tools.Point;
 
+/** Class handles game over mechanics */
 public class GameOver<T extends Actor> extends ScreenController<T> {
 
     private final Logger gameOverLogger = Logger.getLogger(getClass().getName());
