@@ -70,7 +70,7 @@ public class Boss extends Monster {
     private void setupDistanceSkill() {
         PositionComponent pc = (PositionComponent) hero.getComponent(PositionComponent.class).get();
         skillComponent.addSkill(
-                distanceSkill = new Skill(new FireballSkill(() -> pc.getPosition()), 1));
+                distanceSkill = new Skill(new FireballSkill(() -> pc.getPosition()), 0.5f));
     }
 
     private void onCollisionLeave(Entity entity, Entity entity1, Tile.Direction direction) {}
