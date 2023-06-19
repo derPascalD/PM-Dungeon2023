@@ -18,6 +18,7 @@ public class Boss extends Monster {
 
     /**
      * @param levelDepth is the current Level
+     * @param hero is the hero entity
      */
     public Boss(int levelDepth, Entity hero) {
         this.hero = hero;
